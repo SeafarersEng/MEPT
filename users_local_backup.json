@@ -1,0 +1,17 @@
+[
+  {
+    "username": "student1",
+    "password": "stu1",
+    "expireDate": "2026-07-15"
+  },
+  {
+    "username": "zkp",
+    "password": "zkp",
+    "expireDate": "2026-07-23"
+  },
+  {
+    "username": "d",
+    "password": "d",
+    "expireDate": "2026-07-31"
+  }
+]
