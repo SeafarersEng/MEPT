@@ -2,7 +2,7 @@
   "name": "MEPT - Maritime English Proficiency Test",
   "short_name": "MEPT",
   "description": "Maritime English Proficiency Test Preparation Portal & Mock Test Platform",
-  "start_url": "/SeafarersEng/index.html",
+  "start_url": "start_url": "/index.html",
   "display": "standalone",
   "background_color": "#f4f7f6",
   "theme_color": "#0f4c75",
