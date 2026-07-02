@@ -626,7 +626,7 @@ function downloadCertificate() {
                     <p style="color: #555; font-size: 0.95rem; margin-bottom: 5px;">This is to certify that</p>
                     <h3 style="font-size: 1.8rem; color: #0f4c75; font-weight: 700; margin: 8px 0; text-transform: uppercase;">${username}</h3>
                     <p style="color: #555; font-size: 0.95rem; margin-bottom: 5px;">has successfully completed the</p>
-                    <p style="font-size: 1.2rem; font-weight: 700; color: #f0b429; margin-bottom: 12px;">Mock Test 1</p>
+                    <p style="font-size: 1.2rem; font-weight: 700; color: #f0b429; margin-bottom: 12px;">MEPT PREPARATION COURSE</p>
                     <p style="color: #555; font-size: 0.95rem; margin-bottom: 5px;">with a score of</p>
                     
                     <!-- Score Circle -->
