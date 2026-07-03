@@ -1,5 +1,4 @@
 const STORAGE_KEY = 'mept_all_users';
-
 async function startExam() {
     const username = document.getElementById('loginUsername').value.trim();
     const key = document.getElementById('loginKey').value.trim();
