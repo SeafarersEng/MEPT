@@ -7,11 +7,11 @@
     "name": "mts"
   },
   {
-    "username": "student02",
+    "username": "guest",
     "password": "std02@2026",
-    "startDate": "2026-01-15",
-    "expireDate": "2026-02-15",
-    "name": "Student 02"
+    "startDate": "2026-06-15",
+    "expireDate": "2026-07-15",
+    "name": "test101"
   },
   {
     "username": "student03",
