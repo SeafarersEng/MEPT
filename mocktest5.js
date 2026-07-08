@@ -343,194 +343,318 @@ function submitExam() {
         </div>`;
     document.getElementById('examResult').scrollIntoView({ behavior:'smooth' });
 }
-
+// ၁။ Grade သတ်မှတ်ပေးမည့် Function
 function getGrade(pct) {
-    if (pct >= 90) return { class:'grade-excellent', emoji:'🏆', text:'Excellent! (A+)' };
-    if (pct >= 80) return { class:'grade-excellent', emoji:'🌟', text:'Very Good! (A)' };
-    if (pct >= 70) return { class:'grade-good', emoji:'👍', text:'Good! (B)' };
-    if (pct >= 60) return { class:'grade-good', emoji:'✅', text:'Satisfactory (C)' };
-    if (pct >= 50) return { class:'grade-fair', emoji:'📚', text:'Needs Improvement (D)' };
-    return { class:'grade-poor', emoji:'💪', text:'Keep Studying! (F)' };
+    if (pct >= 90) return { class: 'grade-excellent', text: ' (A+)' };
+    if (pct >= 80) return { class: 'grade-excellent', text: ' (A)' };
+    if (pct >= 70) return { class: 'grade-good',      text: ' (B)' };
+    if (pct >= 60) return { class: 'grade-good',      text: ' (C)' };
+    if (pct >= 50) return { class: 'grade-fair',      text: ' (D)' };
+    return { class: 'grade-poor',      text: ' (F)' };
 }
 
+// ၂။ CEFR Mapping Function
+function getCEFR(pct) {
+    if (pct >= 90) return 'C2 (Proficient)';
+    if (pct >= 80) return 'C1 (Advanced)';
+    if (pct >= 70) return 'B2 (Upper Intermediate)';
+    if (pct >= 60) return 'B1 (Intermediate)';
+    if (pct >= 50) return 'A2 (Elementary)';
+    return 'A1 (Beginner)';
+}
+
+// ၃။ ရလဒ် Card ကို PDF အဖြစ် Print ထုတ်ပေးမည့် Function
 function downloadPDF() {
     const card = document.getElementById('resultCard');
+    if (!card) return;
     const btn = card.querySelector('.download-btn');
     if (btn) btn.style.display = 'none';
     window.print();
     if (btn) btn.style.display = 'block';
 }
 
-function downloadCertificate() {
-    const scores = window._lastExamScores;
-    if (!scores) return alert('No data');
-    const { username, total, max, pct, grade, date, time } = scores;
-    const cefr = getCEFR(pct);
-    const passFail = pct >= 50 ? 'PASS' : 'FAIL';
-    const qrText = `MEPT Mock Test 5 Candidate: ${username} Score: ${total}/${max} (${pct}%) Grade: ${grade.text} CEFR: ${cefr} Date: ${date} This is a mock test.`;
-    const qrURL = `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${encodeURIComponent(qrText)}`;
-    const certHTML = `
-    <div style="width: 800px; margin: 0 auto; font-family: 'Inter', sans-serif; padding: 40px; background: #ffffff; border: 4px solid #0f4c75; border-radius: 20px; position: relative;">
-        <div style="text-align: center; border-bottom: 2px solid #0f4c75; padding-bottom: 20px; margin-bottom: 30px;">
-            <div style="font-size: 3rem;">⚓</div>
-            <h1 style="color: #0f4c75; margin: 10px 0 5px; font-size: 2rem;">Certificate of Achievement</h1>
-            <p style="color: #666; font-size: 1rem;">MEPT Mock Test Platform</p>
-        </div>
-        <div style="text-align: center; margin-bottom: 30px;">
-            <p style="font-size: 1.2rem; color: #555;">This is to certify that</p>
-            <h2 style="color: #0f4c75; font-size: 2rem; margin: 10px 0;">${username}</h2>
-            <p style="font-size: 1rem; color: #555;">has successfully completed the</p>
-            <p style="font-size: 1.3rem; font-weight: 700; color: #0f4c75;">Mock Test 5 (A2/B1)</p>
-        </div>
-        <div style="display: flex; justify-content: space-around; margin-bottom: 30px;">
-            <div style="text-align: center;"><p style="font-weight: 700; color: #0f4c75;">Score</p><p style="font-size: 1.5rem; font-weight: 700;">${pct}%</p><p>(${total}/${max})</p></div>
-            <div style="text-align: center;"><p style="font-weight: 700; color: #0f4c75;">Grade</p><p style="font-size: 1.5rem; font-weight: 700;">${grade.text}</p></div>
-            <div style="text-align: center;"><p style="font-weight: 700; color: #0f4c75;">CEFR Level</p><p style="font-size: 1.5rem; font-weight: 700;">${cefr}</p></div>
-            <div style="text-align: center;"><p style="font-weight: 700; color: #0f4c75;">Result</p><p style="font-size: 1.5rem; font-weight: 700; color: ${passFail === 'PASS' ? '#28a745' : '#e74c3c'};">${passFail}</p></div>
-        </div>
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 40px; border-top: 1px dashed #0f4c75; padding-top: 20px;">
-            <div><p style="font-size: 0.9rem; color: #777;">Date: ${date}</p><p style="font-size: 0.9rem; color: #777;">Time: ${time}</p></div>
-            <div><img src="${qrURL}" alt="QR Code" style="width: 100px; height: 100px;"></div>
-        </div>
-        <p style="text-align: center; font-size: 0.8rem; color: #999; margin-top: 30px;">* This is a mock test result for self-assessment only. Not an official certificate.</p>
-    </div>`;
-    const printWindow = window.open('', '_blank', 'width=900,height=700');
-    printWindow.document.write(`<!DOCTYPE html><html><head><title>Certificate</title></head><body style="margin:0;display:flex;justify-content:center;">${certHTML}</body></html>`);
-    printWindow.document.close();
-    printWindow.focus();
-    printWindow.print();
-    printWindow.onafterprint = function() { printWindow.close(); };
+// ၄။ QR Code ကို Base64 အဖြစ် ပြောင်းလဲပေးမည့် Function
+function generateQRBase64(text) {
+    return new Promise((resolve, reject) => {
+        const container = document.createElement('div');
+        container.style.position = 'absolute';
+        container.style.left = '-9999px';
+        container.style.top = '-9999px';
+        document.body.appendChild(container);
+
+        try {
+            const qrObj = new QRCode(container, {
+                text: text,
+                width: 150,
+                height: 150,
+                colorDark: '#0f4c75',
+                colorLight: '#ffffff',
+                correctLevel: QRCode.CorrectLevel.H
+            });
+
+            let checkCount = 0;
+            const checkInterval = setInterval(() => {
+                const img = container.querySelector('img');
+                const canvas = container.querySelector('canvas');
+                
+                if (img && img.src && img.src.startsWith('data:image')) {
+                    clearInterval(checkInterval);
+                    const base64Data = img.src;
+                    container.remove();
+                    resolve(base64Data);
+                } else if (canvas) {
+                    clearInterval(checkInterval);
+                    const base64Data = canvas.toDataURL('image/png');
+                    container.remove();
+                    resolve(base64Data);
+                }
+
+                checkCount++;
+                if (checkCount > 30) { 
+                    clearInterval(checkInterval);
+                    container.remove();
+                    reject(new Error("QR Code rendering timeout."));
+                }
+            }, 100);
+
+        } catch (e) {
+            container.remove();
+            reject(e);
+        }
+    });
 }
 
-function getCEFR(pct) {
-    if (pct >= 90) return 'C2 (Proficient)';
-    if (pct >= 80) return 'C1 (Advanced)';
-    if (pct >= 70) return 'B2 (Upper Intermediate)';
-    if (pct >= 60) return 'B1 (Intermediate)';
-    if (pct >= 50) return 'A2 (Elementary)';
-    return 'A1 (Beginner)';
-}
-
-function getCEFR(pct) {
-    if (pct >= 90) return 'C2 (Proficient)';
-    if (pct >= 80) return 'C1 (Advanced)';
-    if (pct >= 70) return 'B2 (Upper Intermediate)';
-    if (pct >= 60) return 'B1 (Intermediate)';
-    if (pct >= 50) return 'A2 (Elementary)';
-    return 'A1 (Beginner)';
-}
-
-function downloadCertificate() {
+// ၅။ Main Function: HTML/CSS သီးသန့်ဖြင့် Anchor Logo သေချာပေါက်ပေါ်အောင် ပြင်ဆင်ထားသည့် စနစ်
+async function downloadCertificate() {
     const scores = window._lastExamScores;
     if (!scores) {
         alert('ရလဒ်ဒေတာ မရှိပါ။ ကျေးဇူးပြု၍ စာမေးပွဲပြန်ဖြေပါ။');
         return;
     }
 
-    const { username, total, max, pct, grade, date, time } = scores;
-    const cefr = getCEFR(pct);
+    const { username, total, max, pct, date } = scores;
+    const cefr = getCEFR(pct); 
     const passFail = pct >= 50 ? 'PASS' : 'FAIL';
+    const currentGrade = getGrade(pct);
 
-    const qrText = `MEPT Mock Test Candidate: ${username} Score: ${total}/${max} (${pct}%) Grade: ${grade.text} CEFR: ${cefr} Date: ${date}`;
-    const qrURL = `https://api.qrserver.com/v1/create-qr-code/?size=100x100&data=${encodeURIComponent(qrText)}`;
+    if (typeof QRCode === 'undefined') {
+        await new Promise((resolve) => {
+            const script = document.createElement('script');
+            script.src = 'https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js';
+            script.onload = resolve;
+            document.head.appendChild(script);
+        });
+    }
 
+    if (typeof html2canvas === 'undefined') {
+        await new Promise((resolve) => {
+            const script = document.createElement('script');
+            script.src = 'https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js';
+            script.onload = resolve;
+            document.head.appendChild(script);
+        });
+    }
+
+    let qrBase64;
+    try {
+        const qrText = `MEPT Mock Test Candidate: ${username} Score: ${total}/${max} (${pct}%) Date: ${date}`;
+        qrBase64 = await generateQRBase64(qrText); 
+    } catch (err) {
+        console.error(err);
+        alert('QR Code ဖန်တီးရာတွင် အဆင်မပြေဖြစ်သွားပါသည်။ ပြန်ကြိုးစားကြည့်ပါ။');
+        return;
+    }
+
+    // Certificate HTML Template
     const certHTML = `
-    <div style="width: 700px; margin: 0 auto; font-family: 'Inter', sans-serif; background: #ffffff;">
-        <div style="background: linear-gradient(135deg, #1a3a5c, #0f4c75); padding: 8px; border-radius: 20px; box-shadow: 0 20px 50px rgba(15, 76, 117, 0.3);">
-            <div style="background: linear-gradient(180deg, #ffffff 0%, #f8f9fa 100%); border-radius: 14px; padding: 30px 25px; position: relative; overflow: hidden; border: 2px solid #f0b429; margin: 4px;">
+    <div style="width: 1000px; height: 1414px; margin: 0 auto; font-family: 'Inter', 'Segoe UI', sans-serif; background: #ffffff; box-sizing: border-box; padding: 50px; display: flex; flex-direction: column; justify-content: space-between; border: 2px solid #e2e8f0; border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); position: relative; overflow: hidden;">
+        
+        <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 550px; color: #0f4c75; opacity: 0.04; z-index: 0; pointer-events: none; user-select: none;">⚓</div>
+
+        <div style="text-align: center; border-bottom: 3px solid #f0b429; padding-bottom: 15px; position: relative; z-index: 1;">
+            
+            <div style="width: 80px; height: 80px; background: linear-gradient(135deg, #f0b429, #e67e22); border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; box-shadow: 0 4px 14px rgba(240, 180, 41, 0.4); margin-bottom: 12px; position: relative;">
                 
-                <!-- Watermark -->
-                <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 12rem; color: rgba(15, 76, 117, 0.03); pointer-events: none;">⚓</div>
+                <div style="position: absolute; top: 18px; width: 10px; height: 10px; border: 2.5px solid white; border-radius: 50%; box-sizing: border-box;"></div>
                 
-                <!-- Top Seal -->
-                <div style="text-align: center; margin-bottom: 20px;">
-                    <div style="width: 60px; height: 60px; background: linear-gradient(135deg, #f0b429, #e67e22); border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; box-shadow: 0 4px 12px rgba(240, 180, 41, 0.3);">
-                        <span style="font-size: 1.6rem; color: white;">⚓</span>
+                <div style="position: absolute; top: 26px; width: 3px; height: 32px; background-color: white;"></div>
+                
+                <div style="position: absolute; top: 33px; width: 16px; height: 3px; background-color: white;"></div>
+                
+                <div style="position: absolute; bottom: 20px; width: 26px; height: 13px; border-bottom: 3px solid white; border-left: 3px solid white; border-right: 3px solid white; border-bottom-left-radius: 14px; border-bottom-right-radius: 14px; box-sizing: border-box;">
+                    <div style="position: absolute; left: -4px; top: -2px; width: 0; height: 0; border-left: 3px solid transparent; border-right: 3px solid transparent; border-bottom: 5px solid white; transform: rotate(-45deg);"></div>
+                    <div style="position: absolute; right: -4px; top: -2px; width: 0; height: 0; border-left: 3px solid transparent; border-right: 3px solid transparent; border-bottom: 5px solid white; transform: rotate(45deg);"></div>
+                </div>
+            </div>
+
+            <h2 style="font-size: 2rem; color: #0f4c75; font-weight: 700; margin: 5px 0 0 0; letter-spacing: 2px;">CERTIFICATE OF ACHIEVEMENT</h2>
+            <p style="color: #718096; font-size: 1rem; margin: 0; letter-spacing: 4px; text-transform: uppercase;">MEPT Mock Test Platform</p>
+        </div>
+
+        <div style="flex: 1; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; padding: 10px 0; position: relative; z-index: 1;">
+            <p style="color: #4a5568; font-size: 1.1rem; margin-bottom: 8px; font-weight: 500;">This is to certify that</p>
+            <h3 style="font-size: 3.2rem; color: #0f4c75; font-weight: 800; margin: 5px 0 10px 0; text-transform: uppercase; letter-spacing: 3px; border-bottom: 4px solid #f0b429; display: inline-block; padding: 0 20px 10px 20px;">${username}</h3>
+            <p style="color: #4a5568; font-size: 1.1rem; margin: 15px 0 5px 0;">has successfully completed the</p>
+            <p style="font-size: 1.6rem; font-weight: 700; color: #f0b429; margin: 0 0 15px 0;">MEPT PREPARATION COURSE</p>
+            <p style="color: #4a5568; font-size: 1rem; margin-bottom: 10px;">with an overall score of</p>
+            
+            <div style="width: 140px; height: 140px; border-radius: 50%; background: linear-gradient(135deg, #0f4c75, #3282b8); color: white; display: inline-flex; flex-direction: column; align-items: center; justify-content: center; margin: 5px auto 20px auto; box-shadow: 0 8px 25px rgba(15, 76, 117, 0.5); border: 4px solid #f0b429;">
+                <span style="font-size: 2.8rem; font-weight: 800; line-height: 1;">${pct}%</span>
+                <span style="font-size: 1rem; opacity: 0.9; margin-top: 2px;">${total}/${max}</span>
+            </div>
+
+            <div style="display: flex; gap: 40px; margin-top: 10px; align-items: center; width: 100%; justify-content: center; flex-wrap: wrap;">
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px 30px; flex: 1; max-width: 500px;">
+                    <div style="background: rgba(247, 250, 252, 0.85); padding: 12px 15px; border-radius: 12px; text-align: center; border: 1px solid #e2e8f0; backdrop-filter: blur(2px);">
+                        <span style="display: block; font-size: 0.8rem; color: #718096; text-transform: uppercase; letter-spacing: 1px;">CEFR Level</span>
+                        <span style="font-size: 1.4rem; font-weight: 700; color: #0f4c75;">${cefr}</span>
+                    </div>
+                    <div style="background: rgba(247, 250, 252, 0.85); padding: 12px 15px; border-radius: 12px; text-align: center; border: 1px solid #e2e8f0; backdrop-filter: blur(2px);">
+                        <span style="display: block; font-size: 0.8rem; color: #718096; text-transform: uppercase; letter-spacing: 1px;">Grade</span>
+                        <span style="font-size: 1.6rem; font-weight: 700; color: #f0b429;">${currentGrade.text.trim()}</span>
+                    </div>
+                    <div style="background: rgba(247, 250, 252, 0.85); padding: 12px 15px; border-radius: 12px; text-align: center; border: 1px solid #e2e8f0; backdrop-filter: blur(2px);">
+                        <span style="display: block; font-size: 0.8rem; color: #718096; text-transform: uppercase; letter-spacing: 1px;">Result</span>
+                        <span style="font-size: 1.3rem; font-weight: 700; color: ${passFail === 'PASS' ? '#38a169' : '#e53e3e'};">${passFail}</span>
+                    </div>
+                    <div style="background: rgba(247, 250, 252, 0.85); padding: 12px 15px; border-radius: 12px; text-align: center; border: 1px solid #e2e8f0; backdrop-filter: blur(2px);">
+                        <span style="display: block; font-size: 0.8rem; color: #718096; text-transform: uppercase; letter-spacing: 1px;">Date</span>
+                        <span style="font-size: 1.2rem; font-weight: 700; color: #0f4c75;">${date}</span>
                     </div>
                 </div>
                 
-                <!-- Header -->
-                <div style="text-align: center; margin-bottom: 20px; padding-bottom: 15px; border-bottom: 2px solid #e2e8f0;">
-                    <h2 style="font-size: 1.6rem; color: #0f4c75; font-weight: 700; margin: 0 0 5px 0;">Certificate of Achievement</h2>
-                    <p style="color: #718096; font-size: 0.9rem; margin: 0;">MEPT Mock Test Platform</p>
+                <div style="flex-shrink: 0; border: 3px solid #0f4c75; border-radius: 16px; padding: 8px; background: white; box-shadow: 0 4px 10px rgba(0,0,0,0.05);">
+                    <img src="${qrBase64}" alt="QR Code" style="width: 120px; height: 120px; display: block;">
                 </div>
-                
-                <!-- Body -->
-                <div style="text-align: center;">
-                    <p style="color: #555; font-size: 0.95rem; margin-bottom: 5px;">This is to certify that</p>
-                    <h3 style="font-size: 1.8rem; color: #0f4c75; font-weight: 700; margin: 8px 0; text-transform: uppercase;">${username}</h3>
-                    <p style="color: #555; font-size: 0.95rem; margin-bottom: 5px;">has successfully completed the</p>
-                    <p style="font-size: 1.2rem; font-weight: 700; color: #f0b429; margin-bottom: 12px;">MEPT PREPARATION COURSE</p>
-                    <p style="color: #555; font-size: 0.95rem; margin-bottom: 5px;">with a score of</p>
-                    
-                    <!-- Score Circle -->
-                    <div style="width: 110px; height: 110px; border-radius: 50%; background: linear-gradient(135deg, #0f4c75, #3282b8); color: white; display: inline-flex; flex-direction: column; align-items: center; justify-content: center; margin: 15px auto; box-shadow: 0 8px 20px rgba(15, 76, 117, 0.4); border: 3px solid #f0b429;">
-                        <span style="font-size: 2rem; font-weight: 800; line-height: 1;">${pct}%</span>
-                        <span style="font-size: 0.8rem; opacity: 0.9; margin-top: 2px;">${total}/${max}</span>
-                    </div>
-                    
-                    <!-- Details Grid + QR in same row -->
-                    <div style="display: flex; gap: 20px; margin: 20px 0; align-items: center;">
-                        <!-- Details Grid -->
-                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; flex: 1;">
-                            <div style="background: #f8f9fa; padding: 10px; border-radius: 8px; text-align: center; border: 1px solid #e2e8f0;">
-                                <span style="display: block; font-size: 0.75rem; color: #718096; margin-bottom: 4px;">CEFR Level</span>
-                                <span style="font-size: 1rem; font-weight: 700; color: #0f4c75;">${cefr}</span>
-                            </div>
-                            <div style="background: #f8f9fa; padding: 10px; border-radius: 8px; text-align: center; border: 1px solid #e2e8f0;">
-                                <span style="display: block; font-size: 0.75rem; color: #718096; margin-bottom: 4px;">Grade</span>
-                                <span style="font-size: 1.3rem; font-weight: 700; color: #f0b429;">${grade.letter || 'A'}</span>
-                            </div>
-                            <div style="background: #f8f9fa; padding: 10px; border-radius: 8px; text-align: center; border: 1px solid #e2e8f0;">
-                                <span style="display: block; font-size: 0.75rem; color: #718096; margin-bottom: 4px;">Result</span>
-                                <span style="font-size: 1rem; font-weight: 700; color: ${passFail === 'PASS' ? '#38a169' : '#e53e3e'};">${passFail}</span>
-                            </div>
-                            <div style="background: #f8f9fa; padding: 10px; border-radius: 8px; text-align: center; border: 1px solid #e2e8f0;">
-                                <span style="display: block; font-size: 0.75rem; color: #718096; margin-bottom: 4px;">Date</span>
-                                <span style="font-size: 1rem; font-weight: 700; color: #0f4c75;">${date}</span>
-                            </div>
-                        </div>
-                        
-                        <!-- QR Code -->
-                        <div style="flex-shrink: 0;">
-                            <img src="${qrURL}" alt="QR Code" style="width: 90px; height: 90px; border: 2px solid #e2e8f0; border-radius: 8px; padding: 4px; background: white;">
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Footer -->
-                <div style="margin-top: 15px; padding-top: 12px; border-top: 2px solid #e2e8f0; text-align: center;">
-                    <p style="font-size: 0.75rem; color: #999; font-style: italic; margin: 0;">* This is a mock test certificate for self-assessment only</p>
-                </div>
-                
+            </div>
+        </div>
+
+        <div style="border-top: 2px solid #e2e8f0; padding-top: 20px; text-align: center; margin-top: 10px; position: relative; z-index: 1;">
+            <p style="font-size: 0.8rem; color: #a0aec0; font-style: italic; margin: 0;">* This is a mock test certificate for self-assessment purposes only. Not an official certification.</p>
+            <div style="display: flex; justify-content: center; gap: 30px; margin-top: 8px; font-size: 0.75rem; color: #718096;">
+                <span>Certificate ID: MEPT-${Date.now().toString().slice(-6)}</span>
+                <span>|</span>
+                <span>Verified via QR Code</span>
             </div>
         </div>
     </div>`;
 
-    const printWindow = window.open('', '_blank', 'width=900,height=700');
-    printWindow.document.write(`
-        <!DOCTYPE html>
-        <html>
-        <head>
-            <title>Certificate</title>
-            <style>
-                @media print {
-                    body { margin: 0; padding: 10px; }
-                    @page { size: A4; margin: 5mm; }
-                }
-            </style>
-        </head>
-        <body style="margin:0; display:flex; justify-content:center; align-items:center; min-height:100vh; background:#f4f7f6;">
-            ${certHTML}
-        </body>
-        </html>
-    `);
-    printWindow.document.close();
-    printWindow.focus();
+    const container = document.createElement('div');
+    container.id = 'certificate-container';
+    container.style.position = 'absolute';
+    container.style.left = '-9999px';
+    container.style.top = '-9999px';
+    container.style.width = '1000px';
+    container.style.background = 'white';
+    container.innerHTML = certHTML;
+    document.body.appendChild(container);
+
+    try {
+        const canvas = await html2canvas(container, {
+            scale: 2.0, 
+            useCORS: true,
+            allowTaint: false,
+            backgroundColor: '#ffffff',
+            logging: false,
+            width: 1000,
+            height: 1414
+        });
+
+        const finalCertificateImageBase64 = canvas.toDataURL('image/png');
+        container.remove(); 
+
+        showPreviewModal(finalCertificateImageBase64, username);
+
+    } catch (err) {
+        console.error('Certificate generation error:', err);
+        alert('Certificate ထုတ်ယူရာတွင် အမှားရှိပါသည်။');
+        container.remove();
+    }
+}
+
+// ၆။ Preview UI Modal Function
+function showPreviewModal(imageSrc, username) {
+    const oldModal = document.getElementById('cert-preview-modal');
+    if (oldModal) oldModal.remove();
+
+    const modal = document.createElement('div');
+    modal.id = 'cert-preview-modal';
+    modal.style.position = 'fixed';
+    modal.style.top = '0';
+    modal.style.left = '0';
+    modal.style.width = '100vw';
+    modal.style.height = '100vh';
+    modal.style.backgroundColor = 'rgba(0, 0, 0, 0.75)';
+    modal.style.display = 'flex';
+    modal.style.flexDirection = 'column';
+    modal.style.alignItems = 'center';
+    modal.style.justifyContent = 'center';
+    modal.style.zIndex = '99999';
+    modal.style.fontFamily = 'sans-serif';
+    modal.style.padding = '20px';
+    modal.style.boxSizing = 'border-box';
+
+    const wrapper = document.createElement('div');
+    wrapper.style.backgroundColor = '#fff';
+    wrapper.style.padding = '20px';
+    wrapper.style.borderRadius = '12px';
+    wrapper.style.maxWidth = '500px'; 
+    wrapper.style.width = '100%';
+    wrapper.style.textAlign = 'center';
+    wrapper.style.boxShadow = '0 20px 25px -5px rgba(0, 0, 0, 0.3)';
+
+    const title = document.createElement('h3');
+    title.innerText = 'Certificate Preview';
+    title.style.margin = '0 0 10px 0';
+    title.style.color = '#0f4c75';
+
+    const img = document.createElement('img');
+    img.src = imageSrc;
+    img.style.width = '100%';
+    img.style.maxHeight = '60vh';
+    img.style.objectFit = 'contain';
+    img.style.borderRadius = '6px';
+    img.style.border = '1px solid #e2e8f0';
+    img.style.marginBottom = '20px';
+
+    const btnGroup = document.createElement('div');
+    btnGroup.style.display = 'flex';
+    btnGroup.style.gap = '10px';
+    btnGroup.style.justifyContent = 'center';
+
+    const cancelBtn = document.createElement('button');
+    cancelBtn.innerText = 'ပိတ်မည်';
+    cancelBtn.style.padding = '10px 20px';
+    cancelBtn.style.border = '1px solid #cbd5e1';
+    cancelBtn.style.backgroundColor = '#fff';
+    cancelBtn.style.color = '#475569';
+    cancelBtn.style.borderRadius = '6px';
+    cancelBtn.style.cursor = 'pointer';
+    cancelBtn.onclick = () => modal.remove();
+
+    const downloadBtn = document.createElement('button');
+    downloadBtn.innerText = 'Download ရယူမည်';
+    downloadBtn.style.padding = '10px 20px';
+    downloadBtn.style.border = 'none';
+    downloadBtn.style.backgroundColor = '#0f4c75';
+    downloadBtn.style.color = '#fff';
+    downloadBtn.style.borderRadius = '6px';
+    downloadBtn.style.cursor = 'pointer';
+    downloadBtn.style.fontWeight = 'bold';
+    downloadBtn.onclick = () => {
+        const link = document.createElement('a');
+        link.download = `MEPT-Certificate-${username}-${Date.now()}.png`;
+        link.href = imageSrc;
+        link.click();
+        modal.remove(); 
+    };
+
+    btnGroup.appendChild(cancelBtn);
+    btnGroup.appendChild(downloadBtn);
+    wrapper.appendChild(title);
+    wrapper.appendChild(img);
+    wrapper.appendChild(btnGroup);
+    modal.appendChild(wrapper);
     
-    setTimeout(() => {
-        printWindow.print();
-    }, 1500);
-    
-    printWindow.onafterprint = function() { printWindow.close(); };
+    document.body.appendChild(modal);
 }
