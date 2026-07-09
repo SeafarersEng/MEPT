@@ -925,3 +925,41 @@ function showPreviewModal(imageSrc, username) {
     
     document.body.appendChild(modal);
 }
+// ============================================================
+// PREMIUM WEB APP SECURITY & CONTENT PROTECTION
+// ============================================================
+
+// ၁။ Right-Click နှိပ်ပြီး Download ဆွဲခြင်း သို့မဟုတ် Inspect Element ကြည့်ခြင်းကို ပိတ်ရန်
+document.addEventListener('contextmenu', (e) => {
+    e.preventDefault();
+});
+
+// ၂။ စာသားများကို Select ပေးပြီး Copy (Ctrl+C / Cmd+C) ကူးခြင်းကို တားဆီးရန်
+document.addEventListener('selectstart', (e) => {
+    e.preventDefault();
+});
+
+document.addEventListener('keydown', (e) => {
+    // Ctrl+C, Ctrl+A, Ctrl+U (View Source), Ctrl+S (Save Page) များကို ပိတ်ရန်
+    if (e.ctrlKey || e.metaKey) {
+        if (e.key === 'c' || e.key === 'C' || 
+            e.key === 'a' || e.key === 'A' || 
+            e.key === 'u' || e.key === 'U' || 
+            e.key === 's' || e.key === 'S') {
+            e.preventDefault();
+            return false;
+        }
+    }
+    // F12 (Developer Tools) ဖွင့်ခြင်းကို ပိတ်ရန်
+    if (e.key === 'F12') {
+        e.preventDefault();
+        return false;
+    }
+});
+
+// ၃။ ပုံများကို မောက်စ်ဖြင့် ဖိပြီး Drag ဆွဲယူကာ Desktop ပေါ်တင်ခြင်းကို ပိတ်ရန်
+document.addEventListener('dragstart', (e) => {
+    if (e.target.nodeName === 'IMG') {
+        e.preventDefault();
+    }
+});
