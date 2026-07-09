@@ -59,7 +59,7 @@ const exercisesData = [
     {
         id: 3,
         title: "Construction Site Safety",
-        imgUrl: "images/ex3.jpg",
+        imgUrl: "pic3.png",
         imageDesc: "ဆောက်လုပ်ရေးလုပ်ငန်းခွင်တွင် အလုပ်သမားများ ဘေးကင်းဦးထုပ် နှင့် အန္တရာယ်ကာကွယ်ရေးအဝတ်အစားများ ဝတ်ဆင်ထားကြသည်။",
         questions: [
             "1. Why is safety important on a construction site?",
@@ -79,7 +79,7 @@ const exercisesData = [
     {
         id: 4,
         title: "Office Work Environment",
-        imgUrl: "images/ex4.jpg",
+        imgUrl: "pic4.png",
         imageDesc: "ရုံးခန်းတစ်ခုအတွင်း ဝန်ထမ်းများ ကွန်ပျူတာများဖြင့် အလုပ်လုပ်နေကြသည်။",
         questions: [
             "1. What time do you usually start work?",
@@ -99,7 +99,7 @@ const exercisesData = [
     {
         id: 5,
         title: "Restaurant Service",
-        imgUrl: "images/ex5.jpg",
+        imgUrl: "pic5.png",
         imageDesc: "စားသောက်ဆိုင်တစ်ခုအတွင်း စားပွဲများ စီစဉ်ထားပြီး ဧည့်သည်များကို စားသောက်စရာများ ကျွေးမွေးနေသည်။",
         questions: [
             "1. What is your role in the restaurant?",
@@ -119,7 +119,7 @@ const exercisesData = [
     {
         id: 6,
         title: "Hospital / Medical Care",
-        imgUrl: "images/ex6.jpg",
+        imgUrl: "pic6.png",
         imageDesc: "ဆေးရုံအတွင်း ဆရာဝန်နှင့် သူနာပြုများ လူနာများကို စောင့်ရှောက်နေကြသည်။",
         questions: [
             "1. What is your job in the hospital?",
@@ -139,7 +139,7 @@ const exercisesData = [
     {
         id: 7,
         title: "Factory Production Line",
-        imgUrl: "images/ex7.jpg",
+        imgUrl: "pic7.png",
         imageDesc: "စက်ရုံအတွင်း ထုတ်လုပ်မှုလိုင်းပေါ်တွင် အလုပ်သမားများ ကုန်ပစ္စည်းများ တပ်ဆင်နေကြသည်။",
         questions: [
             "1. What do you produce in this factory?",
