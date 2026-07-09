@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="my">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>MEPT Picture Speaking – လေ့ကျင့်ခန်း အသစ် (၁၈)</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+    <link rel="stylesheet" href="pic.css" />
+</head>
+<body>
+
+    <div class="app-container" id="app">
+
+        <div id="loginSection">
+            <div class="logo-icon"><i class="fas fa-anchor"></i></div>
+            <h1>MEPT Picture Speaking</h1>
+            <p class="sub-title">လေ့ကျင့်ခန်း (၁၈) ခု – အဖြေများတွင် မြန်မာလိုပါရှိ</p>
+            
+            <div class="key-input-group">
+                <input type="password" id="keyInput" placeholder="Enter Access Key..." autofocus />
+                <button id="loginBtn"><i class="fas fa-lock"></i> Login</button>
+            </div>
+            
+            <div class="key-error" id="keyError"></div>
+            
+            <div class="key-notice">
+                <i class="fas fa-info-circle"></i> သော့ (Key) ကို အကောင့်ဖွင့်ပြီးမှသာ ရယူအသုံးပြုနိုင်ပါသည်။
+            </div>
+        </div>
+
+        <div id="mainSection">
+            <div class="main-header">
+                <h2><i class="fas fa-ship"></i> MEPT Picture Speaking Dashboard</h2>
+                <div class="header-controls">
+                    <span class="progress-badge"><i class="fas fa-bookmark"></i> Total: 18 Exercises</span>
+                    <button class="logout-btn" id="logoutBtn"><i class="fas fa-sign-out-alt"></i> Logout</button>
+                </div>
+            </div>
+            <div class="exercise-list" id="exerciseList"></div>
+        </div>
+
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
