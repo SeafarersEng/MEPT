@@ -4,7 +4,7 @@ const AUTHORIZED_KEYS = new Set([
     // User 1
     "U1M7P2X4", "U1K9B5V2", "U1T3R8N6", "U1A4Z7Q9", "U1W2E5R8", "U1Y9U2I4", "U1O6P3A7", "U1S5D8F2",
     // User 2
-    "U2B4N7M1", "U2C9V3X5", "U2Z8A2Q6", "U2W5E1R9", "U2T7Y3U8", "U2I4O6P2", "U2A9S5D1", "U2F7G3H8",
+    "U2B4N7M1", "U2C9V3X5", "xxxyyy", "U2W5E1R9", "U2T7Y3U8", "U2I4O6P2", "U2A9S5D1", "U2F7G3H8",
     // User 3
     "U3J2K5L9", "U3M4N7B1", "U3V6C3X8", "U3Z9A5Q1", "U3W7E2R6", "U3T4Y9U1", "U3I5O8P3", "U3A2S6D4",
     // User 4
@@ -159,7 +159,7 @@ const exercisesData = [
     {
         id: 8,
         title: "Hotel Housekeeping",
-        imgUrl: "images/ex8.jpg",
+        imgUrl: "pic8.png",
         imageDesc: "ဟိုတယ်အခန်းတစ်ခုအတွင်း အိမ်သန့်ရှင်းရေးဝန်ထမ်းတစ်ဦး ကုတင်များ ပြင်ဆင်နေပြီး အခန်းကို သန့်ရှင်းရေးလုပ်နေသည်။",
         questions: [
             "1. What are your main duties as a housekeeper?",
@@ -179,7 +179,7 @@ const exercisesData = [
     {
         id: 9,
         title: "Classroom Learning",
-        imgUrl: "images/ex9.jpg",
+        imgUrl: "pic9.png",
         imageDesc: "စာသင်ခန်းတစ်ခုအတွင်း ဆရာတစ်ဦးက ကျောင်းသားများကို သင်ကြားနေပြီး ကျောင်းသားများက မှတ်စုရေးနေကြသည်။",
         questions: [
             "1. What subject are you learning today?",
@@ -199,7 +199,7 @@ const exercisesData = [
     {
         id: 10,
         title: "Market Shopping",
-        imgUrl: "images/ex10.jpg",
+        imgUrl: "pic10.png",
         imageDesc: "ဈေးတစ်ခုအတွင်း လူများ ဈေးဝယ်နေကြသည်။ ဟင်းသီးဟင်းရွက်များ၊ သစ်သီးများ၊ ငါးများ ရောင်းချနေသည်။",
         questions: [
             "1. What do you usually buy at the fresh market?",
@@ -219,7 +219,7 @@ const exercisesData = [
     {
         id: 11,
         title: "Alcohol Policy (အရက်သေစာ မူဝါဒ)",
-        imgUrl: "images/ex11.jpg",
+        imgUrl: "pic11.png",
         imageDesc: "သင်္ဘောပေါ်တွင် အရက်သောက်ခြင်းဆိုင်ရာ စည်းမျဉ်းများ၊ အရက်စစ်ဆေးသည့် ကိရိယာများနှင့် စည်းကမ်းချက်များကို ပြသထားသည်။",
         questions: [
             "1. What is the maximum blood alcohol limit for seafarers under STCW?",
@@ -239,7 +239,7 @@ const exercisesData = [
     {
         id: 12,
         title: "Garbage Management Plan (အမှိုက်စီမံခန့်ခွဲမှု)",
-        imgUrl: "images/ex12.jpg",
+        imgUrl: "pic12.png",
         imageDesc: "သင်္ဘောပေါ်တွင် အမှိုက်ခွဲခြားခြင်း၊ စွန့်ပစ်ခြင်းနှင့် MARPOL စည်းမျဉ်းများကို ပြသထားသည်။",
         questions: [
             "1. What is the purpose of the Garbage Management Plan?",
@@ -259,7 +259,7 @@ const exercisesData = [
     {
         id: 13,
         title: "Enclosed Space Entry (ပိတ်လှောင်နေရာဝင်ရောက်ခြင်း)",
-        imgUrl: "images/ex13.jpg",
+        imgUrl: "pic13.png",
         imageDesc: "သင်္ဘောသားတစ်ဦး အောက်ဆီဂျင်ဘူးနှင့် အသက်ရှူကိရိယာ ဝတ်ဆင်ကာ အလုံပိတ်အခန်းအတွင်းသို့ ဆင်းရန် ပြင်ဆင်နေပုံ။",
         questions: [
             "1. What is an enclosed space on a ship?",
@@ -279,7 +279,7 @@ const exercisesData = [
     {
         id: 14,
         title: "Hot Work Permit (အပူပေးလုပ်ငန်းခွင့်ပြုချက်)",
-        imgUrl: "images/ex14.jpg",
+        imgUrl: "pic14.png",
         imageDesc: "ကုန်းပတ်ပေါ်တွင် သင်္ဘောသားတစ်ဦး ဝဂ်ဂဟေဆော် (Welding) နေပြီး ဘေးတွင် မီးသတ်ဆေးဘူး အဆင်သင့်ချထားပုံ။",
         questions: [
             "1. What is considered 'Hot Work' on board?",
@@ -299,7 +299,7 @@ const exercisesData = [
     {
         id: 15,
         title: "Working at Height (အမြင့်တွင်အလုပ်လုပ်ခြင်း)",
-        imgUrl: "images/ex15.jpg",
+        imgUrl: "pic15.png",
         imageDesc: "သင်္ဘောတိုင်အမြင့်တွင် Safety Harness (ခါးပတ်ကြိုး) ချည်နှောင်ကာ ဆေးသုတ်နေသော အလုပ်သမားတစ်ဦး။",
         questions: [
             "1. When is a safety harness required?",
@@ -319,7 +319,7 @@ const exercisesData = [
     {
         id: 16,
         title: "Mooring Operations (သင်္ဘောဆိုက်ကပ်ခြင်းလုပ်ငန်း)",
-        imgUrl: "images/ex16.jpg",
+        imgUrl: "pic16.png",
         imageDesc: "သင်္ဘောဦးပိုင်းတွင် ကြီးမားသော နိုင်လွန်ကြိုးကြီးများကို Winch စက်ဖြင့် ဆွဲငင်ကာ ကုန်းပတ်တိုင်တွင် ပတ်ချည်နေပုံ။",
         questions: [
             "1. What is a 'Snap-Back Zone'?",
@@ -339,7 +339,7 @@ const exercisesData = [
     {
         id: 17,
         title: "Lifeboat Drill (အသက်ကယ်လှေလေ့ကျင့်ခန်း)",
-        imgUrl: "images/ex17.jpg",
+        imgUrl: "pic17.png",
         imageDesc: "သင်္ဘောသားများ အသက်ကယ်အကျီ (Lifejacket) များ ဝတ်ဆင်ကာ Muster Station တွင် စုဝေးပြီး အသက်ကယ်လှေချရန် ပြင်ဆင်နေပုံ။",
         questions: [
             "1. How often should lifeboat drills be carried out?",
@@ -359,7 +359,7 @@ const exercisesData = [
     {
         id: 18,
         title: "Bunkering Safety (ဆီဖြည့်တင်းခြင်းဘေးကင်းရေး)",
-        imgUrl: "images/ex18.jpg",
+        imgUrl: "pic18.png",
         imageDesc: "ဆီဖြည့်နေစဉ် ပိုက်လိုင်းအဆက်များအောက်တွင် Scupper Plug များ ပိတ်ထားပြီး Spill Kit (ဆီဖိတ်စင်မှုကာကွယ်ရေးပစ္စည်း) ပြင်ဆင်ထားပုံ။",
         questions: [
             "1. What is bunkering operation?",
