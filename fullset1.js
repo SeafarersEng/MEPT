@@ -6,7 +6,6 @@ async function startExam() {
         document.getElementById('loginStatus').innerHTML = '<p style="color:red;">⚠️ ဖြည့်ပါ</p>';
         return;
     }
-
     let user = null;
     try {
         const response = await fetch('users.json');
