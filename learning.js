@@ -1,9 +1,13 @@
 // SECURE USER ACCESS CONTROL KEYS
 const SECURITY_KEYS = {
-    "MEP2024": "2026-12-31", // ၂၀၂၆ ခုနှစ် ဒီဇင်ဘာ ၃၁ ရက် အထိ
-    "U1M7P2X4": "2027-06-30", // ၂၀၂၇ ခုနှစ် ဇွန်လ ၃၀ ရက် အထိ
-    "U2B4N7M1": "2027-12-31", // ၂၀၂၇ ခုနှစ် ဒီဇင်ဘာ ၃၁ ရက် အထိ
-    "U3J2K5L9": "2028-06-30"  // ၂၀၂၈ ခုနှစ် ဇွန်လ ၃၀ ရက် အထိ
+    
+    bWVwMjAyNA: "2026-12-31",
+
+    VTFNN1AyWDQ: "2027-06-30",
+  
+    VTJCNE43TTE: "2027-12-31",
+   
+    VTNKMks1TDk: "2028-06-30"
 };
 
 // ============================================================
@@ -913,31 +917,31 @@ document.addEventListener("DOMContentLoaded", () => {
     const logoutBtn = document.getElementById("logoutBtn");
 
     // ===== LOGIN VALIDATION WITH EXPIRY CHECK =====
-    const handleValidation = () => {
-        const enteredKey = keyInput.value.trim();
+   const handleValidation = () => {
+    const enteredKey = keyInput.value.trim();
 
-        if (SECURITY_KEYS.hasOwnProperty(enteredKey)) {
-            const expiryDateStr = SECURITY_KEYS[enteredKey];
-            const today = new Date();
-            const expiryDate = new Date(expiryDateStr);
+    const encodedKey = btoa(enteredKey); 
 
-            // နေ့စွဲအတိအကျ နှိုင်းယှဉ်ရန်
-            today.setHours(0, 0, 0, 0);
-            expiryDate.setHours(0, 0, 0, 0);
+    if (SECURITY_KEYS.hasOwnProperty(encodedKey)) {
+        const expiryDateStr = SECURITY_KEYS[encodedKey];
+        const today = new Date();
+        const expiryDate = new Date(expiryDateStr);
+        today.setHours(0, 0, 0, 0);
+        expiryDate.setHours(0, 0, 0, 0);
 
-            if (today > expiryDate) {
-                keyError.textContent = "Access Denied. Your authorization key has expired.";
-                return;
-            }
-
-            keyError.textContent = "";
-            loginSection.style.display = "none";
-            mainSection.classList.add("active");
-            renderAllData();
-        } else {
-            keyError.textContent = "Access Denied. Invalid Authorization Key.";
+        if (today > expiryDate) {
+            keyError.textContent = "Access Denied. Your authorization key has expired.";
+            return;
         }
-    };
+
+        keyError.textContent = "";
+        loginSection.style.display = "none";
+        mainSection.classList.add("active");
+        renderAllData();
+    } else {
+        keyError.textContent = "Access Denied. Invalid Authorization Key.";
+    }
+};
 
     loginBtn.addEventListener("click", handleValidation);
     keyInput.addEventListener("keypress", (e) => { if (e.key === "Enter") handleValidation(); });
