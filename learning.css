@@ -1,0 +1,739 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+*, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Inter', -apple-system, sans-serif;
+    background: linear-gradient(135deg, #0a2a4a 0%, #1a4a6a 100%);
+    color: #e2e8f0;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 30px 20px;
+}
+
+.app-container {
+    width: 100%;
+    max-width: 960px;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 24px;
+    box-shadow: 0 20px 60px rgba(10, 42, 74, 0.3);
+    overflow: hidden;
+}
+
+/* ========== LOGIN SCREEN ========== */
+#loginSection {
+    padding: 40px 40px 36px;
+    text-align: center;
+}
+
+.logo-icon {
+    font-size: 44px;
+    color: #c9a84c;
+    background: rgba(10, 42, 74, 0.08);
+    width: 80px;
+    height: 80px;
+    border-radius: 20px;
+    margin: 0 auto 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#loginSection h1 {
+    font-size: 32px;
+    font-weight: 700;
+    color: #0a2a4a;
+    margin-bottom: 4px;
+}
+
+.sub-title {
+    color: #64748b;
+    font-size: 15px;
+    margin-bottom: 28px;
+}
+
+/* ========== FEATURES SECTION ========== */
+.features-section {
+    background: #f8fafc;
+    border-radius: 20px;
+    padding: 28px 24px 24px;
+    margin-bottom: 32px;
+    border: 1px solid #e2e8f0;
+    text-align: left;
+}
+
+.features-title {
+    font-size: 18px;
+    font-weight: 700;
+    color: #0a2a4a;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 4px;
+}
+.features-title i { color: #c9a84c; }
+
+.features-subtitle {
+    font-size: 14px;
+    color: #64748b;
+    margin-bottom: 20px;
+}
+
+.features-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+}
+
+.feature-card {
+    background: #ffffff;
+    padding: 18px 18px 16px;
+    border-radius: 14px;
+    border: 1px solid #e2e8f0;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02);
+    transition: all 0.3s ease;
+}
+
+.feature-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 24px rgba(0, 0, 0, 0.06);
+    border-color: #cbd5e1;
+}
+
+.feature-card.highlight {
+    border-color: #bae6fd;
+    background: #f0f9ff;
+}
+
+.feature-icon {
+    font-size: 18px;
+    color: #0a2a4a;
+    background: #eff6ff;
+    width: 40px;
+    height: 40px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 12px;
+}
+
+.feature-card.highlight .feature-icon {
+    color: #0284c7;
+    background: #e0f2fe;
+}
+
+.feature-card h4 {
+    font-size: 15px;
+    font-weight: 700;
+    color: #0f172a;
+    margin-bottom: 1px;
+}
+
+.feature-eng {
+    font-size: 11px;
+    color: #64748b;
+    font-weight: 500;
+    display: block;
+    margin-bottom: 8px;
+}
+
+.feature-card p {
+    font-size: 13px;
+    color: #475569;
+    line-height: 1.6;
+}
+.feature-card.highlight p strong { color: #0284c7; }
+
+/* ========== KEY INPUT ========== */
+.key-input-group {
+    display: flex;
+    max-width: 460px;
+    margin: 0 auto;
+    background: #ffffff;
+    padding: 6px;
+    border-radius: 16px;
+    border: 2px solid #e2e8f0;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+.key-input-group:focus-within {
+    border-color: #0a2a4a;
+    box-shadow: 0 0 0 4px rgba(10, 42, 74, 0.10);
+}
+
+.key-input-group input {
+    flex: 1;
+    padding: 12px 16px;
+    border: none;
+    outline: none;
+    font-size: 15px;
+    color: #0f172a;
+    background: transparent;
+}
+.key-input-group input::placeholder { color: #94a3b8; }
+
+.key-input-group button {
+    padding: 12px 28px;
+    border-radius: 12px;
+    border: none;
+    background: #0a2a4a;
+    color: #ffffff;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s, color 0.2s;
+}
+.key-input-group button:hover {
+    background: #c9a84c;
+    color: #0a2a4a;
+}
+
+.key-error {
+    color: #ef4444;
+    font-size: 13px;
+    margin-top: 16px;
+    height: 20px;
+    font-weight: 500;
+}
+
+.key-notice {
+    margin-top: 24px;
+    font-size: 13px;
+    color: #64748b;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+}
+
+/* ========== DASHBOARD ========== */
+#mainSection {
+    display: none;
+    padding: 40px;
+    color: #0f172a;
+}
+#mainSection.active { display: block; }
+
+.main-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 28px;
+}
+.main-header h2 {
+    font-size: 24px;
+    font-weight: 700;
+    color: #0a2a4a;
+}
+
+.header-controls {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+}
+
+.progress-badge {
+    font-size: 13px;
+    background: rgba(10, 42, 74, 0.08);
+    color: #0a2a4a;
+    padding: 8px 16px;
+    border-radius: 30px;
+    font-weight: 600;
+}
+
+.logout-btn {
+    background: transparent;
+    color: #64748b;
+    border: 1px solid #e2e8f0;
+    padding: 8px 16px;
+    border-radius: 30px;
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: 500;
+    transition: background 0.2s, color 0.2s;
+}
+.logout-btn:hover {
+    background: #f1f5f9;
+    color: #0f172a;
+}
+
+/* ========================================================== */
+/* ========== TABS ========================================== */
+/* ========================================================== */
+.tabs-container {
+    display: flex;
+    gap: 10px;
+    border-bottom: 2px solid #e2e8f0;
+    padding-bottom: 12px;
+    margin-bottom: 28px;
+}
+
+.tab-btn {
+    background: transparent;
+    border: none;
+    padding: 12px 24px;
+    font-size: 15px;
+    font-weight: 600;
+    color: #64748b;
+    cursor: pointer;
+    border-radius: 10px;
+    transition: all 0.2s;
+}
+.tab-btn:hover {
+    background: #f1f5f9;
+    color: #0a2a4a;
+}
+
+/* ----- Tab Active Colors (အရောင်ခွဲခြား) ----- */
+.tab-btn[data-tab="grammar"].active {
+    background: #1e40af;
+    color: #ffffff;
+    box-shadow: 0 4px 12px rgba(30, 64, 175, 0.3);
+}
+.tab-btn[data-tab="grammar"]:hover {
+    color: #1e40af;
+}
+
+.tab-btn[data-tab="reading"].active {
+    background: #0f766e;
+    color: #ffffff;
+    box-shadow: 0 4px 12px rgba(15, 118, 110, 0.3);
+}
+.tab-btn[data-tab="reading"]:hover {
+    color: #0f766e;
+}
+
+.tab-btn[data-tab="writing"].active {
+    background: #7e22ce;
+    color: #ffffff;
+    box-shadow: 0 4px 12px rgba(126, 34, 206, 0.3);
+}
+.tab-btn[data-tab="writing"]:hover {
+    color: #7e22ce;
+}
+
+.tab-content {
+    display: none;
+    animation: fadeIn 0.3s ease-out;
+}
+.tab-content.active { display: block; }
+
+.section-title {
+    font-size: 18px;
+    font-weight: 700;
+    margin-bottom: 20px;
+}
+
+/* ========================================================== */
+/* ========== 1. GRAMMAR (အပြာရောင် - #1e40af) ============ */
+/* ========================================================== */
+#grammar .section-title {
+    color: #1e40af;
+    border-left: 5px solid #1e40af;
+    padding-left: 14px;
+}
+
+#grammar .qa-card {
+    border: 1px solid #e2e8f0;
+    border-left: 5px solid #1e40af;
+}
+#grammar .question-text {
+    color: #1e40af;
+}
+#grammar .option-item:hover {
+    border-color: #1e40af;
+    background: #eff6ff;
+}
+#grammar .reveal-trigger-btn {
+    background: #1e40af;
+    color: #fff;
+}
+#grammar .reveal-trigger-btn:hover {
+    background: #1e3a8a;
+}
+#grammar .exp-label {
+    color: #1e40af;
+}
+#grammar .correct-ans-highlight {
+    color: #16a34a;
+}
+
+/* ========================================================== */
+/* ========== 2. READING (စိမ်းပြာ - #0f766e) ============= */
+/* ========================================================== */
+#reading .section-title {
+    color: #0f766e;
+    border-left: 5px solid #0f766e;
+    padding-left: 14px;
+}
+
+/* Reading Passage Card */
+#reading .reading-passage-card {
+    border-left: 6px solid #0f766e;
+    background: #f0fdfa;
+}
+#reading .reading-passage-card h2 {
+    color: #0f766e;
+    border-bottom: 2px solid #0f766e;
+}
+
+/* Reading Question Cards */
+#reading .qa-card {
+    border: 1px solid #e2e8f0;
+    border-left: 5px solid #0f766e;
+}
+#reading .question-text {
+    color: #0f766e;
+}
+#reading .option-item:hover {
+    border-color: #0f766e;
+    background: #f0fdfa;
+}
+#reading .reveal-trigger-btn {
+    background: #0f766e;
+    color: #fff;
+}
+#reading .reveal-trigger-btn:hover {
+    background: #0d5f58;
+}
+#reading .exp-label {
+    color: #0f766e;
+}
+#reading .correct-ans-highlight {
+    color: #16a34a;
+}
+
+/* ========================================================== */
+/* ========== 3. WRITING (ခရမ်းရောင်ကြား - #7e22ce) ======== */
+/* ========================================================== */
+#writing .section-title {
+    color: #7e22ce;
+    border-left: 5px solid #7e22ce;
+    padding-left: 14px;
+}
+
+#writing .writing-card {
+    border: 1px solid #e2e8f0;
+    border-left: 5px solid #7e22ce;
+}
+#writing .writing-card h3 {
+    color: #7e22ce;
+}
+#writing .writing-tag {
+    background: #7e22ce;
+    color: #fff;
+}
+#writing .prompt-box {
+    border-left: 3px solid #7e22ce;
+}
+#writing .reveal-trigger-btn {
+    background: #7e22ce;
+    color: #fff;
+}
+#writing .reveal-trigger-btn:hover {
+    background: #6b21a8;
+}
+#writing .exp-label {
+    color: #7e22ce;
+}
+#writing .correct-ans-highlight {
+    color: #16a34a;
+}
+
+/* ========================================================== */
+/* ========== QA CARDS (Base) & EXPLANATION ================= */
+/* ========================================================== */
+.qa-card {
+    background: #ffffff;
+    border-radius: 16px;
+    padding: 20px;
+    margin-bottom: 16px;
+}
+.qa-feed {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.options-stack {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 16px;
+}
+.option-item {
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    padding: 12px 16px;
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: 500;
+    color: #1a1a1a;
+    transition: all 0.2s;
+    cursor: default;
+}
+.option-item:hover {
+    transform: translateX(4px);
+}
+
+.reveal-trigger-btn {
+    border: none;
+    font-size: 12px;
+    font-weight: 600;
+    padding: 8px 18px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.explanation-box {
+    display: none;
+    margin-top: 14px;
+    background: #f8fafc;
+    border-radius: 12px;
+    border: 1px solid #e2e8f0;
+    overflow: hidden;
+}
+.explanation-box.show {
+    display: block;
+    animation: slideDown 0.2s ease-out;
+}
+
+.exp-row {
+    padding: 12px 16px;
+    border-bottom: 1px solid #e2e8f0;
+    font-size: 14px;
+    line-height: 1.6;
+    color: #1a1a1a;
+}
+.exp-row:last-child {
+    border-bottom: none;
+}
+
+.exp-label {
+    font-weight: 700;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 2px;
+    display: block;
+}
+
+/* ========== WRITING FEED ========== */
+.writing-feed {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+.writing-card {
+    background: #ffffff;
+    border-radius: 16px;
+    padding: 24px;
+}
+.writing-tag {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 700;
+    padding: 4px 12px;
+    border-radius: 6px;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+}
+.prompt-box {
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    padding: 14px 18px;
+    border-radius: 10px;
+    font-size: 14px;
+    line-height: 1.6;
+    color: #475569;
+    margin-bottom: 16px;
+}
+
+/* ========== ANIMATIONS ========== */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(6px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+@keyframes slideDown {
+    from { opacity: 0; transform: translateY(-6px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* ========== RESPONSIVE ========== */
+@media (max-width: 768px) {
+    body { padding: 12px; }
+    #loginSection { padding: 28px 16px 24px; }
+    #mainSection { padding: 20px; }
+    
+    .tabs-container {
+        overflow-x: auto;
+        padding-bottom: 6px;
+        gap: 6px;
+    }
+    .tab-btn {
+        padding: 10px 14px;
+        font-size: 13px;
+        white-space: nowrap;
+    }
+    .features-grid {
+        grid-template-columns: 1fr;
+        gap: 14px;
+    }
+    .features-section {
+        padding: 18px 14px 16px;
+    }
+    .features-title { font-size: 16px; }
+    
+    .key-input-group {
+        flex-direction: column;
+        background: transparent;
+        border: none;
+        gap: 10px;
+    }
+    .key-input-group input {
+        border: 2px solid #e2e8f0;
+        border-radius: 12px;
+        padding: 14px;
+        background: #ffffff;
+    }
+    .key-input-group button {
+        width: 100%;
+    }
+    .main-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
+    }
+    .header-controls {
+        width: 100%;
+        justify-content: flex-start;
+        flex-wrap: wrap;
+    }
+    .logo-icon {
+        width: 60px;
+        height: 60px;
+        font-size: 32px;
+    }
+    #loginSection h1 {
+        font-size: 26px;
+    }
+}
+/* ============================================================ */
+/* ========== FEATURE CARDS WITH COLORS (Grammar, Reading, Writing) ========== */
+/* ============================================================ */
+
+.features-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+}
+
+/* Base Feature Card */
+.feature-card {
+    background: #ffffff;
+    padding: 18px 18px 16px;
+    border-radius: 14px;
+    border: 1px solid #e2e8f0;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02);
+    transition: all 0.3s ease;
+}
+.feature-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.08);
+}
+
+.feature-icon {
+    font-size: 18px;
+    width: 40px;
+    height: 40px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 12px;
+}
+.feature-card h4 {
+    font-size: 15px;
+    font-weight: 700;
+    color: #0f172a;
+    margin-bottom: 1px;
+}
+.feature-eng {
+    font-size: 11px;
+    color: #64748b;
+    font-weight: 500;
+    display: block;
+    margin-bottom: 8px;
+}
+.feature-card p {
+    font-size: 13px;
+    color: #475569;
+    line-height: 1.6;
+}
+
+/* ===== GRAMMAR CARD (အပြာရင့်) ===== */
+.feature-card.grammar-card {
+    border-color: #bfdbfe;
+    background: #eff6ff;
+}
+.feature-card.grammar-card .feature-icon {
+    color: #1e40af;
+    background: #bfdbfe;
+}
+.feature-card.grammar-card:hover {
+    border-color: #1e40af;
+    box-shadow: 0 8px 24px rgba(30, 64, 175, 0.15);
+}
+.feature-card.grammar-card h4 {
+    color: #1e40af;
+}
+
+/* ===== READING CARD (စိမ်းပြာ) ===== */
+.feature-card.reading-card {
+    border-color: #99f6e4;
+    background: #f0fdfa;
+}
+.feature-card.reading-card .feature-icon {
+    color: #0f766e;
+    background: #99f6e4;
+}
+.feature-card.reading-card:hover {
+    border-color: #0f766e;
+    box-shadow: 0 8px 24px rgba(15, 118, 110, 0.15);
+}
+.feature-card.reading-card h4 {
+    color: #0f766e;
+}
+
+/* ===== WRITING CARD (ခရမ်းရောင်ကြား) ===== */
+.feature-card.writing-card {
+    border-color: #d8b4fe;
+    background: #faf5ff;
+}
+.feature-card.writing-card .feature-icon {
+    color: #7e22ce;
+    background: #d8b4fe;
+}
+.feature-card.writing-card:hover {
+    border-color: #7e22ce;
+    box-shadow: 0 8px 24px rgba(126, 34, 206, 0.15);
+}
+.feature-card.writing-card h4 {
+    color: #7e22ce;
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 768px) {
+    .features-grid {
+        grid-template-columns: 1fr;
+        gap: 14px;
+    }
+}
