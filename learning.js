@@ -1,13 +1,10 @@
 // SECURE USER ACCESS CONTROL KEYS
 const SECURITY_KEYS = {
     
-    bWVwMjAyNA: "2026-12-31",
-
-    VTFNN1AyWDQ: "2027-06-30",
-  
-    VTJCNE43TTE: "2027-12-31",
-   
-    VTNKMks1TDk: "2028-06-30"
+    "TUVQMjAyNA==": "2026-12-31",
+    "VTFNN1AyWDQ=": "2027-06-30",
+    "VTJCNE43TTE=": "2027-12-31",
+    "VTNKMks1TDk=": "2028-06-30"
 };
 
 // ============================================================
@@ -920,7 +917,9 @@ document.addEventListener("DOMContentLoaded", () => {
    const handleValidation = () => {
     const enteredKey = keyInput.value.trim();
 
-    const encodedKey = btoa(enteredKey); 
+
+    const encodedKey = btoa(enteredKey);
+    console.log("Encoded Key:", encodedKey); // Debug အတွက် (ဖယ်လို့ရပါတယ်)
 
     if (SECURITY_KEYS.hasOwnProperty(encodedKey)) {
         const expiryDateStr = SECURITY_KEYS[encodedKey];
