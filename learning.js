@@ -1,7 +1,7 @@
 
 const SECURITY_KEYS = {
-    "TUVQMjAyNA==": "2026-12-31",
-    "VTFNN1AyWDQ=": "2027-06-30",
+    "TUVQMjAyNA==": "2026-7-31",
+    "VTFNN1AyWDQ=": "2027-08-30",
     "VTJCNE43TTE=": "2027-12-31",
     "VTNKMks1TDk=": "2028-06-30"
 };
