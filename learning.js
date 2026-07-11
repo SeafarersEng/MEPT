@@ -2,15 +2,17 @@
 // 1. SECURE USER ACCESS CONTROL KEYS
 // ============================================================
 const SECURITY_KEYS = {
-    "TUVQMjAyNA==": "2026-07-31",
-    "VTFNN1AyWDQ=": "2027-08-30",
-    "VTJCNE43TTE=": "2027-12-31",
-    "VTNKMks1TDk=": "2028-06-30"
+    "TUVQMjAyNA==": "2026-07-31", 
+    "VTFNN1AyWDQ=": "2027-08-30", 
+    "VTJCNE43TTE=": "2027-12-31", 
+    "VTNKMks1TDk=": "2028-06-30"  
 };
 
-
+// ============================================================
+// 2. GRAMMAR QUESTIONS (50 EXERCISES)
+// ============================================================
 const GRAMMAR_QUESTIONS = [
-    {
+     {
         id: 1,
         question: "1. The crew ________ the deck every morning.",
         options: ["a) cleans", "b) clean", "c) cleaning"],
@@ -412,14 +414,14 @@ const GRAMMAR_QUESTIONS = [
         why: "ဤဝါကျသည် 'Reported Speech (အတိတ်က ပြောခဲ့သော စကားကို ပြန်ပြောခြင်း)' ဖြစ်ပြီး အဓိကကြိယာ (told) က အတိတ်ဖြစ်သောကြောင့် အတိတ်ဖြစ်ရပ်၏ ရှေ့ကဖြစ်ပြီးဆုံးသော အခြေအနေကို Past Perfect Tense ('had + V₃') ဖြင့် သုံးရပါသည်။ 'already' က အဖြစ်ပြီးဆုံးမှုကို ထောက်ကူပေးထားသည်။",
         strategy: "Reported Speech တွင် ပြောပြီးသားစကားကို ပြန်ပြောသည့်အခါ 'said/told' ပါရှိပါက အတိတ်ဖြစ်ရပ် (past) များကို 'Past Perfect (had + V₃)' သို့ ပြောင်းရမည်ကို အမြဲသတိရပါ။"
     }
+    
 ];
 
 // ============================================================
 // 3. READING DATA (7 PASSAGES)
 // ============================================================
 const READING_DATA = [
-     // ==================== READING 1: FIRE DRILL PRACTICE ====================
-    {
+     {
         readingId: 1,
         title: "FIRE DRILL PRACTICE",
         passage: `FIRE DRILL PRACTICE
@@ -784,13 +786,14 @@ The mooring team must never step over a line that is under tension.`,
         }
     ]
 }
+ 
 ];
 
 // ============================================================
 // 4. WRITING TOPICS (15 TOPICS)
 // ============================================================
 const WRITING_TOPICS = [
-    {
+     {
         part: "Part 1 – Short Writing (approx. 25 words)",
         title: "Topic 1: Introduce Yourself",
         prompt: "Write 3-4 sentences about yourself. Include your name, your job on board, and why you like working at sea.",
@@ -1300,7 +1303,177 @@ const SPEAKING_TOPICS = [
 ];
 
 // ============================================================
-// 6. UI CORE LOGIC (ပြင်ဆင်ပြီး)
+// 6. LISTENING DATA (5 EXERCISES)
+// ============================================================
+const LISTENING_DATA = [
+    // ===== ဆရာ့ရဲ့ Listening ၅ ပုဒ် အကုန်ထည့်ပါ =====
+    {
+        id: 1,
+        type: "short",
+        title: "Short Conversation 1: Morning Briefing",
+        audioUrl: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3", // နမူနာ Audio URL
+        description: "Listen to the conversation between the bosun and a deckhand about the morning tasks.",
+        questions: [
+            {
+                id: 1,
+                question: "What time does the bosun want the deck to be cleaned?",
+                options: ["a) Before 08:00", "b) Before 09:00", "c) Before 10:00"],
+                correct: "b) Before 09:00"
+            },
+            {
+                id: 2,
+                question: "What is the deckhand supposed to check after cleaning?",
+                options: ["a) The mooring ropes", "b) The lifeboats", "c) The cargo lashings"],
+                correct: "a) The mooring ropes"
+            },
+            {
+                id: 3,
+                question: "Where will the bosun be during the morning?",
+                options: ["a) On the bridge", "b) In the store room", "c) In the engine room"],
+                correct: "a) On the bridge"
+            }
+        ]
+    },
+    // ===== SHORT CONVERSATION 2 (မေးခွန်း ၃ ခု) =====
+    {
+        id: 2,
+        type: "short",
+        title: "Short Conversation 2: Cargo Operation",
+        audioUrl: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3",
+        description: "Listen to the conversation between the chief officer and the bosun about cargo loading.",
+        questions: [
+            {
+                id: 4,
+                question: "What type of cargo are they loading?",
+                options: ["a) Containers", "b) Grain", "c) Steel pipes"],
+                correct: "a) Containers"
+            },
+            {
+                id: 5,
+                question: "How many containers are expected to be loaded?",
+                options: ["a) 50", "b) 100", "c) 150"],
+                correct: "b) 100"
+            },
+            {
+                id: 6,
+                question: "What weather problem are they worried about?",
+                options: ["a) Heavy rain", "b) Strong wind", "c) Fog"],
+                correct: "b) Strong wind"
+            }
+        ]
+    },
+    // ===== SHORT CONVERSATION 3 (မေးခွန်း ၃ ခု) =====
+    {
+        id: 3,
+        type: "short",
+        title: "Short Conversation 3: Safety Inspection",
+        audioUrl: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3",
+        description: "Listen to the conversation between the captain and the chief engineer about the safety inspection.",
+        questions: [
+            {
+                id: 7,
+                question: "When is the safety inspection scheduled?",
+                options: ["a) Monday", "b) Tuesday", "c) Wednesday"],
+                correct: "b) Tuesday"
+            },
+            {
+                id: 8,
+                question: "Which equipment needs to be tested?",
+                options: ["a) The lifeboat engines", "b) The fire pumps", "c) The navigation lights"],
+                correct: "b) The fire pumps"
+            },
+            {
+                id: 9,
+                question: "Who will accompany the inspector?",
+                options: ["a) The bosun", "b) The chief officer", "c) The captain"],
+                correct: "c) The captain"
+            }
+        ]
+    },
+    // ===== LONG CONVERSATION 1 (မေးခွန်း ၅ ခု) =====
+    {
+        id: 4,
+        type: "long",
+        title: "Long Conversation 1: Voyage Planning Meeting",
+        audioUrl: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-4.mp3",
+        description: "Listen to the voyage planning meeting between the captain, chief officer, and second officer.",
+        questions: [
+            {
+                id: 10,
+                question: "What is the main purpose of the meeting?",
+                options: ["a) To discuss crew welfare", "b) To plan the next voyage route", "c) To review safety procedures"],
+                correct: "b) To plan the next voyage route"
+            },
+            {
+                id: 11,
+                question: "How many ports will they visit on the voyage?",
+                options: ["a) Three ports", "b) Four ports", "c) Five ports"],
+                correct: "a) Three ports"
+            },
+            {
+                id: 12,
+                question: "What is the first port of call?",
+                options: ["a) Singapore", "b) Bangkok", "c) Ho Chi Minh"],
+                correct: "c) Ho Chi Minh"
+            },
+            {
+                id: 13,
+                question: "How many nautical miles is the total voyage distance?",
+                options: ["a) 1,200 miles", "b) 1,500 miles", "c) 2,000 miles"],
+                correct: "b) 1,500 miles"
+            },
+            {
+                id: 14,
+                question: "What fuel calculation did the chief engineer mention?",
+                options: ["a) Need to refuel at the second port", "b) Need to refuel at the final port", "c) No refueling needed"],
+                correct: "a) Need to refuel at the second port"
+            }
+        ]
+    },
+    // ===== LONG CONVERSATION 2 (မေးခွန်း ၅ ခု) =====
+    {
+        id: 5,
+        type: "long",
+        title: "Long Conversation 2: Emergency Drill Debrief",
+        audioUrl: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-5.mp3",
+        description: "Listen to the debriefing after the emergency fire drill.",
+        questions: [
+            {
+                id: 15,
+                question: "How long did the fire drill take?",
+                options: ["a) 5 minutes", "b) 10 minutes", "c) 15 minutes"],
+                correct: "b) 10 minutes"
+            },
+            {
+                id: 16,
+                question: "What problem was found during the drill?",
+                options: ["a) The fire extinguisher was empty", "b) The alarm system failed", "c) Some crew arrived late"],
+                correct: "c) Some crew arrived late"
+            },
+            {
+                id: 17,
+                question: "What does the captain suggest to improve?",
+                options: ["a) More drills", "b) Better communication", "c) Faster response time"],
+                correct: "c) Faster response time"
+            },
+            {
+                id: 18,
+                question: "Who was responsible for recording attendance?",
+                options: ["a) The chief officer", "b) The bosun", "c) The second officer"],
+                correct: "a) The chief officer"
+            },
+            {
+                id: 19,
+                question: "When will the next drill be held?",
+                options: ["a) Next week", "b) Next month", "c) Next quarter"],
+                correct: "b) Next month"
+            }
+        ]
+    }
+];
+
+// ============================================================
+// 7. UI CORE LOGIC
 // ============================================================
 document.addEventListener("DOMContentLoaded", () => {
     const loginSection = document.getElementById("loginSection");
@@ -1310,7 +1483,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const keyError = document.getElementById("keyError");
     const logoutBtn = document.getElementById("logoutBtn");
 
-    // ===== GENERATE SIMPLE DEVICE FINGERPRINT =====
+    // ===== GENERATE DEVICE FINGERPRINT =====
     const getDeviceFingerprint = () => {
         const components = [
             navigator.userAgent,
@@ -1348,7 +1521,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const handleValidation = () => {
         const enteredKey = keyInput.value.trim();
         const encodedKey = btoa(enteredKey);
-        console.log("Encoded Key:", encodedKey);
+        console.log("🔑 Encoded Key:", encodedKey);
 
         if (SECURITY_KEYS.hasOwnProperty(encodedKey)) {
             const expiryDateStr = SECURITY_KEYS[encodedKey];
@@ -1377,9 +1550,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     };
 
-    // ============================================================
-    // ⭐ EVENT LISTENERS (ဒါတွေ ပါအောင်ထည့်ပါ) ⭐
-    // ============================================================
+    // ===== EVENT LISTENERS =====
     loginBtn.addEventListener("click", handleValidation);
     keyInput.addEventListener("keypress", (e) => {
         if (e.key === "Enter") handleValidation();
@@ -1392,7 +1563,7 @@ document.addEventListener("DOMContentLoaded", () => {
         keyError.textContent = "";
     });
 
-    // ===== TAB INTERFACE LOGIC =====
+    // ===== TAB INTERFACE =====
     const tabs = document.querySelectorAll(".tab-btn");
     const contents = document.querySelectorAll(".tab-content");
     tabs.forEach(tab => {
@@ -1408,7 +1579,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const renderAllData = () => {
         // Grammar
         const gList = document.getElementById("grammarList");
-        if (gList) {
+        if (gList && GRAMMAR_QUESTIONS.length > 0) {
             gList.innerHTML = GRAMMAR_QUESTIONS.map(q => `
                 <div class="qa-card">
                     <div class="question-text">${q.question}</div>
@@ -1423,11 +1594,13 @@ document.addEventListener("DOMContentLoaded", () => {
                     </div>
                 </div>
             `).join('');
+        } else if (gList) {
+            gList.innerHTML = '<p style="color:#64748b; text-align:center;">⚠️ Grammar data not found. Please check your data.</p>';
         }
 
         // Reading
         const rList = document.getElementById("readingList");
-        if (rList) {
+        if (rList && READING_DATA.length > 0) {
             let readingHTML = '';
             READING_DATA.forEach(rd => {
                 readingHTML += `
@@ -1454,46 +1627,135 @@ document.addEventListener("DOMContentLoaded", () => {
                 });
             });
             rList.innerHTML = readingHTML;
+        } else if (rList) {
+            rList.innerHTML = '<p style="color:#64748b; text-align:center;">⚠️ Reading data not found. Please check your data.</p>';
         }
 
         // Writing
         const wList = document.getElementById("writingList");
-        if (wList) {
+        if (wList && WRITING_TOPICS.length > 0) {
             wList.innerHTML = WRITING_TOPICS.map(t => `
                 <div class="writing-card">
                     <span class="writing-tag">${t.part}</span>
                     <h3>${t.title}</h3>
-                    <div class="prompt-box">${t.prompt}</div>
+                    <div class="prompt-box"><i class="fas fa-quote-left" style="margin-right:8px; opacity:0.4;"></i>${t.prompt}</div>
                     <button class="reveal-trigger-btn" onclick="toggleExplanation(this)">Show Writing Template</button>
                     <div class="explanation-box">
                         <div class="exp-row"><span class="exp-label">ဖြေဆိုရန် နည်းဗျူဟာ</span>${t.strategy}</div>
-                        <div class="exp-row">${t.blueprint}</div>
+                        <div class="exp-row" style="background:#fff;"><span class="exp-label">Sample Blueprint</span>${t.blueprint}</div>
                     </div>
                 </div>
             `).join('');
+        } else if (wList) {
+            wList.innerHTML = '<p style="color:#64748b; text-align:center;">⚠️ Writing data not found. Please check your data.</p>';
         }
 
         // Speaking
         const sList = document.getElementById("speakingList");
-        if (sList) {
+        if (sList && SPEAKING_TOPICS.length > 0) {
             sList.innerHTML = SPEAKING_TOPICS.map(t => `
                 <div class="speaking-card">
-                    <span class="speaking-tag">${t.category}</span>
-                    <h3>${t.question}</h3>
-                    <div class="speaking-prompt">${t.strategy}</div>
-                    <div class="vocab-box">${t.vocabulary.split(',').map(v => `<span>${v.trim()}</span>`).join(' ')}</div>
+                    <span class="speaking-tag"><i class="fas fa-tag"></i> ${t.category}</span>
+                    <h3><i class="fas fa-question-circle"></i> ${t.question}</h3>
+                    <div class="speaking-prompt">
+                        <strong>💡 ဖြေဆိုရန် အကြံပြုချက်:</strong><br>
+                        ${t.strategy}
+                    </div>
+                    <div class="vocab-box">
+                        <strong>📚 အဓိက ဝေါဟာရများ:</strong><br>
+                        ${t.vocabulary.split(',').map(v => `<span>${v.trim()}</span>`).join(' ')}
+                    </div>
                     <button class="reveal-trigger-btn" onclick="toggleSpeakingAnswer(this)">Show Sample Answer</button>
                     <div class="explanation-box">
-                        <div class="exp-row">${t.sample_answer}</div>
+                        <div class="exp-row">
+                            <span class="exp-label"><i class="fas fa-comment-dots"></i> နမူနာအဖြေ</span>
+                            <div class="sample-answer-box">${t.sample_answer}</div>
+                        </div>
                     </div>
                 </div>
             `).join('');
+        } else if (sList) {
+            sList.innerHTML = '<p style="color:#64748b; text-align:center;">⚠️ Speaking data not found. Please check your data.</p>';
+        }
+
+        // Listening
+        const lList = document.getElementById("listeningList");
+        if (lList && LISTENING_DATA.length > 0) {
+            lList.innerHTML = LISTENING_DATA.map(item => `
+                <div class="listening-card">
+                    <span class="listening-tag">
+                        <i class="fas fa-tag"></i> 
+                        ${item.type === 'short' ? 'Short Conversation (3 Questions)' : 'Long Conversation (5 Questions)'}
+                    </span>
+                    <h3><i class="fas fa-headphones"></i> ${item.title}</h3>
+                    <p style="color: #475569; font-size: 14px; margin-bottom: 12px;">${item.description}</p>
+                    
+                    <div class="audio-player-wrapper">
+                        <audio id="audio_${item.id}" src="${item.audioUrl}" controls preload="metadata"></audio>
+                        <span class="play-count-badge" id="playBadge_${item.id}">
+                            <i class="fas fa-play"></i> 0 / 2 plays
+                        </span>
+                    </div>
+                    
+                    <div class="listening-questions" id="questions_${item.id}">
+                        ${item.questions.map((q, idx) => `
+                            <div class="listening-question-item" id="q_${item.id}_${q.id}">
+                                <div class="q-text">${idx + 1}. ${q.question}</div>
+                                <div class="listening-options">
+                                    ${q.options.map(opt => `
+                                        <span class="opt" data-qid="${q.id}" data-opt="${opt}" onclick="selectListeningOption(${item.id}, ${q.id}, '${opt}')">
+                                            ${opt}
+                                        </span>
+                                    `).join('')}
+                                </div>
+                                <div class="feedback" id="feedback_${item.id}_${q.id}" style="font-size: 13px; margin-top: 6px; font-weight: 500;"></div>
+                            </div>
+                        `).join('')}
+                    </div>
+                    
+                    <button class="check-answers-btn" id="checkBtn_${item.id}" onclick="checkListeningAnswers(${item.id})">
+                        <i class="fas fa-check-circle"></i> Check Answers
+                    </button>
+                </div>
+            `).join('');
+            
+            // Audio Play Limit Logic
+            LISTENING_DATA.forEach(item => {
+                const audio = document.getElementById(`audio_${item.id}`);
+                const badge = document.getElementById(`playBadge_${item.id}`);
+                let playCount = parseInt(localStorage.getItem(`playCount_${item.id}`) || 0);
+                updateBadge(badge, playCount, 2);
+                
+                audio.addEventListener('play', function() {
+                    let currentCount = parseInt(localStorage.getItem(`playCount_${item.id}`) || 0);
+                    if (currentCount >= 2) {
+                        this.pause();
+                        alert('This audio can only be played 2 times. Please move to the next exercise.');
+                        return;
+                    }
+                    if (this.currentTime === 0 && !this.hasPlayed) {
+                        currentCount++;
+                        localStorage.setItem(`playCount_${item.id}`, currentCount);
+                        this.hasPlayed = true;
+                        updateBadge(badge, currentCount, 2);
+                        if (currentCount >= 2) {
+                            badge.classList.add('limited');
+                        }
+                    }
+                });
+                
+                audio.addEventListener('ended', function() {
+                    this.hasPlayed = false;
+                });
+            });
+        } else if (lList) {
+            lList.innerHTML = '<p style="color:#64748b; text-align:center;">⚠️ Listening data not found. Please check your data.</p>';
         }
     };
 });
 
 // ============================================================
-// 7. TOGGLE FUNCTIONS
+// 8. TOGGLE FUNCTIONS
 // ============================================================
 window.toggleExplanation = (btn) => {
     const box = btn.nextElementSibling;
@@ -1513,7 +1775,79 @@ window.toggleSpeakingAnswer = (btn) => {
 };
 
 // ============================================================
-// 8. COPY PROTECTION
+// 9. LISTENING FUNCTIONS
+// ============================================================
+function updateBadge(badge, count, limit) {
+    if (badge) {
+        badge.innerHTML = `<i class="fas fa-play"></i> ${count} / ${limit} plays`;
+        if (count >= limit) {
+            badge.classList.add('limited');
+        } else {
+            badge.classList.remove('limited');
+        }
+    }
+}
+
+window.selectListeningOption = (itemId, qId, selected) => {
+    const questionDiv = document.getElementById(`q_${itemId}_${qId}`);
+    if (!questionDiv) return;
+    const options = questionDiv.querySelectorAll('.opt');
+    options.forEach(opt => {
+        opt.classList.remove('selected');
+        if (opt.dataset.opt === selected) {
+            opt.classList.add('selected');
+        }
+    });
+    localStorage.setItem(`listening_${itemId}_${qId}`, selected);
+};
+
+window.checkListeningAnswers = (itemId) => {
+    const item = LISTENING_DATA.find(d => d.id === itemId);
+    if (!item) return;
+    
+    let correctCount = 0;
+    let totalQuestions = item.questions.length;
+    
+    item.questions.forEach(q => {
+        const questionDiv = document.getElementById(`q_${itemId}_${q.id}`);
+        if (!questionDiv) return;
+        const options = questionDiv.querySelectorAll('.opt');
+        const feedback = document.getElementById(`feedback_${itemId}_${q.id}`);
+        const selected = localStorage.getItem(`listening_${itemId}_${q.id}`);
+        
+        options.forEach(opt => {
+            opt.classList.remove('correct-show', 'wrong-show');
+            if (opt.dataset.opt === q.correct) {
+                opt.classList.add('correct-show');
+            }
+            if (selected && opt.dataset.opt === selected && opt.dataset.opt !== q.correct) {
+                opt.classList.add('wrong-show');
+            }
+        });
+        
+        if (selected && selected === q.correct) {
+            correctCount++;
+            if (feedback) {
+                feedback.innerHTML = '✅ Correct!';
+                feedback.style.color = '#16a34a';
+            }
+        } else {
+            if (feedback) {
+                feedback.innerHTML = '❌ Incorrect. Correct answer: ' + q.correct;
+                feedback.style.color = '#dc2626';
+            }
+        }
+    });
+    
+    const checkBtn = document.getElementById(`checkBtn_${itemId}`);
+    if (checkBtn) {
+        checkBtn.disabled = true;
+        checkBtn.textContent = `✓ Score: ${correctCount}/${totalQuestions}`;
+    }
+};
+
+// ============================================================
+// 10. COPY PROTECTION
 // ============================================================
 document.addEventListener('contextmenu', e => e.preventDefault());
 document.addEventListener('selectstart', e => e.preventDefault());
@@ -1524,3 +1858,6 @@ document.addEventListener('keydown', e => {
     }
     if (e.key === 'F12') e.preventDefault();
 });
+
+console.log("✅ MEPT Core Preparation App loaded successfully!");
+console.log("🔑 Available keys:", Object.keys(SECURITY_KEYS).map(k => atob(k)));
