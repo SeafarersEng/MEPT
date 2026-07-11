@@ -1,14 +1,14 @@
-
+// ============================================================
+// 1. SECURE USER ACCESS CONTROL KEYS
+// ============================================================
 const SECURITY_KEYS = {
-    "TUVQMjAyNA==": "2026-7-31",
+    "TUVQMjAyNA==": "2026-07-31",
     "VTFNN1AyWDQ=": "2027-08-30",
     "VTJCNE43TTE=": "2027-12-31",
     "VTNKMks1TDk=": "2028-06-30"
 };
 
-// ============================================================
-// 2. GRAMMAR QUESTIONS (50 EXERCISES)
-// ============================================================
+
 const GRAMMAR_QUESTIONS = [
     {
         id: 1,
@@ -1300,7 +1300,7 @@ const SPEAKING_TOPICS = [
 ];
 
 // ============================================================
-// 6. UI CORE LOGIC
+// 6. UI CORE LOGIC (ပြင်ဆင်ပြီး)
 // ============================================================
 document.addEventListener("DOMContentLoaded", () => {
     const loginSection = document.getElementById("loginSection");
@@ -1310,43 +1310,31 @@ document.addEventListener("DOMContentLoaded", () => {
     const keyError = document.getElementById("keyError");
     const logoutBtn = document.getElementById("logoutBtn");
 
-    // ===== LOGIN VALIDATION WITH EXPIRY CHECK =====
-       // ===== GENERATE SIMPLE DEVICE FINGERPRINT =====
+    // ===== GENERATE SIMPLE DEVICE FINGERPRINT =====
     const getDeviceFingerprint = () => {
         const components = [
-            navigator.userAgent,          // Browser & OS
-            screen.width + 'x' + screen.height, // Screen Resolution
-            navigator.language,            // Language
-            new Date().getTimezoneOffset() // Timezone
+            navigator.userAgent,
+            screen.width + 'x' + screen.height,
+            navigator.language,
+            new Date().getTimezoneOffset()
         ];
-        return btoa(components.join('|')); // Base64 encode
+        return btoa(components.join('|'));
     };
 
     // ===== CHECK DEVICE LIMIT (MAX 5) =====
     const checkDeviceLimit = (key) => {
         const storageKey = `deviceLimit_${key}`;
         const deviceFingerprint = getDeviceFingerprint();
-        
-        // LocalStorage ထဲက သိမ်းထားတဲ့ Device စာရင်းကို ယူမယ်
         let devices = JSON.parse(localStorage.getItem(storageKey)) || [];
-
-        // လက်ရှိ Device က စာရင်းထဲမှာ ရှိပြီးသားလား စစ်မယ်
         const existingDevice = devices.find(d => d.fingerprint === deviceFingerprint);
-
         if (existingDevice) {
-            // ရှိပြီးသား Device ဆိုရင် အချိန်ကို အပ်ဒိတ်လုပ်ပြီး ဝင်ခွင့်ပေးမယ်
             existingDevice.lastActive = Date.now();
             localStorage.setItem(storageKey, JSON.stringify(devices));
             return true;
         }
-
-        // Device အသစ်ဆိုရင် အရေအတွက် စစ်မယ်
         if (devices.length >= 5) {
-            // ၅ ခုပြည့်နေပြီဆိုရင် ငြင်းပယ်မယ်
             return false;
         }
-
-        // Device အသစ်ကို စာရင်းထဲ ထည့်မယ်
         devices.push({
             fingerprint: deviceFingerprint,
             firstSeen: Date.now(),
@@ -1356,13 +1344,12 @@ document.addEventListener("DOMContentLoaded", () => {
         return true;
     };
 
-    // ===== LOGIN VALIDATION (UPDATED WITH DEVICE LIMIT) =====
+    // ===== LOGIN VALIDATION =====
     const handleValidation = () => {
         const enteredKey = keyInput.value.trim();
         const encodedKey = btoa(enteredKey);
-        console.log("Encoded Key:", encodedKey); // Debug
+        console.log("Encoded Key:", encodedKey);
 
-        // ၁။ Key မှန်ကန်မှု စစ်ဆေးပါ
         if (SECURITY_KEYS.hasOwnProperty(encodedKey)) {
             const expiryDateStr = SECURITY_KEYS[encodedKey];
             const today = new Date();
@@ -1370,20 +1357,17 @@ document.addEventListener("DOMContentLoaded", () => {
             today.setHours(0, 0, 0, 0);
             expiryDate.setHours(0, 0, 0, 0);
 
-            // ၂။ သက်တမ်းကုန်ဆုံးပြီလား စစ်ဆေးပါ
             if (today > expiryDate) {
                 keyError.textContent = "Access Denied. Your authorization key has expired.";
                 return;
             }
 
-            // ၃။ Device Limit (၅ ခု) စစ်ဆေးပါ
             const isDeviceAllowed = checkDeviceLimit(encodedKey);
             if (!isDeviceAllowed) {
                 keyError.textContent = "Access Denied. This key is already used on 5 devices. Please contact support.";
                 return;
             }
 
-            // ၄။ အားလုံးအဆင်ပြေပါက ဝင်ခွင့်ပေးပါ
             keyError.textContent = "";
             loginSection.style.display = "none";
             mainSection.classList.add("active");
@@ -1393,10 +1377,24 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     };
 
+    // ============================================================
+    // ⭐ EVENT LISTENERS (ဒါတွေ ပါအောင်ထည့်ပါ) ⭐
+    // ============================================================
+    loginBtn.addEventListener("click", handleValidation);
+    keyInput.addEventListener("keypress", (e) => {
+        if (e.key === "Enter") handleValidation();
+    });
+
+    logoutBtn.addEventListener("click", () => {
+        mainSection.classList.remove("active");
+        loginSection.style.display = "block";
+        keyInput.value = "";
+        keyError.textContent = "";
+    });
+
     // ===== TAB INTERFACE LOGIC =====
     const tabs = document.querySelectorAll(".tab-btn");
     const contents = document.querySelectorAll(".tab-content");
-
     tabs.forEach(tab => {
         tab.addEventListener("click", () => {
             tabs.forEach(t => t.classList.remove("active"));
@@ -1406,9 +1404,9 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     });
 
-    // ===== RENDER ALL DATA (Grammar, Reading, Writing, Speaking) =====
+    // ===== RENDER ALL DATA =====
     const renderAllData = () => {
-        // 1. Render Grammar
+        // Grammar
         const gList = document.getElementById("grammarList");
         if (gList) {
             gList.innerHTML = GRAMMAR_QUESTIONS.map(q => `
@@ -1427,20 +1425,20 @@ document.addEventListener("DOMContentLoaded", () => {
             `).join('');
         }
 
-        // 2. Render Reading
+        // Reading
         const rList = document.getElementById("readingList");
         if (rList) {
             let readingHTML = '';
             READING_DATA.forEach(rd => {
                 readingHTML += `
-                    <div class="reading-passage-card" style="background: #f0f4fe; padding: 20px 25px; border-radius: 12px; margin-bottom: 25px; border-left: 6px solid #0056a7;">
-                        <h2 style="color: #0056a7; border-bottom: 2px solid #0056a7; padding-bottom: 8px;">📖 ${rd.title}</h2>
-                        <div style="white-space: pre-line; line-height: 1.9; margin-top: 15px;">${rd.passage}</div>
+                    <div class="reading-passage-card">
+                        <h2>📖 ${rd.title}</h2>
+                        <div>${rd.passage}</div>
                     </div>
                 `;
                 rd.questions.forEach(q => {
                     readingHTML += `
-                        <div class="qa-card" style="margin-top: 15px;">
+                        <div class="qa-card">
                             <div class="question-text">${q.question}</div>
                             <div class="options-stack">
                                 ${q.options.map(opt => `<div class="option-item">${opt}</div>`).join('')}
@@ -1458,44 +1456,35 @@ document.addEventListener("DOMContentLoaded", () => {
             rList.innerHTML = readingHTML;
         }
 
-        // 3. Render Writing
+        // Writing
         const wList = document.getElementById("writingList");
         if (wList) {
             wList.innerHTML = WRITING_TOPICS.map(t => `
                 <div class="writing-card">
                     <span class="writing-tag">${t.part}</span>
                     <h3>${t.title}</h3>
-                    <div class="prompt-box"><i class="fas fa-quote-left" style="margin-right:8px; opacity:0.4;"></i>${t.prompt}</div>
+                    <div class="prompt-box">${t.prompt}</div>
                     <button class="reveal-trigger-btn" onclick="toggleExplanation(this)">Show Writing Template</button>
                     <div class="explanation-box">
-                        <div class="exp-row"><span class="exp-label">ဖြေဆိုရန် နည်းဗျူဟာ (Writing Guide)</span>${t.strategy}</div>
-                        <div class="exp-row" style="background:#fff;"><span class="exp-label">High-Scoring Sample Blueprint</span>${t.blueprint}</div>
+                        <div class="exp-row"><span class="exp-label">ဖြေဆိုရန် နည်းဗျူဟာ</span>${t.strategy}</div>
+                        <div class="exp-row">${t.blueprint}</div>
                     </div>
                 </div>
             `).join('');
         }
 
-        // 4. Render Speaking
+        // Speaking
         const sList = document.getElementById("speakingList");
         if (sList) {
             sList.innerHTML = SPEAKING_TOPICS.map(t => `
                 <div class="speaking-card">
-                    <span class="speaking-tag"><i class="fas fa-tag"></i> ${t.category}</span>
-                    <h3><i class="fas fa-question-circle"></i> ${t.question}</h3>
-                    <div class="speaking-prompt">
-                        <strong>💡 ဖြေဆိုရန် အကြံပြုချက် (Strategy):</strong><br>
-                        ${t.strategy}
-                    </div>
-                    <div class="vocab-box">
-                        <strong>📚 အဓိက ဝေါဟာရများ (Key Vocabulary):</strong><br>
-                        ${t.vocabulary.split(',').map(v => `<span>${v.trim()}</span>`).join(' ')}
-                    </div>
+                    <span class="speaking-tag">${t.category}</span>
+                    <h3>${t.question}</h3>
+                    <div class="speaking-prompt">${t.strategy}</div>
+                    <div class="vocab-box">${t.vocabulary.split(',').map(v => `<span>${v.trim()}</span>`).join(' ')}</div>
                     <button class="reveal-trigger-btn" onclick="toggleSpeakingAnswer(this)">Show Sample Answer</button>
                     <div class="explanation-box">
-                        <div class="exp-row">
-                            <span class="exp-label"><i class="fas fa-comment-dots"></i> နမူနာအဖြေ (Sample Answer)</span>
-                            <div class="sample-answer-box">${t.sample_answer}</div>
-                        </div>
+                        <div class="exp-row">${t.sample_answer}</div>
                     </div>
                 </div>
             `).join('');
