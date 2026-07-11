@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>MEPT Exam Prep - Grammar, Reading, Writing & Speaking</title>
+    <title>MEPT Exam Prep - Grammar, Reading, Writing, Speaking & Listening</title>
     <link rel="stylesheet" href="learning.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
 </head>
@@ -13,7 +13,7 @@
     <div class="app-container" id="loginSection">
         <div class="logo-icon"><i class="fas fa-ship"></i></div>
         <h1>MEPT Core Preparation</h1>
-        <p class="sub-title">Grammar, Reading, Writing &amp; Speaking Modules</p>
+        <p class="sub-title">Grammar, Reading, Writing, Speaking &amp; Listening Modules</p>
 
         <!-- FEATURES SECTION -->
         <div class="features-section">
@@ -21,24 +21,10 @@
                 <i class="fas fa-lightbulb"></i> ဘာကြောင့် MEPT Core Preparation ကို ရွေးချယ်သင့်တာလဲ?
             </h3>
             <p class="features-subtitle">
-                ဒီ Website / Course မှာ အခြားနေရာတွေနဲ့မတူဘဲ ထူးခြားတဲ့ အားသာချက် (၄) ခု ရှိပါတယ်။
+                ဒီ Website / Course မှာ အခြားနေရာတွေနဲ့မတူဘဲ ထူးခြားတဲ့ အားသာချက် (၅) ခု ရှိပါတယ်။
             </p>
 
             <div class="features-grid">
-                <div class="feature-card">
-                    <div class="feature-icon"><i class="fas fa-edit"></i></div>
-                    <h4>စနစ်တကျ လေ့ကျင့်နိုင်ခြင်း</h4>
-                    <span class="feature-eng">(Practice &amp; Test)</span>
-                    <p>MEPT Standard မေးခွန်းတွေကို ကိုယ်တိုင်ဖတ်၊ ကိုယ်တိုင် အရင်ဖြေဆိုပြီး မိမိရဲ့ လက်ရှိအရည်အချင်းကို စစ်မှန်စွာ စမ်းသပ်နိုင်မယ်။</p>
-                </div>
-
-                <div class="feature-card">
-                    <div class="feature-icon"><i class="fas fa-key"></i></div>
-                    <h4>အဖြေတိုက်စစ်နိုင်ခြင်း</h4>
-                    <span class="feature-eng">(Answer Keys)</span>
-                    <p>မေးခွန်းတစ်ခုချင်းစီအတွက် အဖြေမှန်တွေကို တိတိကျကျ ပြန်လည်တိုက်ဆိုင် စစ်ဆေးနိုင်မယ်။</p>
-                </div>
-
                 <div class="feature-card grammar-card">
                     <div class="feature-icon"><i class="fas fa-spell-check"></i></div>
                     <h4>Grammar လေ့ကျင့်ခန်း</h4>
@@ -65,6 +51,13 @@
                     <h4>Speaking Practice</h4>
                     <span class="feature-eng">(Speaking Skills)</span>
                     <p>Personal Information, Seafarer English, WH Questions တို့ကို နမူနာအဖြေများနှင့်တကွ လေ့ကျင့်နိုင်ပြီး ကိုယ်ပိုင်အဖြေများကို ပြင်ဆင်နိုင်မည်။</p>
+                </div>
+
+                <div class="feature-card listening-card">
+                    <div class="feature-icon"><i class="fas fa-headphones"></i></div>
+                    <h4>Listening Test</h4>
+                    <span class="feature-eng">(Listening Skills)</span>
+                    <p>Short &amp; Long Conversations များကို Audio နားထောင်ပြီး မေးခွန်းများဖြေဆိုခြင်းဖြင့် နားထောင်မှုစွမ်းရည်ကို မြှင့်တင်ပါ။</p>
                 </div>
 
                 <div class="feature-card">
@@ -100,36 +93,43 @@
             </div>
         </header>
 
-        <!-- ===== TABS (အရောင်စုံ - SPEAKING ထည့်ပြီး) ===== -->
+        <!-- ===== TABS ===== -->
         <div class="tabs-container">
             <button class="tab-btn active" data-tab="grammar"><i class="fas fa-spell-check"></i> Grammar</button>
             <button class="tab-btn" data-tab="reading"><i class="fas fa-book-reader"></i> Reading</button>
-            <button class="tab-btn" data-tab="writing"><i class="fas fa-pen-nib"></i> Writing Tips</button>
+            <button class="tab-btn" data-tab="writing"><i class="fas fa-pen-nib"></i> Writing</button>
             <button class="tab-btn" data-tab="speaking"><i class="fas fa-microphone-alt"></i> Speaking</button>
+            <button class="tab-btn" data-tab="listening"><i class="fas fa-headphones"></i> Listening</button>
         </div>
 
         <!-- ===== TAB CONTENT: GRAMMAR ===== -->
         <div class="tab-content active" id="grammar">
-            <div class="section-title">Grammar Practice Exercises</div>
+            <div class="section-title">Grammar Practice Exercises (50 Questions)</div>
             <div id="grammarList" class="qa-feed"></div>
         </div>
 
         <!-- ===== TAB CONTENT: READING ===== -->
         <div class="tab-content" id="reading">
-            <div class="section-title">Reading Comprehension Passage</div>
+            <div class="section-title">Reading Comprehension (7 Passages)</div>
             <div id="readingList" class="qa-feed"></div>
         </div>
 
         <!-- ===== TAB CONTENT: WRITING ===== -->
         <div class="tab-content" id="writing">
-            <div class="section-title">Writing Blueprints &amp; Formats</div>
+            <div class="section-title">Writing Blueprints &amp; Formats (15 Topics)</div>
             <div id="writingList" class="writing-feed"></div>
         </div>
 
-        <!-- ===== TAB CONTENT: SPEAKING (ဤနေရာမှာ ရှိရမည်) ===== -->
+        <!-- ===== TAB CONTENT: SPEAKING ===== -->
         <div class="tab-content" id="speaking">
-            <div class="section-title">Speaking Practice </div>
+            <div class="section-title">Speaking Practice (50 Questions)</div>
             <div id="speakingList" class="speaking-feed"></div>
+        </div>
+
+        <!-- ===== TAB CONTENT: LISTENING ===== -->
+        <div class="tab-content" id="listening">
+            <div class="section-title">Listening Practice (5 Exercises)</div>
+            <div id="listeningList" class="listening-feed"></div>
         </div>
     </div>
 
