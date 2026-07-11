@@ -787,6 +787,407 @@ The mooring team must never step over a line that is under tension.`,
     ]
 }
 ];
+// ============================================================
+// 5. DATABASE FOR SPEAKING (50 EXERCISES)
+// Personal Info, Seafarer English, WH Questions
+// ============================================================
+const SPEAKING_TOPICS = [
+    // ===================== PART 1: PERSONAL INFORMATION (1-10) =====================
+    {
+        id: 1,
+        category: "Personal Information",
+        question: "Can you tell me a little about yourself? (Name, Age, Nationality)",
+        sample_answer: "My name is Aung Kyaw Moe. I am 28 years old and I come from Yangon, Myanmar. I currently work as an Ordinary Seaman on a container ship.",
+        strategy: "အရင်ဆုံး ကိုယ်နာမည်၊ အသက်၊ နိုင်ငံသားကို ပြောပါ။ ပြီးရင် လက်ရှိအလုပ်အကိုင်ကို ဆက်ပြောပါ။",
+        vocabulary: "Ordinary Seaman, container ship, nationality"
+    },
+    {
+        id: 2,
+        category: "Personal Information",
+        question: "Describe your family. Do you have a wife or children?",
+        sample_answer: "Yes, I am married and I have two children, a son and a daughter. My wife is a teacher. I miss them a lot when I am at sea.",
+        strategy: "မိသားစုအကြောင်း ရိုးရိုးရှင်းရှင်း ပြောပါ။ အိမ်ထောင်ရှိ/မရှိ၊ ကလေးရှိ/မရှိ၊ သူတို့နဲ့ ဘယ်လိုဆက်သွယ်လဲ ဆိုတာကို ဖြည့်စွက်ပြောပါ။",
+        vocabulary: "married, children, teacher, miss"
+    },
+    {
+        id: 3,
+        category: "Personal Information",
+        question: "Where is your hometown? Can you describe it?",
+        sample_answer: "My hometown is in Pathein, Ayeyarwady Region. It is a peaceful place near the river. The people there are friendly and the food is delicious.",
+        strategy: "ကိုယ်မွေးရပ်မြေရဲ့ တည်နေရာ၊ ထူးခြားချက်နဲ့ သင်ကြိုက်တဲ့ အချက်ကို ဖော်ပြပါ။",
+        vocabulary: "hometown, peaceful, river, friendly, delicious"
+    },
+    {
+        id: 4,
+        category: "Personal Information",
+        question: "Why did you choose a career at sea? (Why)",
+        sample_answer: "I chose a career at sea because I love the ocean and traveling. Also, the salary is good and it helps me support my family financially.",
+        strategy: "'Because' ဆိုတဲ့ စကားလုံးကို သုံးပြီး အကြောင်းပြချက် ရှင်းရှင်းလင်းလင်း ပြောပါ။",
+        vocabulary: "career, ocean, traveling, salary, support"
+    },
+    {
+        id: 5,
+        category: "Personal Information",
+        question: "How many years have you worked at sea?",
+        sample_answer: "I have worked at sea for about 3 years now. I started my career as a cadet and now I am an Ordinary Seaman.",
+        strategy: "အလုပ်လုပ်ခဲ့တဲ့ နှစ်အရေအတွက်ကို အတိအကျပြောပြီး ဘယ်လိုရာထူးတွေ တက်လာလဲဆိုတာ ထည့်ပြောပါ။",
+        vocabulary: "worked, career, cadet, Ordinary Seaman"
+    },
+    {
+        id: 6,
+        category: "Personal Information",
+        question: "What ships have you worked on before?",
+        sample_answer: "I have worked on two ships before. The first was a bulk carrier and the second was a container ship. Both were good experiences.",
+        strategy: "အလုပ်လုပ်ခဲ့ဖူးတဲ့ သင်္ဘောအမျိုးအစားတွေကို စာရင်းပြုပြီး အတွေ့အကြုံကို အတိုချုံးပြောပါ။",
+        vocabulary: "bulk carrier, container ship, experience"
+    },
+    {
+        id: 7,
+        category: "Personal Information",
+        question: "Do you have any hobbies or free time activities on board?",
+        sample_answer: "In my free time, I like to read books and watch movies. I also exercise in the gym to stay healthy and fit.",
+        strategy: "အားလပ်ချိန်မှာ ဘာတွေလုပ်လေ့ရှိလဲ ဆိုတာကို ရိုးရိုးရှင်းရှင်း ပြောပါ။",
+        vocabulary: "hobbies, free time, read books, watch movies, exercise, gym"
+    },
+    {
+        id: 8,
+        category: "Personal Information",
+        question: "What is your rank on the current ship?",
+        sample_answer: "My current rank is Ordinary Seaman. I work under the bosun and I am responsible for deck maintenance and cleaning duties.",
+        strategy: "လက်ရှိရာထူးကို အတိအကျပြောပြီး ဘယ်သူ့လက်အောက်မှာ အလုပ်လုပ်ရလဲဆိုတာ ထည့်ပြောပါ။",
+        vocabulary: "rank, Ordinary Seaman, bosun, responsible, deck maintenance"
+    },
+    {
+        id: 9,
+        category: "Personal Information",
+        question: "How do you communicate with your family while at sea?",
+        sample_answer: "I communicate with my family using satellite communication and WhatsApp when there is internet. I call them every weekend.",
+        strategy: "ဘယ်လိုနည်းပညာတွေ သုံးပြီး ဆက်သွယ်လဲ ဆိုတာကို ပြောပြီး ဘယ်နှစ်ကြိမ်လောက် ဆက်သွယ်လဲဆိုတာ ထည့်ပြောပါ။",
+        vocabulary: "communicate, satellite communication, internet, WhatsApp"
+    },
+    {
+        id: 10,
+        category: "Personal Information",
+        question: "What is your favorite food on the ship?",
+        sample_answer: "My favorite food on the ship is chicken curry with rice. The cook prepares it very well and it reminds me of home.",
+        strategy: "သင်္ဘောပေါ်က ကြိုက်တဲ့အစားအစာကို ပြောပြီး ဘာလို့ကြိုက်တာလဲဆိုတဲ့ အကြောင်းပြချက်ကို ထည့်ပြောပါ။",
+        vocabulary: "favorite food, chicken curry, rice, cook, reminds"
+    },
+
+    // ===================== PART 2: DAILY DUTIES & ROUTINE (11-20) =====================
+    {
+        id: 11,
+        category: "Daily Duties & Routine",
+        question: "What are your main duties on board the ship?",
+        sample_answer: "As an Ordinary Seaman, my main duties are to keep the deck clean, maintain the mooring ropes, and assist the bosun during cargo operations. I also stand watch on the bridge when required.",
+        strategy: "ကိုယ့်ရာထူးရဲ့ တာဝန်ကို အတိအကျပြောပါ။ Deck/Engine ပေါ်မှာ ဘာတွေလုပ်ရသလဲဆိုတာကို အသေးစိတ်ဖော်ပြပါ။",
+        vocabulary: "duties, maintain, mooring ropes, bosun, cargo operations, stand watch"
+    },
+    {
+        id: 12,
+        category: "Daily Duties & Routine",
+        question: "Can you describe your daily routine on the ship?",
+        sample_answer: "I wake up at 6:00 a.m. every day. I have breakfast at 6:30, and then I start my work at 7:00. I clean the deck and check the life-saving equipment. I have lunch at 12:00 and finish my work at 5:00 p.m.",
+        strategy: "မနက်အိပ်ရာထချိန်ကနေ ညအိပ်ချိန်အထိ အချိန်ဇယားအတိုင်း ဆက်တိုက်ပြောပါ။",
+        vocabulary: "wake up, breakfast, deck, life-saving equipment, lunch"
+    },
+    {
+        id: 13,
+        category: "Daily Duties & Routine",
+        question: "What time do you start and finish your work every day?",
+        sample_answer: "I start my work at 8:00 a.m. and finish at 5:00 p.m. However, if there is an emergency or special operation, I have to work extra hours.",
+        strategy: "အလုပ်စချိန်နဲ့ ပြီးချိန်ကို အတိအကျပြောပါ။ လိုအပ်ရင် အချိန်ပိုလုပ်ရတဲ့အကြောင်း ထည့်ပြောပါ။",
+        vocabulary: "start, finish, emergency, special operation, extra hours"
+    },
+    {
+        id: 14,
+        category: "Daily Duties & Routine",
+        question: "What do you do during your watch on the bridge?",
+        sample_answer: "During my watch, I check the radar and GPS to monitor the ship's position. I also keep a lookout for other vessels and report any changes to the officer on watch.",
+        strategy: "ကင်းလှည့်ချိန်အတွင်း ဘာတွေလုပ်ရသလဲဆိုတာကို အဆင့်ဆင့် ပြောပါ။",
+        vocabulary: "watch, radar, GPS, monitor, lookout, vessels"
+    },
+    {
+        id: 15,
+        category: "Daily Duties & Routine",
+        question: "What is the first thing you do when you come on watch?",
+        sample_answer: "The first thing I do is check the logbook to see what happened during the previous watch. Then I check the weather and the ship's position.",
+        strategy: "အစဉ်လိုက် လုပ်ရမယ့် အဆင့်တွေကို 'First... Then...' ဆိုတဲ့ ပုံစံသုံးပြီး ပြောပါ။",
+        vocabulary: "logbook, previous watch, weather, position"
+    },
+    {
+        id: 16,
+        category: "Daily Duties & Routine",
+        question: "Do you work day shift or night shift? How do you manage?",
+        sample_answer: "I work day shift from 8 a.m. to 5 p.m. It is good because I can sleep at night. When I worked night shift before, I adjusted my sleep schedule during the day.",
+        strategy: "ဘယ်အချိန်ပိုင်း အလုပ်လုပ်လဲဆိုတာကို ပြောပြီး အိပ်ချိန်ကို ဘယ်လိုစီမံလဲဆိုတာ ထည့်ပြောပါ။",
+        vocabulary: "day shift, night shift, manage, sleep schedule, adjusted"
+    },
+    {
+        id: 17,
+        category: "Daily Duties & Routine",
+        question: "What tools do you use for your daily work?",
+        sample_answer: "I use tools like paint brushes, scrapers, hammers, and spanners. For cleaning, I use mops and deck brushes. We also use power tools for maintenance.",
+        strategy: "အလုပ်လုပ်ရာမှာ သုံးတဲ့ ကိရိယာတွေကို စာရင်းပြုပြီး ဘာအတွက်သုံးလဲဆိုတာ ထည့်ရှင်းပြပါ။",
+        vocabulary: "paint brushes, scrapers, hammers, spanners, mops, power tools"
+    },
+    {
+        id: 18,
+        category: "Daily Duties & Routine",
+        question: "How do you maintain the deck equipment?",
+        sample_answer: "We maintain the deck equipment by cleaning, oiling, and painting them regularly. We also check for any rust or damage and repair it immediately.",
+        strategy: "ပြုပြင်ထိန်းသိမ်းပုံ အဆင့်တွေကို ရှင်းရှင်းလင်းလင်း ပြောပါ။",
+        vocabulary: "maintain, oiling, painting, rust, damage, repair"
+    },
+    {
+        id: 19,
+        category: "Daily Duties & Routine",
+        question: "What does the bosun usually ask you to do?",
+        sample_answer: "The bosun usually asks me to clean the deck, check the mooring lines, and prepare the equipment for cargo operations. I always follow his instructions.",
+        strategy: "အထက်လူကြီးရဲ့ ညွှန်ကြားချက်တွေကို နမူနာနဲ့ပြောပြီး ဘယ်လိုလိုက်နာလဲဆိုတာ ထည့်ပြောပါ။",
+        vocabulary: "bosun, clean the deck, mooring lines, equipment, instructions"
+    },
+    {
+        id: 20,
+        category: "Daily Duties & Routine",
+        question: "Do you have to write any reports or logbooks?",
+        sample_answer: "Yes, I have to record my daily work in the deck logbook. I also report any defects or issues to the bosun. Writing reports is very important for safety.",
+        strategy: "ဘာတွေရေးရလဲ၊ ဘယ်သူ့ကို တင်ပြရလဲဆိုတာကို ရှင်းပြပြီး ဘာလို့အရေးကြီးလဲဆိုတာ ထည့်ပြောပါ။",
+        vocabulary: "record, deck logbook, defects, issues, safety"
+    },
+
+    // ===================== PART 3: SAFETY & EMERGENCY (21-30) =====================
+    {
+        id: 21,
+        category: "Safety & Emergency",
+        question: "What safety equipment do you use on deck?",
+        sample_answer: "I always wear a hard hat, safety boots, and a high-visibility vest. When I work near the edge, I wear a safety harness. I also carry a portable VHF radio.",
+        strategy: "PPE (Personal Protective Equipment) တွေကို အမည်နဲ့အတူ ဘာကြောင့်သုံးရတာလဲဆိုတာကိုပါ ထည့်ပြောပါ။",
+        vocabulary: "hard hat, safety boots, high-visibility vest, safety harness, portable VHF radio"
+    },
+    {
+        id: 22,
+        category: "Safety & Emergency",
+        question: "What would you do if there was a fire on board? (What - Emergency)",
+        sample_answer: "If there was a fire, I would sound the alarm immediately. Then I would put on my lifejacket and go to my muster station. I would follow the chief officer's instructions.",
+        strategy: "အရေးပေါ်အခြေအနေအတွက် Action Plan ကို 'First... Then... Finally...' ဆိုတဲ့ ပုံစံသုံးပြီး ပြောပါ။",
+        vocabulary: "sound the alarm, muster station, instructions, chief officer"
+    },
+    {
+        id: 23,
+        category: "Safety & Emergency",
+        question: "What is a muster station and where is yours?",
+        sample_answer: "A muster station is a designated area where crew members gather during an emergency. My muster station is on the boat deck, near the lifeboat.",
+        strategy: "Muster Station ဆိုတာ ဘာလဲဆိုတဲ့ အဓိပ္ပါယ်ကို ရှင်းပြပြီး ကိုယ့်ရဲ့ Muster Station နေရာကို အတိအကျပြောပါ။",
+        vocabulary: "muster station, designated area, gather, emergency, boat deck, lifeboat"
+    },
+    {
+        id: 24,
+        category: "Safety & Emergency",
+        question: "How often do you have safety drills on board?",
+        sample_answer: "We have safety drills at least once a month. We practice fire drills, lifeboat drills, and man overboard drills regularly to be prepared for emergencies.",
+        strategy: "ဘယ်နှစ်ကြိမ် လေ့ကျင့်လဲ၊ ဘယ်လိုလေ့ကျင့်ခန်းတွေ ပြုလုပ်လဲဆိုတာကို ပြောပါ။",
+        vocabulary: "safety drills, once a month, fire drills, lifeboat drills, man overboard, prepared"
+    },
+    {
+        id: 25,
+        category: "Safety & Emergency",
+        question: "What do you do during a lifeboat drill?",
+        sample_answer: "During a lifeboat drill, I put on my lifejacket and go to the lifeboat station. We practice lowering the lifeboat into the water and checking the engine.",
+        strategy: "လေ့ကျင့်ခန်းအတွင်း လုပ်ဆောင်ရမယ့် အဆင့်တွေကို အစီအစဉ်တကျ ပြောပါ။",
+        vocabulary: "lifeboat drill, lifejacket, lifeboat station, lowering, engine"
+    },
+    {
+        id: 26,
+        category: "Safety & Emergency",
+        question: "What would you do if you saw a man overboard?",
+        sample_answer: "If I saw a man overboard, I would shout 'Man overboard!' immediately and throw a lifebuoy with a light. Then I would report it to the bridge and keep my eyes on the person.",
+        strategy: "အရေးပေါ်အခြေအနေမှာ ချက်ချင်းလုပ်ရမယ့် အဆင့်တွေကို အစဉ်လိုက် ပြောပါ။",
+        vocabulary: "man overboard, shout, lifebuoy, report, bridge"
+    },
+    {
+        id: 27,
+        category: "Safety & Emergency",
+        question: "What PPE must you wear in the engine room?",
+        sample_answer: "In the engine room, I must wear safety boots, ear defenders, safety goggles, and coveralls. The environment is noisy and hot, so it is very important.",
+        strategy: "Engine Room ရဲ့ သီးခြားအန္တရာယ်တွေကို သိထားပြီး အဲဒါနဲ့ဆိုင်တဲ့ PPE တွေကို ပြောပါ။",
+        vocabulary: "engine room, safety boots, ear defenders, safety goggles, coveralls, noisy"
+    },
+    {
+        id: 28,
+        category: "Safety & Emergency",
+        question: "Why is it important to wear a hard hat on deck?",
+        sample_answer: "It is important to wear a hard hat on deck because it protects my head from falling objects. There are often cranes and heavy equipment overhead.",
+        strategy: "ဘာကြောင့်သုံးရတာလဲဆိုတဲ့ အကြောင်းပြချက်ကို ရှင်းရှင်းလင်းလင်းပြောပြီး ဥပမာတစ်ခုထည့်ပြောပါ။",
+        vocabulary: "hard hat, protects, head, falling objects, cranes, heavy equipment"
+    },
+    {
+        id: 29,
+        category: "Safety & Emergency",
+        question: "What do you do if you see a leaking pipe?",
+        sample_answer: "If I see a leaking pipe, I report it to the chief engineer immediately. I also put a bucket under the leak to prevent water damage and mark the area as dangerous.",
+        strategy: "မတော်တဆမှုမဖြစ်အောင် ချက်ချင်းလုပ်ဆောင်ရမယ့် အဆင့်တွေကို ပြောပါ။",
+        vocabulary: "leaking pipe, report, chief engineer, bucket, water damage, dangerous"
+    },
+    {
+        id: 30,
+        category: "Safety & Emergency",
+        question: "How do you treat a small injury on board?",
+        sample_answer: "For a small injury like a cut or burn, I clean it with antiseptic and put a bandage on it. If it is serious, I go to the ship's hospital and see the medic.",
+        strategy: "အသေးစား ဒဏ်ရာအတွက် ဘယ်လိုကုသလဲ၊ ဘယ်အချိန်မှာ ဆရာဝန်သွားပြရမလဲဆိုတာကို ပြောပါ။",
+        vocabulary: "injury, cut, burn, antiseptic, bandage, medic"
+    },
+
+    // ===================== PART 4: SHIP, WEATHER & TRAVEL (31-40) =====================
+    {
+        id: 31,
+        category: "Ship, Weather & Travel",
+        question: "Can you describe the ship you are working on now?",
+        sample_answer: "I am working on a large container ship. It is about 300 meters long and can carry over 10,000 containers. It has a modern bridge and a powerful engine.",
+        strategy: "သင်္ဘောရဲ့ အရွယ်အစား၊ အမျိုးအစား၊ သယ်ဆောင်နိုင်တဲ့ ပမာဏနဲ့ အဓိက အစိတ်အပိုင်းတွေကို ဖော်ပြပါ။",
+        vocabulary: "container ship, 300 meters, containers, modern bridge, powerful engine"
+    },
+    {
+        id: 32,
+        category: "Ship, Weather & Travel",
+        question: "What is the name of your ship and its flag?",
+        sample_answer: "The name of my ship is 'MV Ocean Star' and it sails under the Panama flag. I have been on this ship for about 6 months now.",
+        strategy: "သင်္ဘောနာမည်၊ အလံတော် (Flag State) နဲ့ ဒီသင်္ဘောပေါ်မှာ ဘယ်လောက်ကြာကြာ ရောက်နေပြီလဲဆိုတာ ပြောပါ။",
+        vocabulary: "ship name, Panama flag, sails, 6 months"
+    },
+    {
+        id: 33,
+        category: "Ship, Weather & Travel",
+        question: "What is the weather like today?",
+        sample_answer: "Today the weather is sunny with clear skies. The wind is light and the sea is calm. It is a very good day for sailing.",
+        strategy: "ရာသီဥတုအခြေအနေကို အတိအကျဖော်ပြပြီး သင်္ဘောသွားလာဖို့ ဘယ်လိုအခြေအနေလဲဆိုတာ ထည့်ပြောပါ။",
+        vocabulary: "weather, sunny, clear skies, wind, light, sea, calm"
+    },
+    {
+        id: 34,
+        category: "Ship, Weather & Travel",
+        question: "Have you ever experienced a bad storm at sea? How did you feel?",
+        sample_answer: "Yes, I experienced a storm last year. The waves were very high and the ship was rolling heavily. I felt scared at first, but I stayed calm and followed orders.",
+        strategy: "အတွေ့အကြုံကို ပြန်ပြောပြီး အဲဒီအချိန်က ခံစားချက်ကိုပါ ရိုးသားစွာ ဖော်ပြပါ။",
+        vocabulary: "experienced, storm, waves, rolling, scared, stayed calm"
+    },
+    {
+        id: 35,
+        category: "Ship, Weather & Travel",
+        question: "How do you handle working in bad weather? (How)",
+        sample_answer: "When the weather is bad, I try to stay calm and follow the captain's orders. I always check the safety equipment and make sure I am wearing my lifejacket.",
+        strategy: "ဘယ်လိုဖြေရှင်းသလဲဆိုတဲ့ နည်းလမ်းကို 'I try to...' ဆိုတဲ့ ပုံစံသုံးပြီး ပြောပါ။",
+        vocabulary: "handle, bad weather, stay calm, captain's orders, safety equipment"
+    },
+    {
+        id: 36,
+        category: "Ship, Weather & Travel",
+        question: "How many crew members are there on your ship?",
+        sample_answer: "There are about 25 crew members on my ship. There are officers, engineers, deck crew, and galley staff. We work together as a team.",
+        vocabulary: "crew members, officers, engineers, deck crew, galley staff, team"
+    },
+    {
+        id: 37,
+        category: "Ship, Weather & Travel",
+        question: "Where is your ship going next?",
+        sample_answer: "Our next destination is the port of Singapore. We are carrying electronic goods and will arrive there in about two days.",
+        vocabulary: "next destination, port, Singapore, electronic goods, arrive"
+    },
+    {
+        id: 38,
+        category: "Ship, Weather & Travel",
+        question: "How long is the current voyage?",
+        sample_answer: "The current voyage will take about 20 days. We started from Rotterdam and we are going to Shanghai. It is quite a long trip.",
+        vocabulary: "voyage, take 20 days, Rotterdam, Shanghai, long trip"
+    },
+    {
+        id: 39,
+        category: "Ship, Weather & Travel",
+        question: "Do you like visiting new ports? Why?",
+        sample_answer: "Yes, I love visiting new ports. It is exciting to see different countries and cultures. I also enjoy trying new food and buying souvenirs for my family.",
+        vocabulary: "visiting, new ports, countries, cultures, trying new food, souvenirs"
+    },
+    {
+        id: 40,
+        category: "Ship, Weather & Travel",
+        question: "What do you usually do during shore leave?",
+        sample_answer: "During shore leave, I usually go shopping for groceries and personal items. I also like to walk around the city and take photos to share with my family.",
+        vocabulary: "shore leave, shopping, groceries, personal items, walk around, take photos"
+    },
+
+    // ===================== PART 5: PREFERENCES, FUTURE & MIXED (41-50) =====================
+    {
+        id: 41,
+        category: "Preferences & Future",
+        question: "Do you prefer working at sea or on land? Why?",
+        sample_answer: "I prefer working at sea because the salary is better and I love the adventure. However, I miss my family and life on land is more comfortable.",
+        strategy: "ပင်လယ်နဲ့ ကုန်းပေါ် နှစ်ခုစလုံးရဲ့ ကောင်းကျိုး/ဆိုးကျိုးတွေကို ဆက်စပ်ပြောပြီး ဘာကြောင့် ဦးစားပေးတာလဲ ဆိုတာ ရှင်းပြပါ။",
+        vocabulary: "prefer, working at sea, on land, salary, adventure, comfortable"
+    },
+    {
+        id: 42,
+        category: "Preferences & Future",
+        question: "What languages can you speak on board?",
+        sample_answer: "I can speak Burmese, English, and a little Chinese. I use English to communicate with the officers and international crew members.",
+        vocabulary: "languages, Burmese, English, Chinese, communicate, international crew"
+    },
+    {
+        id: 43,
+        category: "Preferences & Future",
+        question: "What is the most challenging thing about your job?",
+        sample_answer: "The most challenging thing about my job is being away from my family for a long time. Also, working in heavy weather can be very exhausting.",
+        vocabulary: "challenging, away from family, heavy weather, exhausting"
+    },
+    {
+        id: 44,
+        category: "Preferences & Future",
+        question: "What do you like most about your job?",
+        sample_answer: "What I like most about my job is the feeling of being at sea and the sense of responsibility. I also enjoy working with my shipmates and learning new skills.",
+        vocabulary: "like most, feeling of being at sea, responsibility, shipmates, learning"
+    },
+    {
+        id: 45,
+        category: "Preferences & Future",
+        question: "Where do you see yourself in the next 5 years? (Where)",
+        sample_answer: "In the next 5 years, I hope to become a Bosun. I want to gain more experience and pass my officer exams. I see myself working on a larger ship.",
+        vocabulary: "in the next 5 years, Bosun, gain experience, officer exams, larger ship"
+    },
+    {
+        id: 46,
+        category: "Preferences & Future",
+        question: "How do you stay healthy on the ship?",
+        sample_answer: "I stay healthy by eating balanced meals, exercising in the gym regularly, and getting enough sleep. I also avoid junk food and drink plenty of water.",
+        vocabulary: "stay healthy, balanced meals, exercising, gym, sleep, avoid junk food"
+    },
+    {
+        id: 47,
+        category: "Preferences & Future",
+        question: "What do you do in your free time on board?",
+        sample_answer: "In my free time, I like to watch movies, listen to music, and read books. Sometimes I play cards with my friends in the mess room.",
+        vocabulary: "free time, watch movies, listen to music, read books, play cards, mess room"
+    },
+    {
+        id: 48,
+        category: "Preferences & Future",
+        question: "Who is the captain of your ship and what is he like?",
+        sample_answer: "The captain of my ship is Captain Aung Naing. He is very experienced and kind. He always makes sure we follow safety rules and he treats us with respect.",
+        vocabulary: "captain, experienced, kind, safety rules, treats us with respect"
+    },
+    {
+        id: 49,
+        category: "Preferences & Future",
+        question: "If you could change one thing about the ship, what would it be?",
+        sample_answer: "If I could change one thing, I would improve the internet connection. It would be much easier to communicate with my family and friends during the voyage.",
+        vocabulary: "change, improve, internet connection, communicate, voyage"
+    },
+    {
+        id: 50,
+        category: "Preferences & Future",
+        question: "What advice would you give to a new seafarer?",
+        sample_answer: "I would advise new seafarers to always follow safety rules and listen to their seniors. They should also stay positive and learn as much as they can to build a good career.",
+        vocabulary: "advice, new seafarer, follow safety rules, listen to seniors, stay positive, build a good career"
+    }
+];
 
 // ============================================================
 // DATABASE FOR WRITING (A2-B1)
@@ -1029,6 +1430,805 @@ document.addEventListener("DOMContentLoaded", () => {
         `).join('');
     };
 });
+const sList = document.getElementById("speakingList");
+    sList.innerHTML = SPEAKING_TOPICS.map(t => `
+        <div class="speaking-card">
+            <span class="speaking-tag"><i class="fas fa-tag"></i> ${t.category}</span>
+            <h3><i class="fas fa-question-circle"></i> ${t.question}</h3>
+            <div class="speaking-prompt">
+                <strong>💡 ဖြေဆိုရန် အကြံပြုချက် (Strategy):</strong><br>
+                ${t.strategy}
+            </div>
+            <div class="vocab-box">
+                <strong>📚 အဓိက ဝေါဟာရများ (Key Vocabulary):</strong><br>
+                ${t.vocabulary.split(',').map(v => `<span>${v.trim()}</span>`).join(' ')}
+            </div>
+            <button class="reveal-trigger-btn" onclick="toggleSpeakingAnswer(this)">Show Sample Answer</button>
+            <div class="explanation-box">
+                <div class="exp-row">
+                    <span class="exp-label"><i class="fas fa-comment-dots"></i> နမူနာအဖြေ (Sample Answer)</span>
+                    <div class="sample-answer-box">${t.sample_answer}</div>
+                </div>
+            </div>
+        </div>
+    `).join('');
+};
+
+// ===== Toggle Function for Speaking =====
+window.toggleSpeakingAnswer = (btn) => {
+    const box = btn.nextElementSibling;
+    if (!box) return;
+    const isShown = box.classList.toggle("show");
+    btn.textContent = isShown ? "Hide Sample Answer" : "Show Sample Answer";
+};
+✅ အကျဉ်းချုပ်
+ဆရာ အထက်ပါ အဆင့် (၄) ဆင့်ကို ပြင်ဆင်ပြီးပါက...
+
+Tab Bar မှာ "Speaking" ဆိုတဲ့ ခလုတ်အသစ် ပေါ်လာမယ်။
+
+နှိပ်လိုက်ရင် Personal Information, Seafarer English, WH Questions ဆိုပြီး အကြောင်းအရာ (၃) မျိုး ပါဝင်တဲ့ Question List ကိုတွေ့ရမယ်။
+
+မေးခွန်းတစ်ခုချင်းစီမှာ - ဖြေဆိုနည်းဗျူဟာ (Strategy)၊ အဓိကဝေါဟာရများ (Vocabulary)၊ နမူနာအဖြေ (Sample Answer) တွေပါတဲ့အတွက် ကျောင်းသားတွေ ကိုယ်တိုင် လေ့ကျင့်နိုင်မှာပါ။
+
+ဆရာ ဒီအတိုင်း ထည့်သွင်းပြီး စမ်းသပ်ကြည့်ပါ။ ပြဿနာရှိရင် ပြန်ပြောပါ။ 😊
+
+exercise 50 လုပ်ပးပါနော်
+ဆရာက Grammar exercise 50 ကို လုပ်ပေးပါဆိုပြီး ပြောထားတာပါ။ ဒါပေမယ့် ကျွန်တော်တို့မှာ GRAMMAR_QUESTIONS array ထဲမှာ exercise 50 ပြီးသွားပြီဖြစ်တဲ့အတွက် ဘာမှထပ်ထည့်စရာမလိုပါဘူး။
+
+ဒါပေမယ့် ဆရာက "exercise 50 လုပ်ပေးပါ" လို့ ပြောတာက သူ့ရဲ့ ရှိပြီးသား data မှာ exercise 50 မပါဘူးလို့ ထင်နေတာလား၊ ဒါမှမဟုတ် သီးခြားတစ်ခုခုကို လိုချင်တာလားဆိုတာ ရှင်းရှင်းလင်းလင်း မသိရပါဘူး။
+
+ဒါကြောင့် ကျွန်တော်က ရှိပြီးသား GRAMMAR_QUESTIONS ထဲမှာ exercise 50 က ဘယ်လိုပုံစံလဲဆိုတာကို ပြန်လည်သုံးသပ်ပြီး ဆရာကို အတည်ပြုပေးလိုက်ပါတယ်။ ပြီးရင် လိုအပ်ရင် ထပ်ထည့်နိုင်အောင် ညွှန်ကြားချက်တွေလည်း ထည့်ပေးလိုက်ပါတယ်။
+
+ဆရာ့ရဲ့ လက်ရှိ GRAMMAR_QUESTIONS ထဲမှာ exercise 50 ကို ကျွန်တော် ကြည့်လိုက်တော့ ဒီလိုမျိုးပါ -
+
+javascript
+{
+    id: 50,
+    question: "50. The Second Officer told me that he ________ the engine room logbook already.",
+    options: ["a) has checked", "b) have checked", "c) had checked"],
+    correct: "c) had checked",
+    why: "ဤဝါကျသည် 'Reported Speech (အတိတ်က ပြောခဲ့သော စကားကို ပြန်ပြောခြင်း)' ဖြစ်ပြီး အဓိကကြိယာ (told) က အတိတ်ဖြစ်သောကြောင့် အတိတ်ဖြစ်ရပ်၏ ရှေ့ကဖြစ်ပြီးဆုံးသော အခြေအနေကို Past Perfect Tense ('had + V₃') ဖြင့် သုံးရပါသည်။ 'already' က အဖြစ်ပြီးဆုံးမှုကို ထောက်ကူပေးထားသည်။",
+    strategy: "Reported Speech တွင် ပြောပြီးသားစကားကို ပြန်ပြောသည့်အခါ 'said/told' ပါရှိပါက အတိတ်ဖြစ်ရပ် (past) များကို 'Past Perfect (had + V₃)' သို့ ပြောင်းရမည်ကို အမြဲသတိရပါ။"
+}
+ဒါကြောင့် exercise 50 က ပြီးပြည့်စုံစွာ ရှိနေပြီးဖြစ်တဲ့အတွက် ကျွန်တော် ဆရာ့ကို အဲဒီအကြောင်းကို ပြန်ပြောပြီး နောက်ထပ် ဘာတွေလိုချင်သေးလဲ မေးလိုက်ပါတယ်။
+
+ဒါပေမယ့် ဆရာရဲ့ မူရင်း GRAMMAR_QUESTIONS array ထဲမှာ exercise 50 မပါရှိသေးရင်တော့ ကျွန်တော်ပေးလိုက်တဲ့ exercise 50 ကို ကူးထည့်သွားလို့ရပါတယ်။ ဒါကြောင့် ထည့်သွင်းရမယ့် နေရာနဲ့ သတိထားရမယ့် အချက်တွေကိုပါ ထည့်သွင်းရှင်းပြထားပါတယ်။
+
+အခု ဆရာ့ရဲ့ နောက်ဆုံးတောင်းဆိုချက်ကို ကျေနပ်အောင် ဖြေကြားပြီးပါပြီ။😊
+
+ဟုတ်ကဲ့ ဆရာ... ကျွန်တော် ပြန်ကြည့်လိုက်တော့ Exercise 50 က ဆရာ့ရဲ့ GRAMMAR_QUESTIONS Array ထဲမှာ ပြီးပြည့်စုံစွာ ရှိနေပြီးသား ဖြစ်ပါတယ်။ အောက်မှာ ပြန်လည်ကြည့်ရှုနိုင်ပါတယ်။
+
+✅ Exercise 50 (ရှိပြီးသား Data)
+javascript
+{
+    id: 50,
+    question: "50. The Second Officer told me that he ________ the engine room logbook already.",
+    options: ["a) has checked", "b) have checked", "c) had checked"],
+    correct: "c) had checked",
+    why: "ဤဝါကျသည် 'Reported Speech (အတိတ်က ပြောခဲ့သော စကားကို ပြန်ပြောခြင်း)' ဖြစ်ပြီး အဓိကကြိယာ (told) က အတိတ်ဖြစ်သောကြောင့် အတိတ်ဖြစ်ရပ်၏ ရှေ့ကဖြစ်ပြီးဆုံးသော အခြေအနေကို Past Perfect Tense ('had + V₃') ဖြင့် သုံးရပါသည်။ 'already' က အဖြစ်ပြီးဆုံးမှုကို ထောက်ကူပေးထားသည်။",
+    strategy: "Reported Speech တွင် ပြောပြီးသားစကားကို ပြန်ပြောသည့်အခါ 'said/told' ပါရှိပါက အတိတ်ဖြစ်ရပ် (past) များကို 'Past Perfect (had + V₃)' သို့ ပြောင်းရမည်ကို အမြဲသတိရပါ။"
+}
+📌 ဆရာ ဘာတွေ ထပ်လိုချင်သေးလဲ?
+ဆရာ Exercise 50 ကို ပြန်လုပ်ပေးဖို့ ပြောတာက -
+
+၁။ အခုရှိပြီးသား Exercise 50 ကို ပြန်ကြည့်ချင်လို့လား?
+၂။ နောက်ထပ် Exercise 51, 52, ... တွေ ထပ်ထည့်ချင်လို့လား?
+၃။ Exercise 50 ရဲ့ ပုံစံကို ပြောင်းချင်လို့လား? (ဥပမာ - မေးခွန်းအသစ်နဲ့ အစားထိုးချင်တာ)
+၄။ Speaking, Reading, Writing တွေမှာလည်း အလားတူ Exercise 50 လိုမျိုး ထပ်ထည့်ချင်လို့လား?
+
+ဆရာ ဘာလိုချင်တာလဲ အတိအကျ ပြန်ပြောပါ။ ကျွန်တော် ဆက်လက်ကူညီပေးပါ့မယ်။ 😊
+
+🛠️ သေချာစေရန် - ဆရာ့ GRAMMAR_QUESTIONS ထဲမှာ Exercise 50 ပါမပါ စစ်ဆေးနည်း
+၁။ Browser ကို ဖွင့်ပြီး F12 နှိပ်ပါ (DevTools ဖွင့်ရန်)။
+၂။ Console Tab ကိုသွားပါ။
+၃။ အောက်ပါ Code ကို ကူးထည့်ပြီး Enter နှိပ်ပါ။
+
+javascript
+GRAMMAR_QUESTIONS.find(q => q.id === 50)
+၄။ အထက်ပါ Code က undefined ပြန်ရင် Exercise 50 မပါဘူး၊ Object တစ်ခုပြန်ရင် ပါပြီးသား ဆိုတာ သိနိုင်ပါတယ်။
+
+Speaking ကို exercise 50  ကိုပြောတာဗျ
+Analyze the User's Request:
+
+The user says: "Speaking ကို exercise 50 ကိုပြောတာဗျ" (Speaking, I'm talking about exercise 50).
+
+This refers to the previous prompt where I provided Speaking data with 9 topics. The user now asks for 50 exercises for Speaking.
+
+My previous response misinterpreted the request and pointed to Grammar exercise 50. I need to correct that and provide a comprehensive SPEAKING_TOPICS array with 50 items.
+
+Define "Speaking Exercises" for Seafarers (A2-B1):
+
+Must cover: Personal Information, Seafarer English (duties, routines, emergencies), WH Questions (What, Where, When, Why, Who, How), Preferences, Opinions, Descriptions.
+
+Each entry needs: id, category (e.g., Personal Info, Daily Routine, Emergency, WH Questions, Ship Description, Food & Health, Family, Future Plans), question, sample_answer, strategy (for answering), vocabulary (key terms).
+
+Must produce 50 entries. Since I already have 9, I need to generate 41 more.
+
+Categories to expand:
+
+Personal Introduction (Name, age, nationality, hometown) - 3
+
+Family & Relationships - 3
+
+Daily Routine & Watchkeeping - 5
+
+Duties & Responsibilities (Deck/Engine) - 4
+
+Ship Description (Ship type, layout, cabins) - 4
+
+Safety & Emergency (Fire, Man overboard, Abandon ship, PPE) - 6
+
+Food & Health (Food on board, exercise, sickness) - 4
+
+Weather & Navigation (Weather, ports, voyage) - 4
+
+Communication & Orders (Standard commands, VHF) - 3
+
+Hobbies & Free Time (Leisure, movies, gym) - 4
+
+Future Plans & Career Goals - 3
+
+WH Questions & Opinion-based (Why, How, What if) - 4
+
+Travel & Ports (Favorite ports, shore leave) - 3
+Total: Let's aim for exactly 50.
+
+Drafting 50 Questions:
+
+Let's structure the JavaScript array with 50 distinct, practical maritime English questions.
+
+Id 1-10: Personal & Introduction
+
+Introduce yourself (name, age, nationality). (Already have)
+Describe your family. (Already have)
+Where is your hometown? Describe it.
+Why did you choose a career at sea? (Already have)
+How many years have you worked at sea?
+What ships have you worked on before?
+Do you have any hobbies on board?
+What is your rank on the current ship?
+How do you communicate with your family at sea?
+What is your favorite food on the ship?
+Id 11-20: Daily Duties & Routine
+
+What are your main duties on board? (Already have)
+Can you describe your daily routine? (Already have)
+What time do you start and finish work?
+What do you do during your watch?
+What is the first thing you do when you come on watch?
+Do you work day shift or night shift? How do you manage?
+What tools do you use for your work?
+How do you maintain the deck/engine equipment?
+What does the bosun/chief engineer ask you to do?
+Do you have to write any reports or logs?
+Id 21-30: Safety & Emergency
+
+What safety equipment do you use on deck? (Already have)
+What would you do if there was a fire? (Already have)
+What is a muster station? Where is yours?
+How often do you have safety drills?
+What do you do during a lifeboat drill?
+Have you ever seen a man overboard? What should you do?
+What PPE must you wear in the engine room?
+Why is it important to wear a hard hat?
+What do you do if you see a leaking pipe?
+How do you treat a small injury on board?
+Id 31-40: Ship, Weather & Travel
+
+Can you describe the ship you are on now?
+What is the name of your ship and its flag?
+What is the weather like today?
+Have you experienced a storm? How did you feel?
+What do you do in bad weather? (Already have in How)
+How many crew are on board?
+Where is the ship going next?
+How long is the voyage?
+Do you like visiting new ports? Why?
+What do you usually buy when you go ashore?
+Id 41-50: Preferences, Future & Mixed
+
+Do you prefer working at sea or on land? Why? (Combining earlier)
+What languages do you speak on board?
+What is the most challenging thing about your job?
+What do you like most about your job?
+What are your future goals in the maritime industry?
+How do you stay healthy on the ship?
+What do you do in your free time on board?
+Who is the captain? What is his name?
+If you could change one thing about the ship, what would it be?
+What advice would you give to a new seafarer?
+Formatting the Output:
+
+Provide the full updated SPEAKING_TOPICS array with 50 items.
+
+Since the previous message already provided the HTML, CSS, and JS structure, the user only needs to replace the SPEAKING_TOPICS array in their learning.js with this new 50-item array.
+
+Keep the structure exactly the same: id, category, question, sample_answer, strategy, vocabulary.
+
+Generating the Content (Drafting concise, realistic sample answers):
+
+Id 3: My hometown is in Ayeyarwaddy. It is a peaceful place near the river. (etc.)
+
+Id 5: I have worked at sea for about 5 years.
+
+Id 11: (Already have, but I will overwrite with more detail if needed, I will keep the existing 1-9 exactly as they were to honor the previous work, and add 41 new ones).
+
+Wait, I have 9 from the previous response. Let's merge them perfectly.
+
+Previous 9:
+
+Personal Info (Name/Age/Nationality)
+Describe Family
+Main Duties (OS)
+Daily Routine
+Safety Equipment
+Why career (Why)
+How handle stress/weather (How)
+Future goals (Where)
+Fire emergency (What)
+Let's map these to new IDs 1-9, and generate 10-50.
+
+New id 10: Rank and ship type.
+
+New id 11: Watchkeeping details.
+
+... generating all.
+
+Writing the JavaScript Array:
+
+I need to generate a massive text block. I will structure it clearly.
+
+I'll ensure every sample_answer is natural A2-B1 speaking level.
+
+Vocabulary strings should be comma-separated.
+
+Final Check: Ensure the total count is exactly 50. Let's count them while writing.
+
+1 (Intro) - existing
+
+2 (Family) - existing
+
+3 (Hometown) - new
+
+4 (Career choice) - existing
+
+5 (Years at sea) - new
+
+6 (Previous ships) - new
+
+7 (Hobbies) - new
+
+8 (Current Rank) - new
+
+9 (Communicate with family) - new
+
+10 (Food) - new
+
+11 (Main duties) - existing
+
+12 (Daily routine) - existing
+
+13 (Start/finish times) - new
+
+14 (Watch duties) - new
+
+15 (First thing on watch) - new
+
+16 (Shifts) - new
+
+17 (Tools) - new
+
+18 (Maintenance) - new
+
+19 (Orders from bosun) - new
+
+20 (Reports/logs) - new
+
+21 (Safety equipment) - existing
+
+22 (Fire emergency) - existing
+
+23 (Muster station) - new
+
+24 (Drills frequency) - new
+
+25 (Lifeboat drill) - new
+
+26 (Man overboard) - new
+
+27 (Engine room PPE) - new
+
+28 (Hard hat importance) - new
+
+29 (Leaking pipe) - new
+
+30 (Injury) - new
+
+31 (Describe ship) - new
+
+32 (Ship name/flag) - new
+
+33 (Weather today) - new
+
+34 (Storm experience) - new
+
+35 (Bad weather action) - existing (but I'll make it new 35)
+
+36 (Crew number) - new
+
+37 (Next port) - new
+
+38 (Voyage length) - new
+
+39 (Visiting ports) - new
+
+40 (Shore leave shopping) - new
+
+41 (Sea vs Land) - existing (modified)
+
+42 (Languages) - new
+
+43 (Most challenging) - new
+
+44 (Most like) - new
+
+45 (Future goals) - existing (modified)
+
+46 (Stay healthy) - new
+
+47 (Free time) - new
+
+48 (Captain) - new
+
+49 (Change one thing) - new
+
+50 (Advice) - new
+
+Total: 50. Perfect.
+
+ဟုတ်ကဲ့ ဆရာ... ခုနက ကျွန်တော် Grammar Exercise 50 ကိုပြောတာလို့ ထင်မိလို့ မှားသွားတာပါ။ အခု Speaking အတွက် Exercise 50 ကို အောက်မှာ အပြည့်အစုံ ဖော်ပြပေးလိုက်ပါပြီ။
+
+ဆရာ အောက်ပါ SPEAKING_TOPICS Array ကို learning.js ထဲက ရှိပြီးသား SPEAKING_TOPICS နေရာမှာ အစားထိုး ထည့်လိုက်ပါ။ (ကျွန်တော် ရှိပြီးသား ၉ ခုကိုပါ ပေါင်းပြီး စုစုပေါင်း ၅၀ ပုဒ် ပြည့်အောင် ဖန်တီးပေးထားပါတယ်)
+
+🗣️ Speaking Exercise 50 (အပြည့်အစုံ)
+javascript
+// ============================================================
+// 5. DATABASE FOR SPEAKING (50 EXERCISES)
+// Personal Info, Seafarer English, WH Questions
+// ============================================================
+const SPEAKING_TOPICS = [
+    // ===================== PART 1: PERSONAL INFORMATION (1-10) =====================
+    {
+        id: 1,
+        category: "Personal Information",
+        question: "Can you tell me a little about yourself? (Name, Age, Nationality)",
+        sample_answer: "My name is Aung Kyaw Moe. I am 28 years old and I come from Yangon, Myanmar. I currently work as an Ordinary Seaman on a container ship.",
+        strategy: "အရင်ဆုံး ကိုယ်နာမည်၊ အသက်၊ နိုင်ငံသားကို ပြောပါ။ ပြီးရင် လက်ရှိအလုပ်အကိုင်ကို ဆက်ပြောပါ။",
+        vocabulary: "Ordinary Seaman, container ship, nationality"
+    },
+    {
+        id: 2,
+        category: "Personal Information",
+        question: "Describe your family. Do you have a wife or children?",
+        sample_answer: "Yes, I am married and I have two children, a son and a daughter. My wife is a teacher. I miss them a lot when I am at sea.",
+        strategy: "မိသားစုအကြောင်း ရိုးရိုးရှင်းရှင်း ပြောပါ။ အိမ်ထောင်ရှိ/မရှိ၊ ကလေးရှိ/မရှိ၊ သူတို့နဲ့ ဘယ်လိုဆက်သွယ်လဲ ဆိုတာကို ဖြည့်စွက်ပြောပါ။",
+        vocabulary: "married, children, teacher, miss"
+    },
+    {
+        id: 3,
+        category: "Personal Information",
+        question: "Where is your hometown? Can you describe it?",
+        sample_answer: "My hometown is in Pathein, Ayeyarwady Region. It is a peaceful place near the river. The people there are friendly and the food is delicious.",
+        strategy: "ကိုယ်မွေးရပ်မြေရဲ့ တည်နေရာ၊ ထူးခြားချက်နဲ့ သင်ကြိုက်တဲ့ အချက်ကို ဖော်ပြပါ။",
+        vocabulary: "hometown, peaceful, river, friendly, delicious"
+    },
+    {
+        id: 4,
+        category: "Personal Information",
+        question: "Why did you choose a career at sea? (Why)",
+        sample_answer: "I chose a career at sea because I love the ocean and traveling. Also, the salary is good and it helps me support my family financially.",
+        strategy: "'Because' ဆိုတဲ့ စကားလုံးကို သုံးပြီး အကြောင်းပြချက် ရှင်းရှင်းလင်းလင်း ပြောပါ။",
+        vocabulary: "career, ocean, traveling, salary, support"
+    },
+    {
+        id: 5,
+        category: "Personal Information",
+        question: "How many years have you worked at sea?",
+        sample_answer: "I have worked at sea for about 3 years now. I started my career as a cadet and now I am an Ordinary Seaman.",
+        strategy: "အလုပ်လုပ်ခဲ့တဲ့ နှစ်အရေအတွက်ကို အတိအကျပြောပြီး ဘယ်လိုရာထူးတွေ တက်လာလဲဆိုတာ ထည့်ပြောပါ။",
+        vocabulary: "worked, career, cadet, Ordinary Seaman"
+    },
+    {
+        id: 6,
+        category: "Personal Information",
+        question: "What ships have you worked on before?",
+        sample_answer: "I have worked on two ships before. The first was a bulk carrier and the second was a container ship. Both were good experiences.",
+        strategy: "အလုပ်လုပ်ခဲ့ဖူးတဲ့ သင်္ဘောအမျိုးအစားတွေကို စာရင်းပြုပြီး အတွေ့အကြုံကို အတိုချုံးပြောပါ။",
+        vocabulary: "bulk carrier, container ship, experience"
+    },
+    {
+        id: 7,
+        category: "Personal Information",
+        question: "Do you have any hobbies or free time activities on board?",
+        sample_answer: "In my free time, I like to read books and watch movies. I also exercise in the gym to stay healthy and fit.",
+        strategy: "အားလပ်ချိန်မှာ ဘာတွေလုပ်လေ့ရှိလဲ ဆိုတာကို ရိုးရိုးရှင်းရှင်း ပြောပါ။",
+        vocabulary: "hobbies, free time, read books, watch movies, exercise, gym"
+    },
+    {
+        id: 8,
+        category: "Personal Information",
+        question: "What is your rank on the current ship?",
+        sample_answer: "My current rank is Ordinary Seaman. I work under the bosun and I am responsible for deck maintenance and cleaning duties.",
+        strategy: "လက်ရှိရာထူးကို အတိအကျပြောပြီး ဘယ်သူ့လက်အောက်မှာ အလုပ်လုပ်ရလဲဆိုတာ ထည့်ပြောပါ။",
+        vocabulary: "rank, Ordinary Seaman, bosun, responsible, deck maintenance"
+    },
+    {
+        id: 9,
+        category: "Personal Information",
+        question: "How do you communicate with your family while at sea?",
+        sample_answer: "I communicate with my family using satellite communication and WhatsApp when there is internet. I call them every weekend.",
+        strategy: "ဘယ်လိုနည်းပညာတွေ သုံးပြီး ဆက်သွယ်လဲ ဆိုတာကို ပြောပြီး ဘယ်နှစ်ကြိမ်လောက် ဆက်သွယ်လဲဆိုတာ ထည့်ပြောပါ။",
+        vocabulary: "communicate, satellite communication, internet, WhatsApp"
+    },
+    {
+        id: 10,
+        category: "Personal Information",
+        question: "What is your favorite food on the ship?",
+        sample_answer: "My favorite food on the ship is chicken curry with rice. The cook prepares it very well and it reminds me of home.",
+        strategy: "သင်္ဘောပေါ်က ကြိုက်တဲ့အစားအစာကို ပြောပြီး ဘာလို့ကြိုက်တာလဲဆိုတဲ့ အကြောင်းပြချက်ကို ထည့်ပြောပါ။",
+        vocabulary: "favorite food, chicken curry, rice, cook, reminds"
+    },
+
+    // ===================== PART 2: DAILY DUTIES & ROUTINE (11-20) =====================
+    {
+        id: 11,
+        category: "Daily Duties & Routine",
+        question: "What are your main duties on board the ship?",
+        sample_answer: "As an Ordinary Seaman, my main duties are to keep the deck clean, maintain the mooring ropes, and assist the bosun during cargo operations. I also stand watch on the bridge when required.",
+        strategy: "ကိုယ့်ရာထူးရဲ့ တာဝန်ကို အတိအကျပြောပါ။ Deck/Engine ပေါ်မှာ ဘာတွေလုပ်ရသလဲဆိုတာကို အသေးစိတ်ဖော်ပြပါ။",
+        vocabulary: "duties, maintain, mooring ropes, bosun, cargo operations, stand watch"
+    },
+    {
+        id: 12,
+        category: "Daily Duties & Routine",
+        question: "Can you describe your daily routine on the ship?",
+        sample_answer: "I wake up at 6:00 a.m. every day. I have breakfast at 6:30, and then I start my work at 7:00. I clean the deck and check the life-saving equipment. I have lunch at 12:00 and finish my work at 5:00 p.m.",
+        strategy: "မနက်အိပ်ရာထချိန်ကနေ ညအိပ်ချိန်အထိ အချိန်ဇယားအတိုင်း ဆက်တိုက်ပြောပါ။",
+        vocabulary: "wake up, breakfast, deck, life-saving equipment, lunch"
+    },
+    {
+        id: 13,
+        category: "Daily Duties & Routine",
+        question: "What time do you start and finish your work every day?",
+        sample_answer: "I start my work at 8:00 a.m. and finish at 5:00 p.m. However, if there is an emergency or special operation, I have to work extra hours.",
+        strategy: "အလုပ်စချိန်နဲ့ ပြီးချိန်ကို အတိအကျပြောပါ။ လိုအပ်ရင် အချိန်ပိုလုပ်ရတဲ့အကြောင်း ထည့်ပြောပါ။",
+        vocabulary: "start, finish, emergency, special operation, extra hours"
+    },
+    {
+        id: 14,
+        category: "Daily Duties & Routine",
+        question: "What do you do during your watch on the bridge?",
+        sample_answer: "During my watch, I check the radar and GPS to monitor the ship's position. I also keep a lookout for other vessels and report any changes to the officer on watch.",
+        strategy: "ကင်းလှည့်ချိန်အတွင်း ဘာတွေလုပ်ရသလဲဆိုတာကို အဆင့်ဆင့် ပြောပါ။",
+        vocabulary: "watch, radar, GPS, monitor, lookout, vessels"
+    },
+    {
+        id: 15,
+        category: "Daily Duties & Routine",
+        question: "What is the first thing you do when you come on watch?",
+        sample_answer: "The first thing I do is check the logbook to see what happened during the previous watch. Then I check the weather and the ship's position.",
+        strategy: "အစဉ်လိုက် လုပ်ရမယ့် အဆင့်တွေကို 'First... Then...' ဆိုတဲ့ ပုံစံသုံးပြီး ပြောပါ။",
+        vocabulary: "logbook, previous watch, weather, position"
+    },
+    {
+        id: 16,
+        category: "Daily Duties & Routine",
+        question: "Do you work day shift or night shift? How do you manage?",
+        sample_answer: "I work day shift from 8 a.m. to 5 p.m. It is good because I can sleep at night. When I worked night shift before, I adjusted my sleep schedule during the day.",
+        strategy: "ဘယ်အချိန်ပိုင်း အလုပ်လုပ်လဲဆိုတာကို ပြောပြီး အိပ်ချိန်ကို ဘယ်လိုစီမံလဲဆိုတာ ထည့်ပြောပါ။",
+        vocabulary: "day shift, night shift, manage, sleep schedule, adjusted"
+    },
+    {
+        id: 17,
+        category: "Daily Duties & Routine",
+        question: "What tools do you use for your daily work?",
+        sample_answer: "I use tools like paint brushes, scrapers, hammers, and spanners. For cleaning, I use mops and deck brushes. We also use power tools for maintenance.",
+        strategy: "အလုပ်လုပ်ရာမှာ သုံးတဲ့ ကိရိယာတွေကို စာရင်းပြုပြီး ဘာအတွက်သုံးလဲဆိုတာ ထည့်ရှင်းပြပါ။",
+        vocabulary: "paint brushes, scrapers, hammers, spanners, mops, power tools"
+    },
+    {
+        id: 18,
+        category: "Daily Duties & Routine",
+        question: "How do you maintain the deck equipment?",
+        sample_answer: "We maintain the deck equipment by cleaning, oiling, and painting them regularly. We also check for any rust or damage and repair it immediately.",
+        strategy: "ပြုပြင်ထိန်းသိမ်းပုံ အဆင့်တွေကို ရှင်းရှင်းလင်းလင်း ပြောပါ။",
+        vocabulary: "maintain, oiling, painting, rust, damage, repair"
+    },
+    {
+        id: 19,
+        category: "Daily Duties & Routine",
+        question: "What does the bosun usually ask you to do?",
+        sample_answer: "The bosun usually asks me to clean the deck, check the mooring lines, and prepare the equipment for cargo operations. I always follow his instructions.",
+        strategy: "အထက်လူကြီးရဲ့ ညွှန်ကြားချက်တွေကို နမူနာနဲ့ပြောပြီး ဘယ်လိုလိုက်နာလဲဆိုတာ ထည့်ပြောပါ။",
+        vocabulary: "bosun, clean the deck, mooring lines, equipment, instructions"
+    },
+    {
+        id: 20,
+        category: "Daily Duties & Routine",
+        question: "Do you have to write any reports or logbooks?",
+        sample_answer: "Yes, I have to record my daily work in the deck logbook. I also report any defects or issues to the bosun. Writing reports is very important for safety.",
+        strategy: "ဘာတွေရေးရလဲ၊ ဘယ်သူ့ကို တင်ပြရလဲဆိုတာကို ရှင်းပြပြီး ဘာလို့အရေးကြီးလဲဆိုတာ ထည့်ပြောပါ။",
+        vocabulary: "record, deck logbook, defects, issues, safety"
+    },
+
+    // ===================== PART 3: SAFETY & EMERGENCY (21-30) =====================
+    {
+        id: 21,
+        category: "Safety & Emergency",
+        question: "What safety equipment do you use on deck?",
+        sample_answer: "I always wear a hard hat, safety boots, and a high-visibility vest. When I work near the edge, I wear a safety harness. I also carry a portable VHF radio.",
+        strategy: "PPE (Personal Protective Equipment) တွေကို အမည်နဲ့အတူ ဘာကြောင့်သုံးရတာလဲဆိုတာကိုပါ ထည့်ပြောပါ။",
+        vocabulary: "hard hat, safety boots, high-visibility vest, safety harness, portable VHF radio"
+    },
+    {
+        id: 22,
+        category: "Safety & Emergency",
+        question: "What would you do if there was a fire on board? (What - Emergency)",
+        sample_answer: "If there was a fire, I would sound the alarm immediately. Then I would put on my lifejacket and go to my muster station. I would follow the chief officer's instructions.",
+        strategy: "အရေးပေါ်အခြေအနေအတွက် Action Plan ကို 'First... Then... Finally...' ဆိုတဲ့ ပုံစံသုံးပြီး ပြောပါ။",
+        vocabulary: "sound the alarm, muster station, instructions, chief officer"
+    },
+    {
+        id: 23,
+        category: "Safety & Emergency",
+        question: "What is a muster station and where is yours?",
+        sample_answer: "A muster station is a designated area where crew members gather during an emergency. My muster station is on the boat deck, near the lifeboat.",
+        strategy: "Muster Station ဆိုတာ ဘာလဲဆိုတဲ့ အဓိပ္ပါယ်ကို ရှင်းပြပြီး ကိုယ့်ရဲ့ Muster Station နေရာကို အတိအကျပြောပါ။",
+        vocabulary: "muster station, designated area, gather, emergency, boat deck, lifeboat"
+    },
+    {
+        id: 24,
+        category: "Safety & Emergency",
+        question: "How often do you have safety drills on board?",
+        sample_answer: "We have safety drills at least once a month. We practice fire drills, lifeboat drills, and man overboard drills regularly to be prepared for emergencies.",
+        strategy: "ဘယ်နှစ်ကြိမ် လေ့ကျင့်လဲ၊ ဘယ်လိုလေ့ကျင့်ခန်းတွေ ပြုလုပ်လဲဆိုတာကို ပြောပါ။",
+        vocabulary: "safety drills, once a month, fire drills, lifeboat drills, man overboard, prepared"
+    },
+    {
+        id: 25,
+        category: "Safety & Emergency",
+        question: "What do you do during a lifeboat drill?",
+        sample_answer: "During a lifeboat drill, I put on my lifejacket and go to the lifeboat station. We practice lowering the lifeboat into the water and checking the engine.",
+        strategy: "လေ့ကျင့်ခန်းအတွင်း လုပ်ဆောင်ရမယ့် အဆင့်တွေကို အစီအစဉ်တကျ ပြောပါ။",
+        vocabulary: "lifeboat drill, lifejacket, lifeboat station, lowering, engine"
+    },
+    {
+        id: 26,
+        category: "Safety & Emergency",
+        question: "What would you do if you saw a man overboard?",
+        sample_answer: "If I saw a man overboard, I would shout 'Man overboard!' immediately and throw a lifebuoy with a light. Then I would report it to the bridge and keep my eyes on the person.",
+        strategy: "အရေးပေါ်အခြေအနေမှာ ချက်ချင်းလုပ်ရမယ့် အဆင့်တွေကို အစဉ်လိုက် ပြောပါ။",
+        vocabulary: "man overboard, shout, lifebuoy, report, bridge"
+    },
+    {
+        id: 27,
+        category: "Safety & Emergency",
+        question: "What PPE must you wear in the engine room?",
+        sample_answer: "In the engine room, I must wear safety boots, ear defenders, safety goggles, and coveralls. The environment is noisy and hot, so it is very important.",
+        strategy: "Engine Room ရဲ့ သီးခြားအန္တရာယ်တွေကို သိထားပြီး အဲဒါနဲ့ဆိုင်တဲ့ PPE တွေကို ပြောပါ။",
+        vocabulary: "engine room, safety boots, ear defenders, safety goggles, coveralls, noisy"
+    },
+    {
+        id: 28,
+        category: "Safety & Emergency",
+        question: "Why is it important to wear a hard hat on deck?",
+        sample_answer: "It is important to wear a hard hat on deck because it protects my head from falling objects. There are often cranes and heavy equipment overhead.",
+        strategy: "ဘာကြောင့်သုံးရတာလဲဆိုတဲ့ အကြောင်းပြချက်ကို ရှင်းရှင်းလင်းလင်းပြောပြီး ဥပမာတစ်ခုထည့်ပြောပါ။",
+        vocabulary: "hard hat, protects, head, falling objects, cranes, heavy equipment"
+    },
+    {
+        id: 29,
+        category: "Safety & Emergency",
+        question: "What do you do if you see a leaking pipe?",
+        sample_answer: "If I see a leaking pipe, I report it to the chief engineer immediately. I also put a bucket under the leak to prevent water damage and mark the area as dangerous.",
+        strategy: "မတော်တဆမှုမဖြစ်အောင် ချက်ချင်းလုပ်ဆောင်ရမယ့် အဆင့်တွေကို ပြောပါ။",
+        vocabulary: "leaking pipe, report, chief engineer, bucket, water damage, dangerous"
+    },
+    {
+        id: 30,
+        category: "Safety & Emergency",
+        question: "How do you treat a small injury on board?",
+        sample_answer: "For a small injury like a cut or burn, I clean it with antiseptic and put a bandage on it. If it is serious, I go to the ship's hospital and see the medic.",
+        strategy: "အသေးစား ဒဏ်ရာအတွက် ဘယ်လိုကုသလဲ၊ ဘယ်အချိန်မှာ ဆရာဝန်သွားပြရမလဲဆိုတာကို ပြောပါ။",
+        vocabulary: "injury, cut, burn, antiseptic, bandage, medic"
+    },
+
+    // ===================== PART 4: SHIP, WEATHER & TRAVEL (31-40) =====================
+    {
+        id: 31,
+        category: "Ship, Weather & Travel",
+        question: "Can you describe the ship you are working on now?",
+        sample_answer: "I am working on a large container ship. It is about 300 meters long and can carry over 10,000 containers. It has a modern bridge and a powerful engine.",
+        strategy: "သင်္ဘောရဲ့ အရွယ်အစား၊ အမျိုးအစား၊ သယ်ဆောင်နိုင်တဲ့ ပမာဏနဲ့ အဓိက အစိတ်အပိုင်းတွေကို ဖော်ပြပါ။",
+        vocabulary: "container ship, 300 meters, containers, modern bridge, powerful engine"
+    },
+    {
+        id: 32,
+        category: "Ship, Weather & Travel",
+        question: "What is the name of your ship and its flag?",
+        sample_answer: "The name of my ship is 'MV Ocean Star' and it sails under the Panama flag. I have been on this ship for about 6 months now.",
+        strategy: "သင်္ဘောနာမည်၊ အလံတော် (Flag State) နဲ့ ဒီသင်္ဘောပေါ်မှာ ဘယ်လောက်ကြာကြာ ရောက်နေပြီလဲဆိုတာ ပြောပါ။",
+        vocabulary: "ship name, Panama flag, sails, 6 months"
+    },
+    {
+        id: 33,
+        category: "Ship, Weather & Travel",
+        question: "What is the weather like today?",
+        sample_answer: "Today the weather is sunny with clear skies. The wind is light and the sea is calm. It is a very good day for sailing.",
+        strategy: "ရာသီဥတုအခြေအနေကို အတိအကျဖော်ပြပြီး သင်္ဘောသွားလာဖို့ ဘယ်လိုအခြေအနေလဲဆိုတာ ထည့်ပြောပါ။",
+        vocabulary: "weather, sunny, clear skies, wind, light, sea, calm"
+    },
+    {
+        id: 34,
+        category: "Ship, Weather & Travel",
+        question: "Have you ever experienced a bad storm at sea? How did you feel?",
+        sample_answer: "Yes, I experienced a storm last year. The waves were very high and the ship was rolling heavily. I felt scared at first, but I stayed calm and followed orders.",
+        strategy: "အတွေ့အကြုံကို ပြန်ပြောပြီး အဲဒီအချိန်က ခံစားချက်ကိုပါ ရိုးသားစွာ ဖော်ပြပါ။",
+        vocabulary: "experienced, storm, waves, rolling, scared, stayed calm"
+    },
+    {
+        id: 35,
+        category: "Ship, Weather & Travel",
+        question: "How do you handle working in bad weather? (How)",
+        sample_answer: "When the weather is bad, I try to stay calm and follow the captain's orders. I always check the safety equipment and make sure I am wearing my lifejacket.",
+        strategy: "ဘယ်လိုဖြေရှင်းသလဲဆိုတဲ့ နည်းလမ်းကို 'I try to...' ဆိုတဲ့ ပုံစံသုံးပြီး ပြောပါ။",
+        vocabulary: "handle, bad weather, stay calm, captain's orders, safety equipment"
+    },
+    {
+        id: 36,
+        category: "Ship, Weather & Travel",
+        question: "How many crew members are there on your ship?",
+        sample_answer: "There are about 25 crew members on my ship. There are officers, engineers, deck crew, and galley staff. We work together as a team.",
+        vocabulary: "crew members, officers, engineers, deck crew, galley staff, team"
+    },
+    {
+        id: 37,
+        category: "Ship, Weather & Travel",
+        question: "Where is your ship going next?",
+        sample_answer: "Our next destination is the port of Singapore. We are carrying electronic goods and will arrive there in about two days.",
+        vocabulary: "next destination, port, Singapore, electronic goods, arrive"
+    },
+    {
+        id: 38,
+        category: "Ship, Weather & Travel",
+        question: "How long is the current voyage?",
+        sample_answer: "The current voyage will take about 20 days. We started from Rotterdam and we are going to Shanghai. It is quite a long trip.",
+        vocabulary: "voyage, take 20 days, Rotterdam, Shanghai, long trip"
+    },
+    {
+        id: 39,
+        category: "Ship, Weather & Travel",
+        question: "Do you like visiting new ports? Why?",
+        sample_answer: "Yes, I love visiting new ports. It is exciting to see different countries and cultures. I also enjoy trying new food and buying souvenirs for my family.",
+        vocabulary: "visiting, new ports, countries, cultures, trying new food, souvenirs"
+    },
+    {
+        id: 40,
+        category: "Ship, Weather & Travel",
+        question: "What do you usually do during shore leave?",
+        sample_answer: "During shore leave, I usually go shopping for groceries and personal items. I also like to walk around the city and take photos to share with my family.",
+        vocabulary: "shore leave, shopping, groceries, personal items, walk around, take photos"
+    },
+
+    // ===================== PART 5: PREFERENCES, FUTURE & MIXED (41-50) =====================
+    {
+        id: 41,
+        category: "Preferences & Future",
+        question: "Do you prefer working at sea or on land? Why?",
+        sample_answer: "I prefer working at sea because the salary is better and I love the adventure. However, I miss my family and life on land is more comfortable.",
+        strategy: "ပင်လယ်နဲ့ ကုန်းပေါ် နှစ်ခုစလုံးရဲ့ ကောင်းကျိုး/ဆိုးကျိုးတွေကို ဆက်စပ်ပြောပြီး ဘာကြောင့် ဦးစားပေးတာလဲ ဆိုတာ ရှင်းပြပါ။",
+        vocabulary: "prefer, working at sea, on land, salary, adventure, comfortable"
+    },
+    {
+        id: 42,
+        category: "Preferences & Future",
+        question: "What languages can you speak on board?",
+        sample_answer: "I can speak Burmese, English, and a little Chinese. I use English to communicate with the officers and international crew members.",
+        vocabulary: "languages, Burmese, English, Chinese, communicate, international crew"
+    },
+    {
+        id: 43,
+        category: "Preferences & Future",
+        question: "What is the most challenging thing about your job?",
+        sample_answer: "The most challenging thing about my job is being away from my family for a long time. Also, working in heavy weather can be very exhausting.",
+        vocabulary: "challenging, away from family, heavy weather, exhausting"
+    },
+    {
+        id: 44,
+        category: "Preferences & Future",
+        question: "What do you like most about your job?",
+        sample_answer: "What I like most about my job is the feeling of being at sea and the sense of responsibility. I also enjoy working with my shipmates and learning new skills.",
+        vocabulary: "like most, feeling of being at sea, responsibility, shipmates, learning"
+    },
+    {
+        id: 45,
+        category: "Preferences & Future",
+        question: "Where do you see yourself in the next 5 years? (Where)",
+        sample_answer: "In the next 5 years, I hope to become a Bosun. I want to gain more experience and pass my officer exams. I see myself working on a larger ship.",
+        vocabulary: "in the next 5 years, Bosun, gain experience, officer exams, larger ship"
+    },
+    {
+        id: 46,
+        category: "Preferences & Future",
+        question: "How do you stay healthy on the ship?",
+        sample_answer: "I stay healthy by eating balanced meals, exercising in the gym regularly, and getting enough sleep. I also avoid junk food and drink plenty of water.",
+        vocabulary: "stay healthy, balanced meals, exercising, gym, sleep, avoid junk food"
+    },
+    {
+        id: 47,
+        category: "Preferences & Future",
+        question: "What do you do in your free time on board?",
+        sample_answer: "In my free time, I like to watch movies, listen to music, and read books. Sometimes I play cards with my friends in the mess room.",
+        vocabulary: "free time, watch movies, listen to music, read books, play cards, mess room"
+    },
+    {
+        id: 48,
+        category: "Preferences & Future",
+        question: "Who is the captain of your ship and what is he like?",
+        sample_answer: "The captain of my ship is Captain Aung Naing. He is very experienced and kind. He always makes sure we follow safety rules and he treats us with respect.",
+        vocabulary: "captain, experienced, kind, safety rules, treats us with respect"
+    },
+    {
+        id: 49,
+        category: "Preferences & Future",
+        question: "If you could change one thing about the ship, what would it be?",
+        sample_answer: "If I could change one thing, I would improve the internet connection. It would be much easier to communicate with my family and friends during the voyage.",
+        vocabulary: "change, improve, internet connection, communicate, voyage"
+    },
+    {
+        id: 50,
+        category: "Preferences & Future",
+        question: "What advice would you give to a new seafarer?",
+        sample_answer: "I would advise new seafarers to always follow safety rules and listen to their seniors. They should also stay positive and learn as much as they can to build a good career.",
+        vocabulary: "advice, new seafarer, follow safety rules, listen to seniors, stay positive, build a good career"
+    }
+];
+
+// ===== 4. SPEAKING =====
+const sList = document.getElementById("speakingList");
+if (sList) {
+    sList.innerHTML = SPEAKING_TOPICS.map(t => `
+        <div class="speaking-card">
+            <span class="speaking-tag"><i class="fas fa-tag"></i> ${t.category}</span>
+            <h3><i class="fas fa-question-circle"></i> ${t.question}</h3>
+            <div class="speaking-prompt">
+                <strong>💡 ဖြေဆိုရန် အကြံပြုချက် (Strategy):</strong><br>
+                ${t.strategy}
+            </div>
+            <div class="vocab-box">
+                <strong>📚 အဓိက ဝေါဟာရများ (Key Vocabulary):</strong><br>
+                ${t.vocabulary.split(',').map(v => `<span>${v.trim()}</span>`).join(' ')}
+            </div>
+            <button class="reveal-trigger-btn" onclick="toggleSpeakingAnswer(this)">Show Sample Answer</button>
+            <div class="explanation-box">
+                <div class="exp-row">
+                    <span class="exp-label"><i class="fas fa-comment-dots"></i> နမူနာအဖြေ (Sample Answer)</span>
+                    <div class="sample-answer-box">${t.sample_answer}</div>
+                </div>
+            </div>
+        </div>
+    `).join('');
+}
+
+// ===== Toggle Function for Speaking =====
+window.toggleSpeakingAnswer = (btn) => {
+    const box = btn.nextElementSibling;
+    if (!box) return;
+    const isShown = box.classList.toggle("show");
+    btn.textContent = isShown ? "Hide Sample Answer" : "Show Sample Answer";
+};
+
+
 
 // ============================================================
 // 6. TOGGLE SHOW/HIDE FUNCTION
