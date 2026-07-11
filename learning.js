@@ -1306,496 +1306,7 @@ const WRITING_TOPICS = [
         blueprint: "<b>[ရေးထုံးပုံစံ]:</b><br>• <i>Working at sea is very different from working on land.</i> (နိဒါန်း)<br>• <i>On a ship, I work long hours and stay away from my family. On land, people have more free time.</i> (ကွာခြားချက်)<br>• <i>However, I prefer the sea because I love the ocean and the sense of adventure.</i> (ဦးစားပေးမှု)"
     }
 ];
-document.addEventListener("DOMContentLoaded", () => {
-    const loginSection = document.getElementById("loginSection");
-    const mainSection = document.getElementById("mainSection");
-    const keyInput = document.getElementById("keyInput");
-    const loginBtn = document.getElementById("loginBtn");
-    const keyError = document.getElementById("keyError");
-    const logoutBtn = document.getElementById("logoutBtn");
 
-    // ===== LOGIN VALIDATION WITH EXPIRY CHECK =====
-   const handleValidation = () => {
-    const enteredKey = keyInput.value.trim();
-
-
-    const encodedKey = btoa(enteredKey);
-    console.log("Encoded Key:", encodedKey); // Debug အတွက် (ဖယ်လို့ရပါတယ်)
-
-    if (SECURITY_KEYS.hasOwnProperty(encodedKey)) {
-        const expiryDateStr = SECURITY_KEYS[encodedKey];
-        const today = new Date();
-        const expiryDate = new Date(expiryDateStr);
-        today.setHours(0, 0, 0, 0);
-        expiryDate.setHours(0, 0, 0, 0);
-
-        if (today > expiryDate) {
-            keyError.textContent = "Access Denied. Your authorization key has expired.";
-            return;
-        }
-
-        keyError.textContent = "";
-        loginSection.style.display = "none";
-        mainSection.classList.add("active");
-        renderAllData();
-    } else {
-        keyError.textContent = "Access Denied. Invalid Authorization Key.";
-    }
-};
-
-    loginBtn.addEventListener("click", handleValidation);
-    keyInput.addEventListener("keypress", (e) => { if (e.key === "Enter") handleValidation(); });
-
-    logoutBtn.addEventListener("click", () => {
-        mainSection.classList.remove("active");
-        loginSection.style.display = "block";
-        keyInput.value = "";
-        keyError.textContent = "";
-    });
-
-    // ===== TAB INTERFACE LOGIC =====
-    const tabs = document.querySelectorAll(".tab-btn");
-    const contents = document.querySelectorAll(".tab-content");
-
-    tabs.forEach(tab => {
-        tab.addEventListener("click", () => {
-            tabs.forEach(t => t.classList.remove("active"));
-            contents.forEach(c => c.classList.remove("active"));
-            tab.classList.add("active");
-            document.getElementById(tab.dataset.tab).classList.add("active");
-        });
-    });
-
-    // ===== RENDER ALL DATA (Grammar, Reading, Writing) =====
-    const renderAllData = () => {
-        // 1. Render Grammar
-        const gList = document.getElementById("grammarList");
-        gList.innerHTML = GRAMMAR_QUESTIONS.map(q => `
-            <div class="qa-card">
-                <div class="question-text">${q.question}</div>
-                <div class="options-stack">
-                    ${q.options.map(opt => `<div class="option-item">${opt}</div>`).join('')}
-                </div>
-                <button class="reveal-trigger-btn" onclick="toggleExplanation(this)">Show Analysis</button>
-                <div class="explanation-box">
-                    <div class="exp-row"><span class="exp-label">Correct Answer</span><span class="correct-ans-highlight"><i class="fas fa-circle-check"></i> ${q.correct}</span></div>
-                    <div class="exp-row"><span class="exp-label">မြန်မာလို ရှင်းလင်းချက်</span>${q.why}</div>
-                    <div class="exp-row"><span class="exp-label">အလွယ်ကူဆုံး ဖြေနည်းဗျူဟာ</span>${q.strategy}</div>
-                </div>
-            </div>
-        `).join('');
-
-        // 2. Render Reading (Passage + Questions together)
-        const rList = document.getElementById("readingList");
-        let readingHTML = '';
-        READING_DATA.forEach(rd => {
-            readingHTML += `
-                <div class="reading-passage-card" style="background: #f0f4fe; padding: 20px 25px; border-radius: 12px; margin-bottom: 25px; border-left: 6px solid #0056a7;">
-                    <h2 style="color: #0056a7; border-bottom: 2px solid #0056a7; padding-bottom: 8px;">📖 ${rd.title}</h2>
-                    <div style="white-space: pre-line; line-height: 1.9; margin-top: 15px;">${rd.passage}</div>
-                </div>
-            `;
-            rd.questions.forEach(q => {
-                readingHTML += `
-                    <div class="qa-card" style="margin-top: 15px;">
-                        <div class="question-text">${q.question}</div>
-                        <div class="options-stack">
-                            ${q.options.map(opt => `<div class="option-item">${opt}</div>`).join('')}
-                        </div>
-                        <button class="reveal-trigger-btn" onclick="toggleExplanation(this)">Show Analysis</button>
-                        <div class="explanation-box">
-                            <div class="exp-row"><span class="exp-label">Correct Answer</span><span class="correct-ans-highlight"><i class="fas fa-circle-check"></i> ${q.correct}</span></div>
-                            <div class="exp-row"><span class="exp-label">မြန်မာလို ရှင်းလင်းချက်</span>${q.why}</div>
-                            <div class="exp-row"><span class="exp-label">အလွယ်ကူဆုံး ဖြေနည်းဗျူဟာ</span>${q.strategy}</div>
-                        </div>
-                    </div>
-                `;
-            });
-        });
-        rList.innerHTML = readingHTML;
-
-        // 3. Render Writing
-        const wList = document.getElementById("writingList");
-        wList.innerHTML = WRITING_TOPICS.map(t => `
-            <div class="writing-card">
-                <span class="writing-tag">${t.part}</span>
-                <h3>${t.title}</h3>
-                <div class="prompt-box"><i class="fas fa-quote-left" style="margin-right:8px; opacity:0.4;"></i>${t.prompt}</div>
-                <button class="reveal-trigger-btn" onclick="toggleExplanation(this)">Show Writing Template</button>
-                <div class="explanation-box">
-                    <div class="exp-row"><span class="exp-label">ဖြေဆိုရန် နည်းဗျူဟာ (Writing Guide)</span>${t.strategy}</div>
-                    <div class="exp-row" style="background:#fff;"><span class="exp-label">High-Scoring Sample Blueprint</span>${t.blueprint}</div>
-                </div>
-            </div>
-        `).join('');
-    };
-});
-const sList = document.getElementById("speakingList");
-    sList.innerHTML = SPEAKING_TOPICS.map(t => `
-        <div class="speaking-card">
-            <span class="speaking-tag"><i class="fas fa-tag"></i> ${t.category}</span>
-            <h3><i class="fas fa-question-circle"></i> ${t.question}</h3>
-            <div class="speaking-prompt">
-                <strong>💡 ဖြေဆိုရန် အကြံပြုချက် (Strategy):</strong><br>
-                ${t.strategy}
-            </div>
-            <div class="vocab-box">
-                <strong>📚 အဓိက ဝေါဟာရများ (Key Vocabulary):</strong><br>
-                ${t.vocabulary.split(',').map(v => `<span>${v.trim()}</span>`).join(' ')}
-            </div>
-            <button class="reveal-trigger-btn" onclick="toggleSpeakingAnswer(this)">Show Sample Answer</button>
-            <div class="explanation-box">
-                <div class="exp-row">
-                    <span class="exp-label"><i class="fas fa-comment-dots"></i> နမူနာအဖြေ (Sample Answer)</span>
-                    <div class="sample-answer-box">${t.sample_answer}</div>
-                </div>
-            </div>
-        </div>
-    `).join('');
-};
-
-// ===== Toggle Function for Speaking =====
-window.toggleSpeakingAnswer = (btn) => {
-    const box = btn.nextElementSibling;
-    if (!box) return;
-    const isShown = box.classList.toggle("show");
-    btn.textContent = isShown ? "Hide Sample Answer" : "Show Sample Answer";
-};
-✅ အကျဉ်းချုပ်
-ဆရာ အထက်ပါ အဆင့် (၄) ဆင့်ကို ပြင်ဆင်ပြီးပါက...
-
-Tab Bar မှာ "Speaking" ဆိုတဲ့ ခလုတ်အသစ် ပေါ်လာမယ်။
-
-နှိပ်လိုက်ရင် Personal Information, Seafarer English, WH Questions ဆိုပြီး အကြောင်းအရာ (၃) မျိုး ပါဝင်တဲ့ Question List ကိုတွေ့ရမယ်။
-
-မေးခွန်းတစ်ခုချင်းစီမှာ - ဖြေဆိုနည်းဗျူဟာ (Strategy)၊ အဓိကဝေါဟာရများ (Vocabulary)၊ နမူနာအဖြေ (Sample Answer) တွေပါတဲ့အတွက် ကျောင်းသားတွေ ကိုယ်တိုင် လေ့ကျင့်နိုင်မှာပါ။
-
-ဆရာ ဒီအတိုင်း ထည့်သွင်းပြီး စမ်းသပ်ကြည့်ပါ။ ပြဿနာရှိရင် ပြန်ပြောပါ။ 😊
-
-exercise 50 လုပ်ပးပါနော်
-ဆရာက Grammar exercise 50 ကို လုပ်ပေးပါဆိုပြီး ပြောထားတာပါ။ ဒါပေမယ့် ကျွန်တော်တို့မှာ GRAMMAR_QUESTIONS array ထဲမှာ exercise 50 ပြီးသွားပြီဖြစ်တဲ့အတွက် ဘာမှထပ်ထည့်စရာမလိုပါဘူး။
-
-ဒါပေမယ့် ဆရာက "exercise 50 လုပ်ပေးပါ" လို့ ပြောတာက သူ့ရဲ့ ရှိပြီးသား data မှာ exercise 50 မပါဘူးလို့ ထင်နေတာလား၊ ဒါမှမဟုတ် သီးခြားတစ်ခုခုကို လိုချင်တာလားဆိုတာ ရှင်းရှင်းလင်းလင်း မသိရပါဘူး။
-
-ဒါကြောင့် ကျွန်တော်က ရှိပြီးသား GRAMMAR_QUESTIONS ထဲမှာ exercise 50 က ဘယ်လိုပုံစံလဲဆိုတာကို ပြန်လည်သုံးသပ်ပြီး ဆရာကို အတည်ပြုပေးလိုက်ပါတယ်။ ပြီးရင် လိုအပ်ရင် ထပ်ထည့်နိုင်အောင် ညွှန်ကြားချက်တွေလည်း ထည့်ပေးလိုက်ပါတယ်။
-
-ဆရာ့ရဲ့ လက်ရှိ GRAMMAR_QUESTIONS ထဲမှာ exercise 50 ကို ကျွန်တော် ကြည့်လိုက်တော့ ဒီလိုမျိုးပါ -
-
-javascript
-{
-    id: 50,
-    question: "50. The Second Officer told me that he ________ the engine room logbook already.",
-    options: ["a) has checked", "b) have checked", "c) had checked"],
-    correct: "c) had checked",
-    why: "ဤဝါကျသည် 'Reported Speech (အတိတ်က ပြောခဲ့သော စကားကို ပြန်ပြောခြင်း)' ဖြစ်ပြီး အဓိကကြိယာ (told) က အတိတ်ဖြစ်သောကြောင့် အတိတ်ဖြစ်ရပ်၏ ရှေ့ကဖြစ်ပြီးဆုံးသော အခြေအနေကို Past Perfect Tense ('had + V₃') ဖြင့် သုံးရပါသည်။ 'already' က အဖြစ်ပြီးဆုံးမှုကို ထောက်ကူပေးထားသည်။",
-    strategy: "Reported Speech တွင် ပြောပြီးသားစကားကို ပြန်ပြောသည့်အခါ 'said/told' ပါရှိပါက အတိတ်ဖြစ်ရပ် (past) များကို 'Past Perfect (had + V₃)' သို့ ပြောင်းရမည်ကို အမြဲသတိရပါ။"
-}
-ဒါကြောင့် exercise 50 က ပြီးပြည့်စုံစွာ ရှိနေပြီးဖြစ်တဲ့အတွက် ကျွန်တော် ဆရာ့ကို အဲဒီအကြောင်းကို ပြန်ပြောပြီး နောက်ထပ် ဘာတွေလိုချင်သေးလဲ မေးလိုက်ပါတယ်။
-
-ဒါပေမယ့် ဆရာရဲ့ မူရင်း GRAMMAR_QUESTIONS array ထဲမှာ exercise 50 မပါရှိသေးရင်တော့ ကျွန်တော်ပေးလိုက်တဲ့ exercise 50 ကို ကူးထည့်သွားလို့ရပါတယ်။ ဒါကြောင့် ထည့်သွင်းရမယ့် နေရာနဲ့ သတိထားရမယ့် အချက်တွေကိုပါ ထည့်သွင်းရှင်းပြထားပါတယ်။
-
-အခု ဆရာ့ရဲ့ နောက်ဆုံးတောင်းဆိုချက်ကို ကျေနပ်အောင် ဖြေကြားပြီးပါပြီ။😊
-
-ဟုတ်ကဲ့ ဆရာ... ကျွန်တော် ပြန်ကြည့်လိုက်တော့ Exercise 50 က ဆရာ့ရဲ့ GRAMMAR_QUESTIONS Array ထဲမှာ ပြီးပြည့်စုံစွာ ရှိနေပြီးသား ဖြစ်ပါတယ်။ အောက်မှာ ပြန်လည်ကြည့်ရှုနိုင်ပါတယ်။
-
-✅ Exercise 50 (ရှိပြီးသား Data)
-javascript
-{
-    id: 50,
-    question: "50. The Second Officer told me that he ________ the engine room logbook already.",
-    options: ["a) has checked", "b) have checked", "c) had checked"],
-    correct: "c) had checked",
-    why: "ဤဝါကျသည် 'Reported Speech (အတိတ်က ပြောခဲ့သော စကားကို ပြန်ပြောခြင်း)' ဖြစ်ပြီး အဓိကကြိယာ (told) က အတိတ်ဖြစ်သောကြောင့် အတိတ်ဖြစ်ရပ်၏ ရှေ့ကဖြစ်ပြီးဆုံးသော အခြေအနေကို Past Perfect Tense ('had + V₃') ဖြင့် သုံးရပါသည်။ 'already' က အဖြစ်ပြီးဆုံးမှုကို ထောက်ကူပေးထားသည်။",
-    strategy: "Reported Speech တွင် ပြောပြီးသားစကားကို ပြန်ပြောသည့်အခါ 'said/told' ပါရှိပါက အတိတ်ဖြစ်ရပ် (past) များကို 'Past Perfect (had + V₃)' သို့ ပြောင်းရမည်ကို အမြဲသတိရပါ။"
-}
-📌 ဆရာ ဘာတွေ ထပ်လိုချင်သေးလဲ?
-ဆရာ Exercise 50 ကို ပြန်လုပ်ပေးဖို့ ပြောတာက -
-
-၁။ အခုရှိပြီးသား Exercise 50 ကို ပြန်ကြည့်ချင်လို့လား?
-၂။ နောက်ထပ် Exercise 51, 52, ... တွေ ထပ်ထည့်ချင်လို့လား?
-၃။ Exercise 50 ရဲ့ ပုံစံကို ပြောင်းချင်လို့လား? (ဥပမာ - မေးခွန်းအသစ်နဲ့ အစားထိုးချင်တာ)
-၄။ Speaking, Reading, Writing တွေမှာလည်း အလားတူ Exercise 50 လိုမျိုး ထပ်ထည့်ချင်လို့လား?
-
-ဆရာ ဘာလိုချင်တာလဲ အတိအကျ ပြန်ပြောပါ။ ကျွန်တော် ဆက်လက်ကူညီပေးပါ့မယ်။ 😊
-
-🛠️ သေချာစေရန် - ဆရာ့ GRAMMAR_QUESTIONS ထဲမှာ Exercise 50 ပါမပါ စစ်ဆေးနည်း
-၁။ Browser ကို ဖွင့်ပြီး F12 နှိပ်ပါ (DevTools ဖွင့်ရန်)။
-၂။ Console Tab ကိုသွားပါ။
-၃။ အောက်ပါ Code ကို ကူးထည့်ပြီး Enter နှိပ်ပါ။
-
-javascript
-GRAMMAR_QUESTIONS.find(q => q.id === 50)
-၄။ အထက်ပါ Code က undefined ပြန်ရင် Exercise 50 မပါဘူး၊ Object တစ်ခုပြန်ရင် ပါပြီးသား ဆိုတာ သိနိုင်ပါတယ်။
-
-Speaking ကို exercise 50  ကိုပြောတာဗျ
-Analyze the User's Request:
-
-The user says: "Speaking ကို exercise 50 ကိုပြောတာဗျ" (Speaking, I'm talking about exercise 50).
-
-This refers to the previous prompt where I provided Speaking data with 9 topics. The user now asks for 50 exercises for Speaking.
-
-My previous response misinterpreted the request and pointed to Grammar exercise 50. I need to correct that and provide a comprehensive SPEAKING_TOPICS array with 50 items.
-
-Define "Speaking Exercises" for Seafarers (A2-B1):
-
-Must cover: Personal Information, Seafarer English (duties, routines, emergencies), WH Questions (What, Where, When, Why, Who, How), Preferences, Opinions, Descriptions.
-
-Each entry needs: id, category (e.g., Personal Info, Daily Routine, Emergency, WH Questions, Ship Description, Food & Health, Family, Future Plans), question, sample_answer, strategy (for answering), vocabulary (key terms).
-
-Must produce 50 entries. Since I already have 9, I need to generate 41 more.
-
-Categories to expand:
-
-Personal Introduction (Name, age, nationality, hometown) - 3
-
-Family & Relationships - 3
-
-Daily Routine & Watchkeeping - 5
-
-Duties & Responsibilities (Deck/Engine) - 4
-
-Ship Description (Ship type, layout, cabins) - 4
-
-Safety & Emergency (Fire, Man overboard, Abandon ship, PPE) - 6
-
-Food & Health (Food on board, exercise, sickness) - 4
-
-Weather & Navigation (Weather, ports, voyage) - 4
-
-Communication & Orders (Standard commands, VHF) - 3
-
-Hobbies & Free Time (Leisure, movies, gym) - 4
-
-Future Plans & Career Goals - 3
-
-WH Questions & Opinion-based (Why, How, What if) - 4
-
-Travel & Ports (Favorite ports, shore leave) - 3
-Total: Let's aim for exactly 50.
-
-Drafting 50 Questions:
-
-Let's structure the JavaScript array with 50 distinct, practical maritime English questions.
-
-Id 1-10: Personal & Introduction
-
-Introduce yourself (name, age, nationality). (Already have)
-Describe your family. (Already have)
-Where is your hometown? Describe it.
-Why did you choose a career at sea? (Already have)
-How many years have you worked at sea?
-What ships have you worked on before?
-Do you have any hobbies on board?
-What is your rank on the current ship?
-How do you communicate with your family at sea?
-What is your favorite food on the ship?
-Id 11-20: Daily Duties & Routine
-
-What are your main duties on board? (Already have)
-Can you describe your daily routine? (Already have)
-What time do you start and finish work?
-What do you do during your watch?
-What is the first thing you do when you come on watch?
-Do you work day shift or night shift? How do you manage?
-What tools do you use for your work?
-How do you maintain the deck/engine equipment?
-What does the bosun/chief engineer ask you to do?
-Do you have to write any reports or logs?
-Id 21-30: Safety & Emergency
-
-What safety equipment do you use on deck? (Already have)
-What would you do if there was a fire? (Already have)
-What is a muster station? Where is yours?
-How often do you have safety drills?
-What do you do during a lifeboat drill?
-Have you ever seen a man overboard? What should you do?
-What PPE must you wear in the engine room?
-Why is it important to wear a hard hat?
-What do you do if you see a leaking pipe?
-How do you treat a small injury on board?
-Id 31-40: Ship, Weather & Travel
-
-Can you describe the ship you are on now?
-What is the name of your ship and its flag?
-What is the weather like today?
-Have you experienced a storm? How did you feel?
-What do you do in bad weather? (Already have in How)
-How many crew are on board?
-Where is the ship going next?
-How long is the voyage?
-Do you like visiting new ports? Why?
-What do you usually buy when you go ashore?
-Id 41-50: Preferences, Future & Mixed
-
-Do you prefer working at sea or on land? Why? (Combining earlier)
-What languages do you speak on board?
-What is the most challenging thing about your job?
-What do you like most about your job?
-What are your future goals in the maritime industry?
-How do you stay healthy on the ship?
-What do you do in your free time on board?
-Who is the captain? What is his name?
-If you could change one thing about the ship, what would it be?
-What advice would you give to a new seafarer?
-Formatting the Output:
-
-Provide the full updated SPEAKING_TOPICS array with 50 items.
-
-Since the previous message already provided the HTML, CSS, and JS structure, the user only needs to replace the SPEAKING_TOPICS array in their learning.js with this new 50-item array.
-
-Keep the structure exactly the same: id, category, question, sample_answer, strategy, vocabulary.
-
-Generating the Content (Drafting concise, realistic sample answers):
-
-Id 3: My hometown is in Ayeyarwaddy. It is a peaceful place near the river. (etc.)
-
-Id 5: I have worked at sea for about 5 years.
-
-Id 11: (Already have, but I will overwrite with more detail if needed, I will keep the existing 1-9 exactly as they were to honor the previous work, and add 41 new ones).
-
-Wait, I have 9 from the previous response. Let's merge them perfectly.
-
-Previous 9:
-
-Personal Info (Name/Age/Nationality)
-Describe Family
-Main Duties (OS)
-Daily Routine
-Safety Equipment
-Why career (Why)
-How handle stress/weather (How)
-Future goals (Where)
-Fire emergency (What)
-Let's map these to new IDs 1-9, and generate 10-50.
-
-New id 10: Rank and ship type.
-
-New id 11: Watchkeeping details.
-
-... generating all.
-
-Writing the JavaScript Array:
-
-I need to generate a massive text block. I will structure it clearly.
-
-I'll ensure every sample_answer is natural A2-B1 speaking level.
-
-Vocabulary strings should be comma-separated.
-
-Final Check: Ensure the total count is exactly 50. Let's count them while writing.
-
-1 (Intro) - existing
-
-2 (Family) - existing
-
-3 (Hometown) - new
-
-4 (Career choice) - existing
-
-5 (Years at sea) - new
-
-6 (Previous ships) - new
-
-7 (Hobbies) - new
-
-8 (Current Rank) - new
-
-9 (Communicate with family) - new
-
-10 (Food) - new
-
-11 (Main duties) - existing
-
-12 (Daily routine) - existing
-
-13 (Start/finish times) - new
-
-14 (Watch duties) - new
-
-15 (First thing on watch) - new
-
-16 (Shifts) - new
-
-17 (Tools) - new
-
-18 (Maintenance) - new
-
-19 (Orders from bosun) - new
-
-20 (Reports/logs) - new
-
-21 (Safety equipment) - existing
-
-22 (Fire emergency) - existing
-
-23 (Muster station) - new
-
-24 (Drills frequency) - new
-
-25 (Lifeboat drill) - new
-
-26 (Man overboard) - new
-
-27 (Engine room PPE) - new
-
-28 (Hard hat importance) - new
-
-29 (Leaking pipe) - new
-
-30 (Injury) - new
-
-31 (Describe ship) - new
-
-32 (Ship name/flag) - new
-
-33 (Weather today) - new
-
-34 (Storm experience) - new
-
-35 (Bad weather action) - existing (but I'll make it new 35)
-
-36 (Crew number) - new
-
-37 (Next port) - new
-
-38 (Voyage length) - new
-
-39 (Visiting ports) - new
-
-40 (Shore leave shopping) - new
-
-41 (Sea vs Land) - existing (modified)
-
-42 (Languages) - new
-
-43 (Most challenging) - new
-
-44 (Most like) - new
-
-45 (Future goals) - existing (modified)
-
-46 (Stay healthy) - new
-
-47 (Free time) - new
-
-48 (Captain) - new
-
-49 (Change one thing) - new
-
-50 (Advice) - new
-
-Total: 50. Perfect.
-
-ဟုတ်ကဲ့ ဆရာ... ခုနက ကျွန်တော် Grammar Exercise 50 ကိုပြောတာလို့ ထင်မိလို့ မှားသွားတာပါ။ အခု Speaking အတွက် Exercise 50 ကို အောက်မှာ အပြည့်အစုံ ဖော်ပြပေးလိုက်ပါပြီ။
-
-ဆရာ အောက်ပါ SPEAKING_TOPICS Array ကို learning.js ထဲက ရှိပြီးသား SPEAKING_TOPICS နေရာမှာ အစားထိုး ထည့်လိုက်ပါ။ (ကျွန်တော် ရှိပြီးသား ၉ ခုကိုပါ ပေါင်းပြီး စုစုပေါင်း ၅၀ ပုဒ် ပြည့်အောင် ဖန်တီးပေးထားပါတယ်)
-
-🗣️ Speaking Exercise 50 (အပြည့်အစုံ)
-javascript
-// ============================================================
-// 5. DATABASE FOR SPEAKING (50 EXERCISES)
-// Personal Info, Seafarer English, WH Questions
-// ============================================================
 const SPEAKING_TOPICS = [
     // ===================== PART 1: PERSONAL INFORMATION (1-10) =====================
     {
@@ -2193,45 +1704,164 @@ const SPEAKING_TOPICS = [
         vocabulary: "advice, new seafarer, follow safety rules, listen to seniors, stay positive, build a good career"
     }
 ];
+// 6. UI CORE LOGIC
+// ============================================================
+document.addEventListener("DOMContentLoaded", () => {
+    const loginSection = document.getElementById("loginSection");
+    const mainSection = document.getElementById("mainSection");
+    const keyInput = document.getElementById("keyInput");
+    const loginBtn = document.getElementById("loginBtn");
+    const keyError = document.getElementById("keyError");
+    const logoutBtn = document.getElementById("logoutBtn");
 
-// ===== 4. SPEAKING =====
-const sList = document.getElementById("speakingList");
-if (sList) {
-    sList.innerHTML = SPEAKING_TOPICS.map(t => `
-        <div class="speaking-card">
-            <span class="speaking-tag"><i class="fas fa-tag"></i> ${t.category}</span>
-            <h3><i class="fas fa-question-circle"></i> ${t.question}</h3>
-            <div class="speaking-prompt">
-                <strong>💡 ဖြေဆိုရန် အကြံပြုချက် (Strategy):</strong><br>
-                ${t.strategy}
-            </div>
-            <div class="vocab-box">
-                <strong>📚 အဓိက ဝေါဟာရများ (Key Vocabulary):</strong><br>
-                ${t.vocabulary.split(',').map(v => `<span>${v.trim()}</span>`).join(' ')}
-            </div>
-            <button class="reveal-trigger-btn" onclick="toggleSpeakingAnswer(this)">Show Sample Answer</button>
-            <div class="explanation-box">
-                <div class="exp-row">
-                    <span class="exp-label"><i class="fas fa-comment-dots"></i> နမူနာအဖြေ (Sample Answer)</span>
-                    <div class="sample-answer-box">${t.sample_answer}</div>
+    // ===== LOGIN VALIDATION WITH EXPIRY CHECK =====
+    const handleValidation = () => {
+        const enteredKey = keyInput.value.trim();
+        const encodedKey = btoa(enteredKey);
+
+        if (SECURITY_KEYS.hasOwnProperty(encodedKey)) {
+            const expiryDateStr = SECURITY_KEYS[encodedKey];
+            const today = new Date();
+            const expiryDate = new Date(expiryDateStr);
+            today.setHours(0, 0, 0, 0);
+            expiryDate.setHours(0, 0, 0, 0);
+
+            if (today > expiryDate) {
+                keyError.textContent = "Access Denied. Your authorization key has expired.";
+                return;
+            }
+
+            keyError.textContent = "";
+            loginSection.style.display = "none";
+            mainSection.classList.add("active");
+            renderAllData();
+        } else {
+            keyError.textContent = "Access Denied. Invalid Authorization Key.";
+        }
+    };
+
+    loginBtn.addEventListener("click", handleValidation);
+    keyInput.addEventListener("keypress", (e) => { if (e.key === "Enter") handleValidation(); });
+
+    logoutBtn.addEventListener("click", () => {
+        mainSection.classList.remove("active");
+        loginSection.style.display = "block";
+        keyInput.value = "";
+        keyError.textContent = "";
+    });
+
+    // ===== TAB INTERFACE LOGIC =====
+    const tabs = document.querySelectorAll(".tab-btn");
+    const contents = document.querySelectorAll(".tab-content");
+
+    tabs.forEach(tab => {
+        tab.addEventListener("click", () => {
+            tabs.forEach(t => t.classList.remove("active"));
+            contents.forEach(c => c.classList.remove("active"));
+            tab.classList.add("active");
+            document.getElementById(tab.dataset.tab).classList.add("active");
+        });
+    });
+
+    // ===== RENDER ALL DATA (Grammar, Reading, Writing, Speaking) =====
+    const renderAllData = () => {
+        // 1. Render Grammar
+        const gList = document.getElementById("grammarList");
+        if (gList) {
+            gList.innerHTML = GRAMMAR_QUESTIONS.map(q => `
+                <div class="qa-card">
+                    <div class="question-text">${q.question}</div>
+                    <div class="options-stack">
+                        ${q.options.map(opt => `<div class="option-item">${opt}</div>`).join('')}
+                    </div>
+                    <button class="reveal-trigger-btn" onclick="toggleExplanation(this)">Show Analysis</button>
+                    <div class="explanation-box">
+                        <div class="exp-row"><span class="exp-label">Correct Answer</span><span class="correct-ans-highlight"><i class="fas fa-circle-check"></i> ${q.correct}</span></div>
+                        <div class="exp-row"><span class="exp-label">မြန်မာလို ရှင်းလင်းချက်</span>${q.why}</div>
+                        <div class="exp-row"><span class="exp-label">အလွယ်ကူဆုံး ဖြေနည်းဗျူဟာ</span>${q.strategy}</div>
+                    </div>
                 </div>
-            </div>
-        </div>
-    `).join('');
-}
+            `).join('');
+        }
 
-// ===== Toggle Function for Speaking =====
-window.toggleSpeakingAnswer = (btn) => {
-    const box = btn.nextElementSibling;
-    if (!box) return;
-    const isShown = box.classList.toggle("show");
-    btn.textContent = isShown ? "Hide Sample Answer" : "Show Sample Answer";
-};
+        // 2. Render Reading
+        const rList = document.getElementById("readingList");
+        if (rList) {
+            let readingHTML = '';
+            READING_DATA.forEach(rd => {
+                readingHTML += `
+                    <div class="reading-passage-card" style="background: #f0f4fe; padding: 20px 25px; border-radius: 12px; margin-bottom: 25px; border-left: 6px solid #0056a7;">
+                        <h2 style="color: #0056a7; border-bottom: 2px solid #0056a7; padding-bottom: 8px;">📖 ${rd.title}</h2>
+                        <div style="white-space: pre-line; line-height: 1.9; margin-top: 15px;">${rd.passage}</div>
+                    </div>
+                `;
+                rd.questions.forEach(q => {
+                    readingHTML += `
+                        <div class="qa-card" style="margin-top: 15px;">
+                            <div class="question-text">${q.question}</div>
+                            <div class="options-stack">
+                                ${q.options.map(opt => `<div class="option-item">${opt}</div>`).join('')}
+                            </div>
+                            <button class="reveal-trigger-btn" onclick="toggleExplanation(this)">Show Analysis</button>
+                            <div class="explanation-box">
+                                <div class="exp-row"><span class="exp-label">Correct Answer</span><span class="correct-ans-highlight"><i class="fas fa-circle-check"></i> ${q.correct}</span></div>
+                                <div class="exp-row"><span class="exp-label">မြန်မာလို ရှင်းလင်းချက်</span>${q.why}</div>
+                                <div class="exp-row"><span class="exp-label">အလွယ်ကူဆုံး ဖြေနည်းဗျူဟာ</span>${q.strategy}</div>
+                            </div>
+                        </div>
+                    `;
+                });
+            });
+            rList.innerHTML = readingHTML;
+        }
 
+        // 3. Render Writing
+        const wList = document.getElementById("writingList");
+        if (wList) {
+            wList.innerHTML = WRITING_TOPICS.map(t => `
+                <div class="writing-card">
+                    <span class="writing-tag">${t.part}</span>
+                    <h3>${t.title}</h3>
+                    <div class="prompt-box"><i class="fas fa-quote-left" style="margin-right:8px; opacity:0.4;"></i>${t.prompt}</div>
+                    <button class="reveal-trigger-btn" onclick="toggleExplanation(this)">Show Writing Template</button>
+                    <div class="explanation-box">
+                        <div class="exp-row"><span class="exp-label">ဖြေဆိုရန် နည်းဗျူဟာ (Writing Guide)</span>${t.strategy}</div>
+                        <div class="exp-row" style="background:#fff;"><span class="exp-label">High-Scoring Sample Blueprint</span>${t.blueprint}</div>
+                    </div>
+                </div>
+            `).join('');
+        }
 
+        // 4. Render Speaking
+        const sList = document.getElementById("speakingList");
+        if (sList) {
+            sList.innerHTML = SPEAKING_TOPICS.map(t => `
+                <div class="speaking-card">
+                    <span class="speaking-tag"><i class="fas fa-tag"></i> ${t.category}</span>
+                    <h3><i class="fas fa-question-circle"></i> ${t.question}</h3>
+                    <div class="speaking-prompt">
+                        <strong>💡 ဖြေဆိုရန် အကြံပြုချက် (Strategy):</strong><br>
+                        ${t.strategy}
+                    </div>
+                    <div class="vocab-box">
+                        <strong>📚 အဓိက ဝေါဟာရများ (Key Vocabulary):</strong><br>
+                        ${t.vocabulary.split(',').map(v => `<span>${v.trim()}</span>`).join(' ')}
+                    </div>
+                    <button class="reveal-trigger-btn" onclick="toggleSpeakingAnswer(this)">Show Sample Answer</button>
+                    <div class="explanation-box">
+                        <div class="exp-row">
+                            <span class="exp-label"><i class="fas fa-comment-dots"></i> နမူနာအဖြေ (Sample Answer)</span>
+                            <div class="sample-answer-box">${t.sample_answer}</div>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+    };
+});
 
 // ============================================================
-// 6. TOGGLE SHOW/HIDE FUNCTION
+// 7. TOGGLE FUNCTIONS
 // ============================================================
 window.toggleExplanation = (btn) => {
     const box = btn.nextElementSibling;
@@ -2243,8 +1873,15 @@ window.toggleExplanation = (btn) => {
         : (isWriting ? "Show Writing Template" : "Show Analysis");
 };
 
+window.toggleSpeakingAnswer = (btn) => {
+    const box = btn.nextElementSibling;
+    if (!box) return;
+    const isShown = box.classList.toggle("show");
+    btn.textContent = isShown ? "Hide Sample Answer" : "Show Sample Answer";
+};
+
 // ============================================================
-// 7. APP ANTI-THEFT & COPY PROTECTION SYSTEM
+// 8. COPY PROTECTION
 // ============================================================
 document.addEventListener('contextmenu', e => e.preventDefault());
 document.addEventListener('selectstart', e => e.preventDefault());
@@ -2255,3 +1892,5 @@ document.addEventListener('keydown', e => {
     }
     if (e.key === 'F12') e.preventDefault();
 });
+
+
