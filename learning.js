@@ -1311,10 +1311,58 @@ document.addEventListener("DOMContentLoaded", () => {
     const logoutBtn = document.getElementById("logoutBtn");
 
     // ===== LOGIN VALIDATION WITH EXPIRY CHECK =====
+       // ===== GENERATE SIMPLE DEVICE FINGERPRINT =====
+    const getDeviceFingerprint = () => {
+        const components = [
+            navigator.userAgent,          // Browser & OS
+            screen.width + 'x' + screen.height, // Screen Resolution
+            navigator.language,            // Language
+            new Date().getTimezoneOffset() // Timezone
+        ];
+        return btoa(components.join('|')); // Base64 encode
+    };
+
+    // ===== CHECK DEVICE LIMIT (MAX 5) =====
+    const checkDeviceLimit = (key) => {
+        const storageKey = `deviceLimit_${key}`;
+        const deviceFingerprint = getDeviceFingerprint();
+        
+        // LocalStorage ထဲက သိမ်းထားတဲ့ Device စာရင်းကို ယူမယ်
+        let devices = JSON.parse(localStorage.getItem(storageKey)) || [];
+
+        // လက်ရှိ Device က စာရင်းထဲမှာ ရှိပြီးသားလား စစ်မယ်
+        const existingDevice = devices.find(d => d.fingerprint === deviceFingerprint);
+
+        if (existingDevice) {
+            // ရှိပြီးသား Device ဆိုရင် အချိန်ကို အပ်ဒိတ်လုပ်ပြီး ဝင်ခွင့်ပေးမယ်
+            existingDevice.lastActive = Date.now();
+            localStorage.setItem(storageKey, JSON.stringify(devices));
+            return true;
+        }
+
+        // Device အသစ်ဆိုရင် အရေအတွက် စစ်မယ်
+        if (devices.length >= 5) {
+            // ၅ ခုပြည့်နေပြီဆိုရင် ငြင်းပယ်မယ်
+            return false;
+        }
+
+        // Device အသစ်ကို စာရင်းထဲ ထည့်မယ်
+        devices.push({
+            fingerprint: deviceFingerprint,
+            firstSeen: Date.now(),
+            lastActive: Date.now()
+        });
+        localStorage.setItem(storageKey, JSON.stringify(devices));
+        return true;
+    };
+
+    // ===== LOGIN VALIDATION (UPDATED WITH DEVICE LIMIT) =====
     const handleValidation = () => {
         const enteredKey = keyInput.value.trim();
         const encodedKey = btoa(enteredKey);
+        console.log("Encoded Key:", encodedKey); // Debug
 
+        // ၁။ Key မှန်ကန်မှု စစ်ဆေးပါ
         if (SECURITY_KEYS.hasOwnProperty(encodedKey)) {
             const expiryDateStr = SECURITY_KEYS[encodedKey];
             const today = new Date();
@@ -1322,11 +1370,20 @@ document.addEventListener("DOMContentLoaded", () => {
             today.setHours(0, 0, 0, 0);
             expiryDate.setHours(0, 0, 0, 0);
 
+            // ၂။ သက်တမ်းကုန်ဆုံးပြီလား စစ်ဆေးပါ
             if (today > expiryDate) {
                 keyError.textContent = "Access Denied. Your authorization key has expired.";
                 return;
             }
 
+            // ၃။ Device Limit (၅ ခု) စစ်ဆေးပါ
+            const isDeviceAllowed = checkDeviceLimit(encodedKey);
+            if (!isDeviceAllowed) {
+                keyError.textContent = "Access Denied. This key is already used on 5 devices. Please contact support.";
+                return;
+            }
+
+            // ၄။ အားလုံးအဆင်ပြေပါက ဝင်ခွင့်ပေးပါ
             keyError.textContent = "";
             loginSection.style.display = "none";
             mainSection.classList.add("active");
@@ -1335,16 +1392,6 @@ document.addEventListener("DOMContentLoaded", () => {
             keyError.textContent = "Access Denied. Invalid Authorization Key.";
         }
     };
-
-    loginBtn.addEventListener("click", handleValidation);
-    keyInput.addEventListener("keypress", (e) => { if (e.key === "Enter") handleValidation(); });
-
-    logoutBtn.addEventListener("click", () => {
-        mainSection.classList.remove("active");
-        loginSection.style.display = "block";
-        keyInput.value = "";
-        keyError.textContent = "";
-    });
 
     // ===== TAB INTERFACE LOGIC =====
     const tabs = document.querySelectorAll(".tab-btn");
