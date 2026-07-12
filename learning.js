@@ -1698,12 +1698,26 @@ document.addEventListener("DOMContentLoaded", () => {
         if (e.key === "Enter") handleValidation();
     });
 
-    logoutBtn.addEventListener("click", () => {
-        mainSection.classList.remove("active");
-        loginSection.style.display = "block";
-        keyInput.value = "";
-        keyError.textContent = "";
-    });
+   logoutBtn.addEventListener("click", () => {
+    mainSection.classList.remove("active");
+    loginSection.style.display = "block";
+    keyInput.value = "";
+    keyError.textContent = "";
+    
+    
+    const keysToRemove = [];
+    for (let i = 0; i < localStorage.length; i++) {
+        const key = localStorage.key(i);
+        if (key && key.startsWith('playCount_')) {
+            keysToRemove.push(key);
+        }
+    }
+  
+    keysToRemove.forEach(key => localStorage.removeItem(key));
+    
+    console.log("✅ Audio play counts cleared on logout.");
+   
+});
 
     // ===== TAB INTERFACE =====
     const tabs = document.querySelectorAll(".tab-btn");
