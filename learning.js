@@ -1310,166 +1310,305 @@ const SPEAKING_TOPICS = [
 // ============================================================
 const LISTENING_DATA = [
     // ===== ဆရာ့ရဲ့ Listening ၅ ပုဒ် အကုန်ထည့်ပါ =====
-    {
+   {
         id: 1,
         type: "short",
-        title: "Short Conversation 1: Morning Briefing",
-        audioUrl: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3", // နမူနာ Audio URL
-        description: "Listen to the conversation between the bosun and a deckhand about the morning tasks.",
+        title: "Exercise 1: Morning Briefing (Part 1)",
+        audioUrl: "https://your-audio-url-here-1.mp3", // ⚠️ ဆရာ့ကိုယ်ပိုင် Audio URL ဖြင့် အစားထိုးပါ
+        description: "Listen to the morning briefing between the bosun and the deckhand.",
         questions: [
             {
                 id: 1,
-                question: "What time does the bosun want the deck to be cleaned?",
+                question: "1. What is the first task for today?",
+                options: ["a) Clean the deck and check mooring ropes", "b) Check the lifeboat", "c) Have a safety meeting"],
+                correct: "a) Clean the deck and check mooring ropes"
+            },
+            {
+                id: 2,
+                question: "2. What time should the deck be cleaned?",
                 options: ["a) Before 08:00", "b) Before 09:00", "c) Before 10:00"],
                 correct: "b) Before 09:00"
             },
             {
-                id: 2,
-                question: "What is the deckhand supposed to check after cleaning?",
-                options: ["a) The mooring ropes", "b) The lifeboats", "c) The cargo lashings"],
-                correct: "a) The mooring ropes"
-            },
-            {
                 id: 3,
-                question: "Where will the bosun be during the morning?",
-                options: ["a) On the bridge", "b) In the store room", "c) In the engine room"],
-                correct: "a) On the bridge"
+                question: "3. What time will the chief officer inspect?",
+                options: ["a) 08:30", "b) 09:00", "c) 09:30"],
+                correct: "c) 09:30"
             }
         ]
     },
-    // ===== SHORT CONVERSATION 2 (မေးခွန်း ၃ ခု) =====
     {
         id: 2,
         type: "short",
-        title: "Short Conversation 2: Cargo Operation",
-        audioUrl: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3",
-        description: "Listen to the conversation between the chief officer and the bosun about cargo loading.",
+        title: "Exercise 2: Morning Briefing (Part 2)",
+        audioUrl: "https://your-audio-url-here-1.mp3", // ⚠️ တူညီတဲ့ Audio ကိုပဲ သုံးပါ
+        description: "Listen again to the morning briefing and answer these questions.",
         questions: [
             {
                 id: 4,
-                question: "What type of cargo are they loading?",
-                options: ["a) Containers", "b) Grain", "c) Steel pipes"],
-                correct: "a) Containers"
+                question: "4. What will happen at 10:00?",
+                options: ["a) The deck will be cleaned", "b) The lifeboat maintenance will start", "c) The safety meeting will begin"],
+                correct: "b) The lifeboat maintenance will start"
             },
             {
                 id: 5,
-                question: "How many containers are expected to be loaded?",
-                options: ["a) 50", "b) 100", "c) 150"],
-                correct: "b) 100"
+                question: "5. What equipment needs to be checked for the lifeboat?",
+                options: ["a) Engine, steering system, and lifejackets", "b) Mooring ropes and deck", "c) Radar and GPS"],
+                correct: "a) Engine, steering system, and lifejackets"
             },
             {
                 id: 6,
-                question: "What weather problem are they worried about?",
-                options: ["a) Heavy rain", "b) Strong wind", "c) Fog"],
-                correct: "b) Strong wind"
+                question: "6. Who will inform the team?",
+                options: ["a) The bosun", "b) The deckhand", "c) The captain"],
+                correct: "b) The deckhand"
             }
         ]
     },
-    // ===== SHORT CONVERSATION 3 (မေးခွန်း ၃ ခု) =====
     {
         id: 3,
         type: "short",
-        title: "Short Conversation 3: Safety Inspection",
-        audioUrl: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3",
-        description: "Listen to the conversation between the captain and the chief engineer about the safety inspection.",
+        title: "Exercise 3: Morning Briefing (Part 3)",
+        audioUrl: "https://your-audio-url-here-1.mp3", // ⚠️ တူညီတဲ့ Audio ကိုပဲ သုံးပါ
+        description: "Listen again and focus on the weather and safety meeting.",
         questions: [
             {
                 id: 7,
-                question: "When is the safety inspection scheduled?",
-                options: ["a) Monday", "b) Tuesday", "c) Wednesday"],
-                correct: "b) Tuesday"
+                question: "7. What does the weather forecast say?",
+                options: ["a) Heavy rain", "b) Strong wind", "c) Fog"],
+                correct: "b) Strong wind"
             },
             {
                 id: 8,
-                question: "Which equipment needs to be tested?",
-                options: ["a) The lifeboat engines", "b) The fire pumps", "c) The navigation lights"],
-                correct: "b) The fire pumps"
+                question: "8. What must they do because of the strong wind?",
+                options: ["a) Stay in the cabin", "b) Secure all loose equipment", "c) Stop working"],
+                correct: "b) Secure all loose equipment"
             },
             {
                 id: 9,
-                question: "Who will accompany the inspector?",
-                options: ["a) The bosun", "b) The chief officer", "c) The captain"],
-                correct: "c) The captain"
+                question: "9. Where will the safety meeting be held?",
+                options: ["a) On the bridge", "b) In the conference room", "c) On the boat deck"],
+                correct: "b) In the conference room"
             }
         ]
     },
-    // ===== LONG CONVERSATION 1 (မေးခွန်း ၅ ခု) =====
     {
         id: 4,
-        type: "long",
-        title: "Long Conversation 1: Voyage Planning Meeting",
-        audioUrl: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-4.mp3",
-        description: "Listen to the voyage planning meeting between the captain, chief officer, and second officer.",
+        type: "short",
+        title: "Exercise 4: Morning Briefing (Part 4)",
+        audioUrl: "https://your-audio-url-here-1.mp3", // ⚠️ တူညီတဲ့ Audio ကိုပဲ သုံးပါ
+        description: "Listen again and answer these questions.",
         questions: [
             {
                 id: 10,
-                question: "What is the main purpose of the meeting?",
-                options: ["a) To discuss crew welfare", "b) To plan the next voyage route", "c) To review safety procedures"],
-                correct: "b) To plan the next voyage route"
+                question: "10. What time is the safety meeting?",
+                options: ["a) 13:00", "b) 14:00", "c) 15:00"],
+                correct: "b) 14:00"
             },
             {
                 id: 11,
-                question: "How many ports will they visit on the voyage?",
-                options: ["a) Three ports", "b) Four ports", "c) Five ports"],
-                correct: "a) Three ports"
+                question: "11. Who wants the safety meeting?",
+                options: ["a) The bosun", "b) The chief officer", "c) The captain"],
+                correct: "c) The captain"
             },
             {
                 id: 12,
-                question: "What is the first port of call?",
-                options: ["a) Singapore", "b) Bangkok", "c) Ho Chi Minh"],
-                correct: "c) Ho Chi Minh"
-            },
-            {
-                id: 13,
-                question: "How many nautical miles is the total voyage distance?",
-                options: ["a) 1,200 miles", "b) 1,500 miles", "c) 2,000 miles"],
-                correct: "b) 1,500 miles"
-            },
-            {
-                id: 14,
-                question: "What fuel calculation did the chief engineer mention?",
-                options: ["a) Need to refuel at the second port", "b) Need to refuel at the final port", "c) No refueling needed"],
-                correct: "a) Need to refuel at the second port"
+                question: "12. What must all crew members attend?",
+                options: ["a) The morning briefing", "b) The safety meeting", "c) The lifeboat drill"],
+                correct: "b) The safety meeting"
             }
         ]
     },
-    // ===== LONG CONVERSATION 2 (မေးခွန်း ၅ ခု) =====
     {
         id: 5,
-        type: "long",
-        title: "Long Conversation 2: Emergency Drill Debrief",
-        audioUrl: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-5.mp3",
-        description: "Listen to the debriefing after the emergency fire drill.",
+        type: "short",
+        title: "Exercise 5: Morning Briefing (Part 5)",
+        audioUrl: "https://your-audio-url-here-1.mp3", // ⚠️ တူညီတဲ့ Audio ကိုပဲ သုံးပါ
+        description: "Final set of questions from the morning briefing.",
         questions: [
             {
-                id: 15,
-                question: "How long did the fire drill take?",
-                options: ["a) 5 minutes", "b) 10 minutes", "c) 15 minutes"],
-                correct: "b) 10 minutes"
+                id: 13,
+                question: "13. What is the bosun's final instruction?",
+                options: ["a) Start the work and stay safe", "b) Have lunch together", "c) Go to the bridge"],
+                correct: "a) Start the work and stay safe"
             },
             {
+                id: 14,
+                question: "14. What did the bosun say about the lifeboat maintenance time?",
+                options: ["a) It will be at 09:00", "b) It will be at 10:00", "c) It will be at 11:00"],
+                correct: "b) It will be at 10:00"
+            },
+            {
+                id: 15,
+                question: "15. What should the crew do about loose equipment?",
+                options: ["a) Report to the captain", "b) Secure it properly", "c) Remove it from the deck"],
+                correct: "b) Secure it properly"
+            }
+        ]
+    },
+
+    // ==========================================================
+    // PART 2: DIFFERENT SCRIPTS (Exercises 6-8 - Short)
+    // ==========================================================
+    {
+        id: 6,
+        type: "short",
+        title: "Exercise 6: Cargo Operation",
+        audioUrl: "https://your-audio-url-here-2.mp3", // ⚠️ ဆရာ့ကိုယ်ပိုင် Audio URL ဖြင့် အစားထိုးပါ
+        description: "Listen to the conversation between the Chief Officer and the Bosun about cargo loading.",
+        questions: [
+            {
                 id: 16,
-                question: "What problem was found during the drill?",
-                options: ["a) The fire extinguisher was empty", "b) The alarm system failed", "c) Some crew arrived late"],
-                correct: "c) Some crew arrived late"
+                question: "16. How many containers are they expecting?",
+                options: ["a) 50 containers", "b) 100 containers", "c) 150 containers"],
+                correct: "b) 100 containers"
             },
             {
                 id: 17,
-                question: "What does the captain suggest to improve?",
-                options: ["a) More drills", "b) Better communication", "c) Faster response time"],
-                correct: "c) Faster response time"
+                question: "17. How many containers will be loaded?",
+                options: ["a) 25", "b) 50", "c) 75"],
+                correct: "b) 50"
             },
             {
                 id: 18,
-                question: "Who was responsible for recording attendance?",
-                options: ["a) The chief officer", "b) The bosun", "c) The second officer"],
-                correct: "a) The chief officer"
-            },
+                question: "18. What must the bosun check carefully after loading?",
+                options: ["a) The mooring ropes", "b) The lashings", "c) The lifeboat"],
+                correct: "b) The lashings"
+            }
+        ]
+    },
+    {
+        id: 7,
+        type: "short",
+        title: "Exercise 7: Safety Drill",
+        audioUrl: "https://your-audio-url-here-3.mp3", // ⚠️ ဆရာ့ကိုယ်ပိုင် Audio URL ဖြင့် အစားထိုးပါ
+        description: "Listen to the conversation between the Captain and the Chief Engineer about the fire drill.",
+        questions: [
             {
                 id: 19,
-                question: "When will the next drill be held?",
-                options: ["a) Next week", "b) Next month", "c) Next quarter"],
-                correct: "b) Next month"
+                question: "19. What time will the fire drill be?",
+                options: ["a) 10:00", "b) 11:00", "c) 12:00"],
+                correct: "b) 11:00"
+            },
+            {
+                id: 20,
+                question: "20. Who will inform the engine room team?",
+                options: ["a) The captain", "b) The chief engineer", "c) The bosun"],
+                correct: "b) The chief engineer"
+            },
+            {
+                id: 21,
+                question: "21. What equipment must be tested before the drill?",
+                options: ["a) The lifeboat", "b) The fire pumps and alarm system", "c) The navigation lights"],
+                correct: "b) The fire pumps and alarm system"
+            }
+        ]
+    },
+    {
+        id: 8,
+        type: "short",
+        title: "Exercise 8: Watchkeeping Duty",
+        audioUrl: "https://your-audio-url-here-4.mp3", // ⚠️ ဆရာ့ကိုယ်ပိုင် Audio URL ဖြင့် အစားထိုးပါ
+        description: "Listen to the conversation between the Officer and the Lookout.",
+        questions: [
+            {
+                id: 22,
+                question: "22. How is the visibility?",
+                options: ["a) Poor", "b) Good", "c) Very good"],
+                correct: "b) Good"
+            },
+            {
+                id: 23,
+                question: "23. How far is the fishing boat from the ship?",
+                options: ["a) 1 mile", "b) 2 miles", "c) 3 miles"],
+                correct: "c) 3 miles"
+            },
+            {
+                id: 24,
+                question: "24. What is the fishing boat's speed?",
+                options: ["a) 3 knots", "b) 5 knots", "c) 7 knots"],
+                correct: "b) 5 knots"
+            }
+        ]
+    },
+
+    // ==========================================================
+    // PART 3: LONG CONVERSATIONS (Exercises 9-10 - 5 Questions Each)
+    // ==========================================================
+    {
+        id: 9,
+        type: "long",
+        title: "Exercise 9: Galley Hygiene (Long)",
+        audioUrl: "https://your-audio-url-here-5.mp3", // ⚠️ ဆရာ့ကိုယ်ပိုင် Audio URL ဖြင့် အစားထိုးပါ
+        description: "Listen to the detailed conversation about galley hygiene between the Chief Steward and the Cook.",
+        questions: [
+            {
+                id: 25,
+                question: "25. What does the chief steward need to check?",
+                options: ["a) The engine room", "b) The galley hygiene", "c) The lifeboat"],
+                correct: "b) The galley hygiene"
+            },
+            {
+                id: 26,
+                question: "26. What is the condition of the garbage bins?",
+                options: ["a) They are full", "b) They are covered with lids and emptied", "c) They are broken"],
+                correct: "b) They are covered with lids and emptied"
+            },
+            {
+                id: 27,
+                question: "27. What should the crew members do before eating?",
+                options: ["a) Wear a uniform", "b) Wash their hands", "c) Report to the chief steward"],
+                correct: "b) Wash their hands"
+            },
+            {
+                id: 28,
+                question: "28. What did the cook say about the refrigerator temperatures?",
+                options: ["a) They are too cold", "b) They are perfect", "c) They are too warm"],
+                correct: "b) They are perfect"
+            },
+            {
+                id: 29,
+                question: "29. What is the chief steward's final instruction?",
+                options: ["a) Check the food quality", "b) Remind crew to wash hands", "c) Clean the kitchen again"],
+                correct: "b) Remind crew to wash hands"
+            }
+        ]
+    },
+    {
+        id: 10,
+        type: "long",
+        title: "Exercise 10: Mooring Operation (Long)",
+        audioUrl: "https://your-audio-url-here-6.mp3", // ⚠️ ဆရာ့ကိုယ်ပိုင် Audio URL ဖြင့် အစားထိုးပါ
+        description: "Listen to the detailed conversation about mooring operation.",
+        questions: [
+            {
+                id: 30,
+                question: "30. What are the crew preparing for?",
+                options: ["a) Cargo loading", "b) Mooring operation", "c) Safety drill"],
+                correct: "b) Mooring operation"
+            },
+            {
+                id: 31,
+                question: "31. What must the crew wear?",
+                options: ["a) Lifejacket and helmet", "b) Gloves and hard hat", "c) Safety glasses and coveralls"],
+                correct: "b) Gloves and hard hat"
+            },
+            {
+                id: 32,
+                question: "32. What time will the pilot arrive?",
+                options: ["a) 14:30", "b) 15:00", "c) 15:30"],
+                correct: "c) 15:30"
+            },
+            {
+                id: 33,
+                question: "33. What is the bosun's warning to the crew?",
+                options: ["a) Work quickly", "b) Never stand in the bight of a rope", "c) Check the engine"],
+                correct: "b) Never stand in the bight of a rope"
+            },
+            {
+                id: 34,
+                question: "34. What should the team do when the pilot is on board?",
+                options: ["a) Start the cargo operation", "b) Start the mooring operation", "c) Have a meeting"],
+                correct: "b) Start the mooring operation"
             }
         ]
     }
