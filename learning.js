@@ -1613,7 +1613,6 @@ const LISTENING_DATA = [
         ]
     }
 ];
-
 // ============================================================
 // 7. UI CORE LOGIC
 // ============================================================
@@ -1698,26 +1697,24 @@ document.addEventListener("DOMContentLoaded", () => {
         if (e.key === "Enter") handleValidation();
     });
 
-   logoutBtn.addEventListener("click", () => {
-    mainSection.classList.remove("active");
-    loginSection.style.display = "block";
-    keyInput.value = "";
-    keyError.textContent = "";
-    
-    
-    const keysToRemove = [];
-    for (let i = 0; i < localStorage.length; i++) {
-        const key = localStorage.key(i);
-        if (key && key.startsWith('playCount_')) {
-            keysToRemove.push(key);
+    // ⭐ Logout လုပ်တဲ့အခါ Audio Play Count အကုန်ရှင်းမယ်
+    logoutBtn.addEventListener("click", () => {
+        mainSection.classList.remove("active");
+        loginSection.style.display = "block";
+        keyInput.value = "";
+        keyError.textContent = "";
+
+        // Audio Play Count Data အကုန်ဖျက်မယ်
+        const keysToRemove = [];
+        for (let i = 0; i < localStorage.length; i++) {
+            const key = localStorage.key(i);
+            if (key && key.startsWith('playCount_')) {
+                keysToRemove.push(key);
+            }
         }
-    }
-  
-    keysToRemove.forEach(key => localStorage.removeItem(key));
-    
-    console.log("✅ Audio play counts cleared on logout.");
-   
-});
+        keysToRemove.forEach(key => localStorage.removeItem(key));
+        console.log("✅ Audio play counts cleared on logout.");
+    });
 
     // ===== TAB INTERFACE =====
     const tabs = document.querySelectorAll(".tab-btn");
@@ -1751,7 +1748,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 </div>
             `).join('');
         } else if (gList) {
-            gList.innerHTML = '<p style="color:#64748b; text-align:center;">⚠️ Grammar data not found. Please check your data.</p>';
+            gList.innerHTML = '<p style="color:#64748b; text-align:center;">⚠️ Grammar data not found.</p>';
         }
 
         // Reading
@@ -1784,7 +1781,7 @@ document.addEventListener("DOMContentLoaded", () => {
             });
             rList.innerHTML = readingHTML;
         } else if (rList) {
-            rList.innerHTML = '<p style="color:#64748b; text-align:center;">⚠️ Reading data not found. Please check your data.</p>';
+            rList.innerHTML = '<p style="color:#64748b; text-align:center;">⚠️ Reading data not found.</p>';
         }
 
         // Writing
@@ -1803,7 +1800,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 </div>
             `).join('');
         } else if (wList) {
-            wList.innerHTML = '<p style="color:#64748b; text-align:center;">⚠️ Writing data not found. Please check your data.</p>';
+            wList.innerHTML = '<p style="color:#64748b; text-align:center;">⚠️ Writing data not found.</p>';
         }
 
         // Speaking
@@ -1831,7 +1828,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 </div>
             `).join('');
         } else if (sList) {
-            sList.innerHTML = '<p style="color:#64748b; text-align:center;">⚠️ Speaking data not found. Please check your data.</p>';
+            sList.innerHTML = '<p style="color:#64748b; text-align:center;">⚠️ Speaking data not found.</p>';
         }
 
         // Listening
@@ -1905,7 +1902,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 });
             });
         } else if (lList) {
-            lList.innerHTML = '<p style="color:#64748b; text-align:center;">⚠️ Listening data not found. Please check your data.</p>';
+            lList.innerHTML = '<p style="color:#64748b; text-align:center;">⚠️ Listening data not found.</p>';
         }
     };
 });
