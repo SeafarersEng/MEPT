@@ -1314,7 +1314,7 @@ const LISTENING_DATA = [
         id: 1,
         type: "short",
         title: "Exercise 1: Morning Briefing (Part 1)",
-        audioUrl: "", // ⚠️ ဆရာ့ကိုယ်ပိုင် Audio URL ဖြင့် အစားထိုးပါ
+        audioUrl: "listening_ex1_5.mp3", // ⚠️ ဆရာ့ကိုယ်ပိုင် Audio URL ဖြင့် အစားထိုးပါ
         description: "Listen to the morning briefing between the bosun and the deckhand.",
         questions: [
             {
@@ -1341,7 +1341,7 @@ const LISTENING_DATA = [
         id: 2,
         type: "short",
         title: "Exercise 2: Morning Briefing (Part 2)",
-        audioUrl: "", // ⚠️ တူညီတဲ့ Audio ကိုပဲ သုံးပါ
+        audioUrl: "listening_ex1_5.mp3", // ⚠️ တူညီတဲ့ Audio ကိုပဲ သုံးပါ
         description: "Listen again to the morning briefing and answer these questions.",
         questions: [
             {
@@ -1368,7 +1368,7 @@ const LISTENING_DATA = [
         id: 3,
         type: "short",
         title: "Exercise 3: Morning Briefing (Part 3)",
-        audioUrl: "", // ⚠️ တူညီတဲ့ Audio ကိုပဲ သုံးပါ
+        audioUrl: "listening_ex1_5.mp3", // ⚠️ တူညီတဲ့ Audio ကိုပဲ သုံးပါ
         description: "Listen again and focus on the weather and safety meeting.",
         questions: [
             {
@@ -1395,7 +1395,7 @@ const LISTENING_DATA = [
         id: 4,
         type: "short",
         title: "Exercise 4: Morning Briefing (Part 4)",
-        audioUrl: "", // ⚠️ တူညီတဲ့ Audio ကိုပဲ သုံးပါ
+        audioUrl: "listening_ex1_5.mp3", // ⚠️ တူညီတဲ့ Audio ကိုပဲ သုံးပါ
         description: "Listen again and answer these questions.",
         questions: [
             {
@@ -1422,7 +1422,7 @@ const LISTENING_DATA = [
         id: 5,
         type: "short",
         title: "Exercise 5: Morning Briefing (Part 5)",
-        audioUrl: "", // ⚠️ တူညီတဲ့ Audio ကိုပဲ သုံးပါ
+        audioUrl: "listening_ex1_5.mp3", // ⚠️ တူညီတဲ့ Audio ကိုပဲ သုံးပါ
         description: "Final set of questions from the morning briefing.",
         questions: [
             {
@@ -1453,7 +1453,7 @@ const LISTENING_DATA = [
         id: 6,
         type: "short",
         title: "Exercise 6: Cargo Operation",
-        audioUrl: "", // ⚠️ ဆရာ့ကိုယ်ပိုင် Audio URL ဖြင့် အစားထိုးပါ
+        audioUrl: "listening_ex6.mp3", // ⚠️ ဆရာ့ကိုယ်ပိုင် Audio URL ဖြင့် အစားထိုးပါ
         description: "Listen to the conversation between the Chief Officer and the Bosun about cargo loading.",
         questions: [
             {
@@ -1480,7 +1480,7 @@ const LISTENING_DATA = [
         id: 7,
         type: "short",
         title: "Exercise 7: Safety Drill",
-        audioUrl: "", // ⚠️ ဆရာ့ကိုယ်ပိုင် Audio URL ဖြင့် အစားထိုးပါ
+        audioUrl: "listening_ex7.mp3", // ⚠️ ဆရာ့ကိုယ်ပိုင် Audio URL ဖြင့် အစားထိုးပါ
         description: "Listen to the conversation between the Captain and the Chief Engineer about the fire drill.",
         questions: [
             {
@@ -1507,7 +1507,7 @@ const LISTENING_DATA = [
         id: 8,
         type: "short",
         title: "Exercise 8: Watchkeeping Duty",
-        audioUrl: "", // ⚠️ ဆရာ့ကိုယ်ပိုင် Audio URL ဖြင့် အစားထိုးပါ
+        audioUrl: "listening_ex8.mp3", // ⚠️ ဆရာ့ကိုယ်ပိုင် Audio URL ဖြင့် အစားထိုးပါ
         description: "Listen to the conversation between the Officer and the Lookout.",
         questions: [
             {
@@ -1538,7 +1538,7 @@ const LISTENING_DATA = [
         id: 9,
         type: "long",
         title: "Exercise 9: Galley Hygiene (Long)",
-        audioUrl: "", // ⚠️ ဆရာ့ကိုယ်ပိုင် Audio URL ဖြင့် အစားထိုးပါ
+        audioUrl: "listening_ex9.mp3", // ⚠️ ဆရာ့ကိုယ်ပိုင် Audio URL ဖြင့် အစားထိုးပါ
         description: "Listen to the detailed conversation about galley hygiene between the Chief Steward and the Cook.",
         questions: [
             {
@@ -1577,7 +1577,7 @@ const LISTENING_DATA = [
         id: 10,
         type: "long",
         title: "Exercise 10: Mooring Operation (Long)",
-        audioUrl: "", // ⚠️ ဆရာ့ကိုယ်ပိုင် Audio URL ဖြင့် အစားထိုးပါ
+        audioUrl: "listening_ex10.mp3", // ⚠️ ဆရာ့ကိုယ်ပိုင် Audio URL ဖြင့် အစားထိုးပါ
         description: "Listen to the detailed conversation about mooring operation.",
         questions: [
             {
