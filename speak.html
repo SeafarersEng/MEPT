@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MEPT Secure Simulator - BST Edition</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <!-- CryptoJS for Secure Hashing -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
+    <link rel="stylesheet" href="speak.css">
+</head>
+<body class="bg-slate-900 font-sans antialiased selection:bg-sky-500 selection:text-white">
+
+    <!-- 1. SECURE AUTH SCREEN (Simplifed: Enter Access Key Only) -->
+    <div id="auth-screen" class="flex flex-col items-center justify-center min-h-screen px-4 bg-slate-900 text-white">
+        <div class="w-full max-w-md bg-slate-800 p-8 rounded-2xl shadow-xl border border-slate-700 text-center">
+            <div class="flex justify-center mb-4 text-sky-400">
+                <svg class="w-12 h-12" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path>
+                </svg>
+            </div>
+            <h2 class="text-2xl font-bold mb-6 text-slate-100">MEPT Secure Simulator</h2>
+            
+            <div class="mb-5 text-left">
+                <label class="block text-sm font-medium text-slate-400 mb-2">Enter Access Key</label>
+                <input type="text" id="activation-key-input" placeholder="•••••••" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-4 py-3 text-center tracking-widest font-mono text-lg text-emerald-400 focus:outline-none focus:border-sky-500 uppercase">
+            </div>
+
+            <button onclick="verifySecureActivation()" class="w-full bg-emerald-500 hover:bg-emerald-600 text-slate-950 font-bold py-3 px-4 rounded-xl transition duration-200 active:scale-98 cursor-pointer">
+                Authorize Device
+            </button>
+
+            <!-- Error Messages -->
+            <p id="auth-error" class="text-rose-400 text-sm font-semibold mt-4 hidden">⚠️ Invalid Key Format or Access Refused!</p>
+            <p id="device-lock-error" class="text-amber-400 text-sm font-semibold mt-4 hidden">⚠️ Security Alert: Key locked to another machine!</p>
+        </div>
+    </div>
+
+    <!-- 2. START DASHBOARD SCREEN -->
+    <div id="start-screen" class="hidden min-h-screen flex flex-col justify-between bg-slate-900 text-white p-4 md:p-8">
+        <header class="flex justify-between items-center max-w-5xl w-full mx-auto border-b border-slate-800 pb-4">
+            <div>
+                <h1 class="text-xl md:text-2xl font-black text-sky-400 flex items-center gap-2">⚓ MEPT Secure Simulator</h1>
+                <p class="text-xs text-slate-400 font-mono">FYIDC Advanced Multi-Platform Client</p>
+            </div>
+            <button onclick="lockAppAccess()" class="bg-rose-500/10 hover:bg-rose-500 text-rose-400 hover:text-white px-3 py-1.5 rounded-lg text-xs font-bold border border-rose-500/20 transition cursor-pointer">Logout</button>
+        </header>
+
+        <main class="max-w-3xl w-full mx-auto my-auto text-center py-8">
+            <h2 class="text-xl md:text-3xl font-extrabold mb-2 tracking-tight">Select Training Assessment Matrix</h2>
+            <p class="text-sm text-slate-400 mb-8 max-w-md mx-auto">Choose a structural scenario set below. Each set tests core BST knowledge, picture identification, and Marlins debate fluency.</p>
+            
+            <div id="set-selector-grid" class="grid grid-cols-2 sm:grid-cols-5 gap-3 md:gap-4 max-w-2xl mx-auto">
+                <!-- JavaScript renders 10 dynamic sets here -->
+            </div>
+        </main>
+        <footer class="text-center text-xs text-slate-500 font-mono max-w-5xl w-full mx-auto border-t border-slate-800 pt-4">⚓ FYIDC STCW Assessment Core v4.2</footer>
+    </div>
+
+    <!-- 3. ACTIVE EXAMINATION SCREEN -->
+    <div id="exam-screen" class="hidden min-h-screen bg-slate-950 text-slate-100 p-4 md:p-6 flex flex-col justify-between">
+        <!-- Top Metrics Header -->
+        <div class="flex justify-between items-center bg-slate-900 border border-slate-800 p-4 rounded-2xl max-w-5xl w-full mx-auto shadow-md">
+            <span id="question-number" class="bg-sky-500/10 border border-sky-500/20 text-sky-400 px-4 py-1.5 rounded-xl text-xs md:text-sm font-black font-mono">Q 1/5</span>
+            <div class="flex items-center gap-3">
+                <span id="timer-display" class="font-mono text-base md:text-lg font-bold text-amber-400">00:00</span>
+                <div class="w-24 md:w-40 bg-slate-950 rounded-full h-2.5 overflow-hidden border border-slate-800">
+                    <div id="timer-bar" class="bg-gradient-to-r from-amber-500 to-orange-500 h-full w-full transition-all duration-1000 ease-linear"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Dynamic Canvas Content -->
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 max-w-5xl w-full mx-auto my-auto py-6 items-stretch">
+            <!-- Left Prompt Frame -->
+            <div class="lg:col-span-7 bg-slate-900 border border-slate-800 rounded-3xl p-5 md:p-6 shadow-xl flex flex-col justify-between min-h-[300px]">
+                <div>
+                    <span class="text-[10px] tracking-widest font-mono text-slate-400 uppercase block mb-1">STCW Core Evaluation Prompt</span>
+                    <h3 id="question-prompt" class="text-base md:text-lg font-bold leading-relaxed text-slate-100">Loading evaluation criteria scenario...</h3>
+                </div>
+                
+                <div class="mt-4 pt-4 border-t border-slate-800/60">
+                    <span class="text-[10px] tracking-widest font-mono text-emerald-400 uppercase block mb-1">Live Audio Capturing Transcript</span>
+                    <p id="student-speech" class="text-sm text-slate-300 italic min-h-[60px] bg-slate-950/50 p-3 rounded-xl border border-slate-850">Awaiting audio examiner clearance...</p>
+                </div>
+            </div>
+
+            <!-- Right Visual Canvas Frame -->
+            <div class="lg:col-span-5 bg-slate-900 border border-slate-800 rounded-3xl overflow-hidden p-4 shadow-xl flex flex-col items-center justify-center min-h-[300px]">
+                <img id="exam-picture" src="" alt="Marlins Visual Assessment" class="w-full h-full object-cover rounded-xl shadow-md hidden">
+                <div id="ai-avatar" class="text-center p-6">
+                    <div class="w-20 h-20 bg-sky-500/10 border border-sky-500/20 rounded-full flex items-center justify-center mx-auto mb-4 animate-pulse">
+                        <svg class="w-10 h-10 text-sky-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 100-6 3 3 0 000 6z"></path>
+                        </svg>
+                    </div>
+                    <span id="examiner-status" class="text-xs font-mono font-bold tracking-wider text-slate-400 uppercase">System Initializing</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Action Layout Control -->
+        <div class="flex justify-end max-w-5xl w-full mx-auto">
+            <button id="btn-next" class="bg-gradient-to-r from-sky-500 to-blue-600 hover:from-sky-600 hover:to-blue-700 text-white font-bold py-3 px-8 rounded-2xl shadow-lg transition active:scale-95 cursor-pointer text-sm">
+                Submit Response & Next ➔
+            </button>
+        </div>
+    </div>
+
+    <!-- 4. EVALUATION REPORT SCORE SCREEN -->
+    <div id="finish-screen" class="hidden min-h-screen bg-slate-900 text-white p-4 md:p-8 flex flex-col justify-center items-center">
+        <div class="w-full max-w-xl bg-slate-800 border border-slate-700 rounded-3xl p-6 md:p-8 shadow-2xl text-center">
+            <div id="grade-badge" class="w-20 h-20 mx-auto flex items-center justify-center rounded-full text-4xl font-extrabold text-slate-950 shadow-inner bg-emerald-400 mb-4">A</div>
+            <h2 id="grade-title" class="text-2xl font-black tracking-tight mb-2">Grade A - Professional Pass</h2>
+            <p id="grade-desc" class="text-sm text-slate-400 px-4 mb-6">The candidate displays strong syntax flow, deep vocabulary control and natural delivery matching technical crew requirements.</p>
+            
+            <div class="bg-slate-900/60 border border-slate-750 rounded-2xl p-4 text-left space-y-3 mb-6 font-mono text-xs">
+                <div class="flex justify-between border-b border-slate-800 pb-2"><span class="text-slate-400">Lexical Vocabulary:</span> <span id="stat-vocab" class="text-slate-200 font-bold">Standard</span></div>
+                <div class="flex justify-between border-b border-slate-800 pb-2"><span class="text-slate-400">Grammar Architecture:</span> <span id="stat-grammar" class="text-slate-200 font-bold">Standard</span></div>
+                <div class="flex justify-between pb-1"><span class="text-slate-400">Fluency Production:</span> <span id="stat-fluency" class="text-slate-200 font-bold">Standard</span></div>
+            </div>
+
+            <button onclick="resetToDashboard()" class="bg-slate-700 hover:bg-slate-600 text-white font-bold py-3 px-6 rounded-xl transition duration-150 active:scale-95 cursor-pointer text-sm">
+                Return to Dashboard Menu
+            </button>
+        </div>
+    </div>
+
+    <script src="speak.js"></script>
+</body>
+</html>

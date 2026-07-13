@@ -1,0 +1,24 @@
+.progress-bar {
+    transition: width 1s linear;
+}
+
+#student-speech::-webkit-scrollbar {
+    width: 3px;
+}
+#student-speech::-webkit-scrollbar-thumb {
+    background: #475569;
+    border-radius: 4px;
+}
+
+body {
+    -webkit-tap-highlight-color: transparent;
+}
+
+/* Enhancing grid list scrollbars */
+#set-selector-grid::-webkit-scrollbar {
+    width: 4px;
+}
+#set-selector-grid::-webkit-scrollbar-thumb {
+    background: #334155;
+    border-radius: 10px;
+}
