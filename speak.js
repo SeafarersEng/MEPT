@@ -45,7 +45,7 @@ const examSets = {
         { type: "short", timeLimit: 50, prompt: "What is your target rank on board, and what are the main duties?", image: "" },
         { type: "short", timeLimit: 50, prompt: "What are your hobbies or interests in your free time?", image: "" },
         { type: "short", timeLimit: 50, prompt: "How do you feel about working with a multicultural crew?", image: "" },
-        { type: "picture", timeLimit: 120, prompt: "Look at the picture. Describe the fire-fighting drill being performed on deck, including the equipment and PPE used.", image: "img/set1_firefight.jpg" },
+        { type: "picture", timeLimit: 120, prompt: "Look at the picture. Describe the fire-fighting drill being performed on deck, including the equipment and PPE used.", image: "set1_firefight.png" },
         { type: "debate", timeLimit: 120, prompt: "Marlins Debate: 'In very hot weather, seafarers should be allowed to not wear heavy boilersuits or safety shoes to prevent heatstroke.' What is your position?", image: "" }
     ],
     set2: [
@@ -54,7 +54,7 @@ const examSets = {
         { type: "short", timeLimit: 50, prompt: "How will you handle being away from your family for many months?", image: "" },
         { type: "short", timeLimit: 50, prompt: "What is the most important quality of a good seafarer, in your opinion?", image: "" },
         { type: "short", timeLimit: 50, prompt: "What is your long-term goal in this career?", image: "" },
-        { type: "picture", timeLimit: 120, prompt: "Look at the picture. Describe the mooring operation at the forward station, including the PPE and safety precautions.", image: "img/set2_mooring.jpg" },
+        { type: "picture", timeLimit: 120, prompt: "Look at the picture. Describe the mooring operation at the forward station, including the PPE and safety precautions.", image: "set2_mooring.png" },
         { type: "debate", timeLimit: 120, prompt: "Marlins Debate: 'If a crewmember falls overboard, you should jump into the water immediately to save him before you lose sight of him.' Do you agree?", image: "" }
     ],
     set3: [
@@ -63,7 +63,7 @@ const examSets = {
         { type: "short", timeLimit: 50, prompt: "Where did you complete your pre-sea and BST training?", image: "" },
         { type: "short", timeLimit: 50, prompt: "If a company offers you a contract that is longer than usual, will you accept it?", image: "" },
         { type: "short", timeLimit: 50, prompt: "What department will you work in, and what is your current knowledge about it?", image: "" },
-        { type: "picture", timeLimit: 120, prompt: "Look at the picture. Explain the meaning of the 'Snap-Back Zone' markings and why seafarers must avoid this area during mooring.", image: "img/set3_snapback.jpg" },
+        { type: "picture", timeLimit: 120, prompt: "Look at the picture. Explain the meaning of the 'Snap-Back Zone' markings and why seafarers must avoid this area during mooring.", image: "set3_snapback.png" },
         { type: "debate", timeLimit: 120, prompt: "Marlins Debate: 'You are busy, and you just need to enter a pump room for 2 minutes to check a gauge. It is okay to enter without a permit as long as you are quick.' Do you agree?", image: "" }
     ],
     set4: [
@@ -72,7 +72,7 @@ const examSets = {
         { type: "short", timeLimit: 50, prompt: "Seafaring involves a lot of teamwork. Can you give an example of how you work in a team?", image: "" },
         { type: "short", timeLimit: 50, prompt: "What is your current English proficiency level for maritime work?", image: "" },
         { type: "short", timeLimit: 50, prompt: "If your superior asks you to do something that is not safe, what will you do?", image: "" },
-        { type: "picture", timeLimit: 120, prompt: "Look at the picture. Describe the watchkeeping duties in the Engine Control Room and the importance of monitoring machinery parameters.", image: "img/set4_ecr.jpg" },
+        { type: "picture", timeLimit: 120, prompt: "Look at the picture. Describe the watchkeeping duties in the Engine Control Room and the importance of monitoring machinery parameters.", image: "set4_ecr.png" },
         { type: "debate", timeLimit: 120, prompt: "Marlins Debate: 'Port State Control (PSC) is just trouble. Seafarers should hide any problems from the inspectors to avoid ship detention.' What is your view?", image: "" }
     ],
     set5: [
@@ -81,7 +81,7 @@ const examSets = {
         { type: "short", timeLimit: 50, prompt: "Seafarers face rough sea conditions. Are you physically and mentally ready?", image: "" },
         { type: "short", timeLimit: 50, prompt: "How do you spend your free time while you are waiting for a ship contract?", image: "" },
         { type: "short", timeLimit: 50, prompt: "If a crewmember from another country disrespects your culture, how will you respond?", image: "" },
-        { type: "picture", timeLimit: 120, prompt: "Look at the picture. Describe the CPR (Cardiopulmonary Resuscitation) procedure being performed and explain why first aid training is essential at sea.", image: "img/set5_cpr.jpg" },
+        { type: "picture", timeLimit: 120, prompt: "Look at the picture. Describe the CPR (Cardiopulmonary Resuscitation) procedure being performed and explain why first aid training is essential at sea.", image: "set5_cpr.png" },
         { type: "debate", timeLimit: 120, prompt: "Marlins Debate: 'Safety Management System (SMS) paperwork is a waste of time. It is better to just focus on the physical job and skip the forms.' Argue your position.", image: "" }
     ],
     set6: [
@@ -90,7 +90,7 @@ const examSets = {
         { type: "short", timeLimit: 50, prompt: "What are your salary expectations, and how do you plan to utilize your income?", image: "" },
         { type: "short", timeLimit: 50, prompt: "How do you usually cope with sea sickness, bad weather, or high stress on board?", image: "" },
         { type: "short", timeLimit: 50, prompt: "How important is it to maintain a good professional relationship with the Chief Officer or Chief Engineer?", image: "" },
-        { type: "picture", timeLimit: 120, prompt: "Look at the picture. Describe the abandon ship drill, specifically the launching of the lifeboat and the correct use of the life jacket.", image: "img/set6_lifeboat.jpg" },
+        { type: "picture", timeLimit: 120, prompt: "Look at the picture. Describe the abandon ship drill, specifically the launching of the lifeboat and the correct use of the life jacket.", image: "set6_lifeboat.png" },
         { type: "debate", timeLimit: 120, prompt: "Marlins Debate: 'Social media and mobile phones should be completely banned on board to keep the crew focused on safety.' Do you agree or disagree?", image: "" }
     ],
     set7: [
@@ -99,7 +99,7 @@ const examSets = {
         { type: "short", timeLimit: 50, prompt: "In your opinion, who has the ultimate responsibility for safety on board a ship?", image: "" },
         { type: "short", timeLimit: 50, prompt: "What do you do to keep yourself physically fit during a long sea voyage?", image: "" },
         { type: "short", timeLimit: 50, prompt: "What do you know about garbage segregation and waste management according to MARPOL?", image: "" },
-        { type: "picture", timeLimit: 120, prompt: "Look at the picture. Explain how to correctly use a portable fire extinguisher (PASS method) on a small fire in the galley.", image: "img/set7_extinguisher.jpg" },
+        { type: "picture", timeLimit: 120, prompt: "Look at the picture. Explain how to correctly use a portable fire extinguisher (PASS method) on a small fire in the galley.", image: "set7_extinguisher.png" },
         { type: "debate", timeLimit: 120, prompt: "Marlins Debate: 'On a busy turnaround day, it is acceptable to skip the daily safety inspection rounds to save time.' What is your argument?", image: "" }
     ],
     set8: [
@@ -108,7 +108,7 @@ const examSets = {
         { type: "short", timeLimit: 50, prompt: "Can you briefly explain the 'Chain of Command' on a merchant vessel?", image: "" },
         { type: "short", timeLimit: 50, prompt: "Tell me about a 'near-miss' accident you have witnessed or heard about. How could it have been prevented?", image: "" },
         { type: "short", timeLimit: 50, prompt: "What does 'STCW' stand for, and why is this convention critical for your career?", image: "" },
-        { type: "picture", timeLimit: 120, prompt: "Look at the picture. Describe the potential safety hazards in the galley and the importance of wearing correct PPE while cooking.", image: "img/set8_galley.jpg" },
+        { type: "picture", timeLimit: 120, prompt: "Look at the picture. Describe the potential safety hazards in the galley and the importance of wearing correct PPE while cooking.", image: "set8_galley.png" },
         { type: "debate", timeLimit: 120, prompt: "Marlins Debate: 'Crew members should be allowed to keep a small amount of alcohol in their cabins to relax after long working hours.' Do you support this?", image: "" }
     ],
     set9: [
@@ -117,7 +117,7 @@ const examSets = {
         { type: "short", timeLimit: 50, prompt: "When the ship is berthing, how do you communicate with the Pilot effectively?", image: "" },
         { type: "short", timeLimit: 50, prompt: "Describe an emergency drill (fire, man overboard, or abandon ship) that you have actively participated in.", image: "" },
         { type: "short", timeLimit: 50, prompt: "How do you ensure that a proper lookout is maintained while you are on navigational watch?", image: "" },
-        { type: "picture", timeLimit: 120, prompt: "Look at the picture. Describe the bridge navigation equipment, including ECDIS and Radar, and how they assist in collision avoidance.", image: "img/set9_bridge.jpg" },
+        { type: "picture", timeLimit: 120, prompt: "Look at the picture. Describe the bridge navigation equipment, including ECDIS and Radar, and how they assist in collision avoidance.", image: "set9_bridge.png" },
         { type: "debate", timeLimit: 120, prompt: "Marlins Debate: 'When a Pilot is on board, the Master is completely relieved of all navigational responsibility.' Do you agree with this statement?", image: "" }
     ],
     set10: [
@@ -126,7 +126,7 @@ const examSets = {
         { type: "short", timeLimit: 50, prompt: "Seafaring can be lonely. How do you handle boredom and isolation during long voyages?", image: "" },
         { type: "short", timeLimit: 50, prompt: "Why is it vital to complete a 'pre-arrival checklist' before entering a foreign port?", image: "" },
         { type: "short", timeLimit: 50, prompt: "If you receive multiple conflicting orders from senior officers, how would you prioritize your tasks?", image: "" },
-        { type: "picture", timeLimit: 120, prompt: "Look at the picture. Describe the correct procedure for discharging ballast water and the environmental risks of oil spills during bunkering.", image: "img/set10_environment.jpg" },
+        { type: "picture", timeLimit: 120, prompt: "Look at the picture. Describe the correct procedure for discharging ballast water and the environmental risks of oil spills during bunkering.", image: "set10_environment.png" },
         { type: "debate", timeLimit: 120, prompt: "Marlins Debate: 'Regular crew safety drills are simply for passing inspections and do not actually prepare us for real emergencies.' Argue your position.", image: "" }
     ]
 };
@@ -170,29 +170,48 @@ const statGrammar = document.getElementById('stat-grammar');
 const statFluency = document.getElementById('stat-fluency');
 
 // ==========================================
-// 4. HELPER FUNCTION: Get Male Voice
+// 4. HELPER FUNCTION: Get MALE Voice (Any Device)
 // ==========================================
 function getMaleVoice() {
     const voices = speechSynth.getVoices();
-    
+    if (!voices || voices.length === 0) return null;
+
+    // 1. ကမ္ဘာ့အနှံ့သုံးတဲ့ နာမည်ကြီး Male / Clear အသံများ (Device မရွေး)
     const preferredVoices = [
         'Google UK English Male',
+        'Google US English Male',
         'Microsoft David Desktop',
         'Microsoft David',
-        'Google US English Male',
-        'Samantha',
-        'Alex'
+        'Alex',          // macOS အဓိက အသံ
+        'Samantha'       // Female ဖြစ်ပေမယ့် အရမ်းရှင်းလင်းတယ် (Fallback)
     ];
-    
-    for (let preferred of preferredVoices) {
-        const found = voices.find(voice => voice.name.includes(preferred));
-        if (found) return found;
+
+    // Preferred List ထဲက ရှာပါ
+    for (let pref of preferredVoices) {
+        const found = voices.find(v => v.name.includes(pref));
+        if (found) {
+            console.log(`✅ AI Male Voice Selected: ${found.name} (${found.lang})`);
+            return found;
+        }
     }
-    
-    const maleVoice = voices.find(voice => voice.name.toLowerCase().includes('male'));
-    if (maleVoice) return maleVoice;
-    
-    return voices[0] || null;
+
+    // 2. နာမည်ထဲမှာ "Male" ပါတဲ့ အသံကို ရှာပါ
+    const maleByName = voices.find(v => v.name.toLowerCase().includes('male'));
+    if (maleByName) {
+        console.log(`✅ AI Male Voice Selected (by name): ${maleByName.name}`);
+        return maleByName;
+    }
+
+    // 3. နာမည်ထဲမှာ "Female" မပါတဲ့ (သို့) ပထမဆုံး အသံကို ယူပါ
+    const nonFemale = voices.find(v => !v.name.toLowerCase().includes('female'));
+    if (nonFemale) {
+        console.log(`✅ AI Voice Selected (Non-Female): ${nonFemale.name}`);
+        return nonFemale;
+    }
+
+    // 4. နောက်ဆုံး Fallback
+    console.log(`✅ AI Voice Selected (Fallback): ${voices[0].name}`);
+    return voices[0];
 }
 
 // ==========================================
@@ -297,18 +316,19 @@ function loadQuestion(index) {
 }
 
 // ==========================================
-// 6. AI EXAMINER VOICE - MALE & CLEAR
+// 6. AI EXAMINER VOICE - MALE & CLEAR (Any Device)
 // ==========================================
 function triggerAIExaminerVoice(text, limit) {
     exStatus.innerText = "Examiner reading... (1/2)";
     
+    // Voice ကို ကြိုရွေးပါ (Any Device အတွက် အထူးပြင်ဆင်)
     const maleVoice = getMaleVoice();
     
     let speak1 = new SpeechSynthesisUtterance(text);
     speak1.lang = 'en-US';
-    speak1.rate = 0.9;
-    speak1.pitch = 1.0;
-    speak1.volume = 1;
+    speak1.rate = 0.9;        // ပြတ်သားစေဖို့ အနည်းငယ်နှေး
+    speak1.pitch = 1.0;       // သဘာဝအတိုင်း
+    speak1.volume = 1;        // အသံပြည့် (Maximum)
     if (maleVoice) speak1.voice = maleVoice;
 
     speak1.onend = () => {
@@ -411,6 +431,7 @@ function formatTime(secs) {
 }
 
 window.onload = () => {
+    // Device ပေါ်ရှိ Voice များကို ကြိုတင်ရယူပါ
     speechSynth.getVoices();
     
     if (localStorage.getItem('session_active') === 'true') {
@@ -420,6 +441,7 @@ window.onload = () => {
     }
 };
 
+// Browser က Voice စာရင်းပြောင်းတဲ့အခါ ထပ်မံရယူပါ
 speechSynth.onvoiceschanged = () => {
     speechSynth.getVoices();
 };
@@ -507,4 +529,3 @@ triggerAIExaminerVoice = function(text, limit) {
         originalTriggerAI.call(this, text, limit);
     }
 };
-
