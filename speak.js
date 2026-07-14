@@ -41,6 +41,7 @@ function verifySecureActivation() {
   authError.classList.add('hidden');
   deviceLockError.classList.add('hidden');
 
+  // အရင်က ပါခဲ့တဲ့ Reset ခလုတ်ကို ဖယ်ရှားလိုက်ပါ
   const oldResetBtn = document.getElementById('custom-reset-btn');
   if (oldResetBtn) oldResetBtn.remove();
 
@@ -49,26 +50,16 @@ function verifySecureActivation() {
   if (SECURE_ALLOWED_KEYS.includes(encodedEntered)) {
     const savedDeviceForThisKey = localStorage.getItem(`lock_${entered}`);
 
+    // ---------- ပင်မ ပြင်ဆင်ချက် (Strict Device Lock) ----------
+    // အကယ်၍ ဒီ Key ကို တစ်ခြားစက်မှာ သိမ်းဆည်းထားပြီးသားဆိုရင်
     if (savedDeviceForThisKey && savedDeviceForThisKey !== currentDevice) {
       deviceLockError.classList.remove('hidden');
-      deviceLockError.innerText = "🔒 ဒီ Key ကို အခြားတစ်ယောက်က အသုံးပြုထားပါတယ်။ အောက်က 'Reset Lock' ကိုနှိပ်ပြီး ဒီစက်မှာ ပြန်ဝင်ပါ။";
-
-      const resetBtn = document.createElement('button');
-      resetBtn.id = 'custom-reset-btn';
-      resetBtn.innerText = "🔄 Reset Lock & Login (ဒီစက်တွင် ဝင်ရန်)";
-      resetBtn.className = "mt-3 bg-amber-600 hover:bg-amber-700 text-white font-bold py-2 px-4 rounded-xl w-full transition";
-      resetBtn.onclick = () => {
-        localStorage.removeItem(`lock_${entered}`);
-        localStorage.setItem(`lock_${entered}`, currentDevice);
-        localStorage.setItem('session_active', 'true');
-        authScreen.classList.add('hidden');
-        startScreen.classList.remove('hidden');
-        initResponsiveDashboard();
-      };
-      deviceLockError.parentNode.appendChild(resetBtn);
-      return;
+      // Reset ခလုတ် မပါတော့ဘဲ သတိပေးစာတစ်ကြောင်းပဲ ပြမယ်
+      deviceLockError.innerText = "🔒 ဒီ Activation Key ကို အခြားစက်တွင် သုံးထားပြီးဖြစ်ပါတယ်။ ကျေးဇူးပြု၍ သင့်ကိုယ်ပိုင် Key ကိုသာ သုံးပါ။ (This key is already locked to another device.)";
+      return; // ဒီနေရာမှာပဲ ရပ်လိုက်မယ် (ဝင်ခွင့်မပေးဘူး)
     }
 
+    // အကယ်၍ ဒီ Key ကို ဘယ်စက်မှ မသုံးရသေးဘူး သို့မဟုတ် ဒီစက်မှာ သုံးထားပြီးသားဆိုရင်
     localStorage.setItem(`lock_${entered}`, currentDevice);
     localStorage.setItem('session_active', 'true');
     authScreen.classList.add('hidden');
