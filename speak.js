@@ -176,17 +176,15 @@ function getMaleVoice() {
     const voices = speechSynth.getVoices();
     if (!voices || voices.length === 0) return null;
 
-    // 1. ကမ္ဘာ့အနှံ့သုံးတဲ့ နာမည်ကြီး Male / Clear အသံများ (Device မရွေး)
     const preferredVoices = [
         'Google UK English Male',
         'Google US English Male',
         'Microsoft David Desktop',
         'Microsoft David',
-        'Alex',          // macOS အဓိက အသံ
-        'Samantha'       // Female ဖြစ်ပေမယ့် အရမ်းရှင်းလင်းတယ် (Fallback)
+        'Alex',
+        'Samantha'
     ];
 
-    // Preferred List ထဲက ရှာပါ
     for (let pref of preferredVoices) {
         const found = voices.find(v => v.name.includes(pref));
         if (found) {
@@ -195,27 +193,27 @@ function getMaleVoice() {
         }
     }
 
-    // 2. နာမည်ထဲမှာ "Male" ပါတဲ့ အသံကို ရှာပါ
     const maleByName = voices.find(v => v.name.toLowerCase().includes('male'));
     if (maleByName) {
         console.log(`✅ AI Male Voice Selected (by name): ${maleByName.name}`);
         return maleByName;
     }
 
-    // 3. နာမည်ထဲမှာ "Female" မပါတဲ့ (သို့) ပထမဆုံး အသံကို ယူပါ
     const nonFemale = voices.find(v => !v.name.toLowerCase().includes('female'));
     if (nonFemale) {
         console.log(`✅ AI Voice Selected (Non-Female): ${nonFemale.name}`);
         return nonFemale;
     }
 
-    // 4. နောက်ဆုံး Fallback
     console.log(`✅ AI Voice Selected (Fallback): ${voices[0].name}`);
     return voices[0];
 }
 
 // ==========================================
 // 5. FUNCTIONAL LOGIC & APP FLOW
+// ==========================================
+// ==========================================
+// VERIFY ACTIVATION (Debug Version with Reset)
 // ==========================================
 function verifySecureActivation() {
     const entered = keyInput.value.trim().toUpperCase();
@@ -224,24 +222,54 @@ function verifySecureActivation() {
     authError.classList.add('hidden');
     deviceLockError.classList.add('hidden');
 
+    // ရှိပြီးသား Reset Button ဟောင်းရှိရင် ဖျက်ပစ်မယ်
+    const oldResetBtn = document.getElementById('custom-reset-btn');
+    if (oldResetBtn) oldResetBtn.remove();
+
+    console.log("🔑 ရိုက်ထည့်ထားတဲ့ Key:", entered);
     const encodedEntered = btoa(entered);
+    console.log("🔐 Base64 ပြောင်းပြီးသား Key:", encodedEntered);
+    console.log("📋 ခွင့်ပြုထားတဲ့ Key စာရင်း:", SECURE_ALLOWED_KEYS);
 
     if (SECURE_ALLOWED_KEYS.includes(encodedEntered)) {
+        console.log("✅ Key မှန်ပါတယ်။");
         const savedDeviceForThisKey = localStorage.getItem(`lock_${entered}`);
+        console.log("💻 ဒီ Key အတွက် သိမ်းထားတဲ့ Device:", savedDeviceForThisKey);
+        console.log("📱 လက်ရှိသုံးနေတဲ့ Device:", currentDevice);
 
+        // Device Lock စစ်ဆေးခြင်း
         if (savedDeviceForThisKey && savedDeviceForThisKey !== currentDevice) {
+            console.warn("⚠️ Device မတူညီတာကြောင့် Lock ဖြစ်နေပါတယ်။");
             deviceLockError.classList.remove('hidden');
+            deviceLockError.innerText = "⚠️ ဒီ Key ကို အခြားစက်မှာ သုံးထားပါတယ်။ အောက်က 'Reset Lock' ကိုနှိပ်ပြီး ဒီစက်မှာ ပြန်ဝင်ပါ။";
+
+            // Reset Button ကို ထည့်ပေးမယ်
+            const resetBtn = document.createElement('button');
+            resetBtn.id = 'custom-reset-btn';
+            resetBtn.innerText = "🔄 Reset Lock & Login (ဒီစက်တွင် ဝင်ရန်)";
+            resetBtn.className = "mt-3 bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-xl w-full transition";
+            resetBtn.onclick = () => {
+                localStorage.removeItem(`lock_${entered}`);
+                localStorage.setItem(`lock_${entered}`, currentDevice);
+                localStorage.setItem('session_active', 'true');
+                authScreen.classList.add('hidden');
+                startScreen.classList.remove('hidden');
+                initResponsiveDashboard();
+            };
+            deviceLockError.parentNode.appendChild(resetBtn);
             return;
         }
 
+        // Lock မရှိရင် ပုံမှန်ဝင်ခွင့်ပြုမယ်
         localStorage.setItem(`lock_${entered}`, currentDevice);
         localStorage.setItem('session_active', 'true');
-
         authScreen.classList.add('hidden');
         startScreen.classList.remove('hidden');
         initResponsiveDashboard();
     } else {
+        console.error("❌ Key မှားနေပါတယ်။ စစ်ဆေးပါ။");
         authError.classList.remove('hidden');
+        authError.innerText = "❌ Activation Key မှားနေပါတယ်။ စစ်ဆေးပြီး ပြန်ရိုက်ပါ။ (စာလုံးအကြီးအသေး သေချာစစ်ပါ)";
     }
 }
 
@@ -316,28 +344,38 @@ function loadQuestion(index) {
 }
 
 // ==========================================
-// 6. AI EXAMINER VOICE - MALE & CLEAR (Any Device)
+// 6. AI EXAMINER VOICE - MALE & CLEAR (ANDROID PITCH FIX)
 // ==========================================
 function triggerAIExaminerVoice(text, limit) {
     exStatus.innerText = "Examiner reading... (1/2)";
     
-    // Voice ကို ကြိုရွေးပါ (Any Device အတွက် အထူးပြင်ဆင်)
     const maleVoice = getMaleVoice();
+    const isAndroid = /Android/i.test(navigator.userAgent);
     
+    // *** အဓိက ပြင်ဆင်ချက် ***
+    // Android ဖြစ်ရင် Pitch ကို 0.65 ထိ နိမ့်ချပြီး အမျိုးသားအသံပုံစံ ပြောင်းလဲပေးပါမယ်။
+    let selectedPitch = isAndroid ? 0.65 : 1.0;
+    
+    if (isAndroid) {
+        console.log("📢 Android တွေ့ရှိပါပြီ။ Pitch ကို 0.65 သို့ နိမ့်ချပါမည်။");
+    }
+
+    // ၁။ ပထမအကြိမ် ဖတ်ခြင်း
     let speak1 = new SpeechSynthesisUtterance(text);
     speak1.lang = 'en-US';
-    speak1.rate = 0.9;        // ပြတ်သားစေဖို့ အနည်းငယ်နှေး
-    speak1.pitch = 1.0;       // သဘာဝအတိုင်း
-    speak1.volume = 1;        // အသံပြည့် (Maximum)
+    speak1.rate = 0.9;          // ပြတ်သားအောင် နှေးထား
+    speak1.pitch = selectedPitch; // Android ဆို 0.65, တခြား 1.0
+    speak1.volume = 1;
     if (maleVoice) speak1.voice = maleVoice;
 
     speak1.onend = () => {
         setTimeout(() => {
+            // ၂။ ဒုတိယအကြိမ် ဖတ်ခြင်း (ပြန်ကြားခြင်း)
             exStatus.innerText = "Examiner repeating... (2/2)";
             let speak2 = new SpeechSynthesisUtterance(text);
             speak2.lang = 'en-US';
             speak2.rate = 0.9;
-            speak2.pitch = 1.0;
+            speak2.pitch = selectedPitch; // ဒီမှာလည်း Pitch အတူတူပဲ
             speak2.volume = 1;
             if (maleVoice) speak2.voice = maleVoice;
 
@@ -431,7 +469,6 @@ function formatTime(secs) {
 }
 
 window.onload = () => {
-    // Device ပေါ်ရှိ Voice များကို ကြိုတင်ရယူပါ
     speechSynth.getVoices();
     
     if (localStorage.getItem('session_active') === 'true') {
@@ -441,103 +478,14 @@ window.onload = () => {
     }
 };
 
-// Browser က Voice စာရင်းပြောင်းတဲ့အခါ ထပ်မံရယူပါ
 speechSynth.onvoiceschanged = () => {
     speechSynth.getVoices();
 };
 
 // ==========================================
-// 7. MOBILE VOICE RECOGNITION FIXES
+// 7. ANDROID MICROPHONE & VOICE FIX (အောက်ဆုံးမှာ ထားရမယ်)
 // ==========================================
-document.addEventListener('DOMContentLoaded', function() {
-    const startBtn = document.createElement('button');
-    startBtn.id = 'mic-start-btn';
-    startBtn.className = 'hidden';
-    document.body.appendChild(startBtn);
-    
-    if (recognizer) {
-        const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
-        if (isIOS) {
-            alert('⚠️ သင့်စက်က iOS ဖြစ်နေပါတယ်။ Voice Recognition အတွက် Android သို့မဟုတ် Desktop Chrome ကိုသုံးပေးပါ။');
-        }
-    }
-});
-
-if (recognizer) {
-    recognizer.continuous = true;
-    recognizer.interimResults = true;
-    recognizer.lang = 'en-US';
-    
-    if ('webkitSpeechRecognition' in window) {
-        recognizer.continuous = true;
-        recognizer.interimResults = true;
-    }
-    
-    recognizer.onerror = (event) => {
-        console.error('Speech Recognition Error:', event.error);
-        if (event.error === 'not-allowed') {
-            alert('⚠️ မိုက်ခရိုဖုန်းခွင့်ပြုချက် လိုအပ်ပါတယ်။ ခွင့်ပြုပေးပါ။');
-        } else if (event.error === 'no-speech') {
-            studentSpeech.innerText = "No speech detected. Please try again.";
-            setTimeout(() => {
-                if (recognizer) {
-                    try { recognizer.start(); } catch (e) {}
-                }
-            }, 1000);
-        }
-    };
-}
-
-function showMobileMicButton() {
-    const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
-    if (isMobile) {
-        const micBtn = document.getElementById('mic-start-btn');
-        if (micBtn) {
-            micBtn.classList.remove('hidden');
-            micBtn.innerHTML = '🎤 စကားပြောရန် နှိပ်ပါ';
-            micBtn.onclick = () => {
-                if (recognizer) {
-                    try {
-                        recognizer.start();
-                        studentSpeech.innerText = "🎤 စကားပြောနေပါ...";
-                    } catch (e) {
-                        console.log('Already listening or error:', e);
-                    }
-                }
-            };
-        }
-    }
-}
-
-const originalTriggerAI = triggerAIExaminerVoice;
-triggerAIExaminerVoice = function(text, limit) {
-    const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
-    
-    if (isMobile) {
-        if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
-            navigator.mediaDevices.getUserMedia({ audio: true })
-                .then(() => {
-                    originalTriggerAI.call(this, text, limit);
-                })
-                .catch(() => {
-                    alert('⚠️ မိုက်ခရိုဖုန်းခွင့်ပြုချက် လိုအပ်ပါတယ်။ Settings မှာ ခွင့်ပြုပေးပါ။');
-                });
-        } else {
-            originalTriggerAI.call(this, text, limit);
-        }
-    } else {
-        originalTriggerAI.call(this, text, limit);
-    }
-};
-// ... ရှိပြီးသား Code အကုန်လုံး ...
-
-speechSynth.onvoiceschanged = () => {
-    speechSynth.getVoices();
-};
-
-// ==========================================
-// (ဒီနေရာမှာ အောက်ပါ Code ကို ထည့်ပါ)
-// ==========================================
+// Android အတွက် Microphone သန့်ရှင်းရေး
 async function forceAndroidMicrophone() {
     const isAndroid = /Android/i.test(navigator.userAgent);
     if (!isAndroid) return;
@@ -563,6 +511,7 @@ async function forceAndroidMicrophone() {
     }
 }
 
+// Section 6 က triggerAIExaminerVoice ကို ပြန်အုပ်ပြီး Android အတွက် မိုက်သန့်ရှင်းမှု ထည့်ပေးခြင်း
 const originalTriggerAIForAndroid = triggerAIExaminerVoice;
 triggerAIExaminerVoice = function(text, limit) {
     const isAndroid = /Android/i.test(navigator.userAgent);
@@ -577,5 +526,3 @@ triggerAIExaminerVoice = function(text, limit) {
         originalTriggerAIForAndroid.call(this, text, limit);
     }
 };
-
-
