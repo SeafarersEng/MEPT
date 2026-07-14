@@ -8,7 +8,17 @@ const SECURITY_KEYS = {
     "VTNKMks1TDk=": "2027-08-30" ,
     "VTRBOEszUDc=": "2027-08-30",
     "VVNSOVQyTTY=": "2027-08-30",
-    "VTZFNVcxTjg=": "2027-08-30"  
+    "VTZFNVcxTjg=": "2027-08-30" ,
+    "VjdNNEsyTDk=": "2027-08-30", 
+    "VjhQMks1Ujc=": "2027-08-30",
+    "VjlDM1c0TTA=": "2027-08-30", 
+    "VjBBNUtTM1g=": "2027-08-30", 
+    "VzFQM043SzI=": "2027-08-30", 
+    "VzJUNks1VDQ=": "2027-08-30", 
+    "VzNCN1cxTjk=": "2027-08-30", 
+    "VzRBOFAyTTU=": "2027-08-30", 
+    "VzVNN1cxTDg=": "2027-08-30", 
+    "VzZEMks0UDM=": "2027-08-30",
 };
 
 // ============================================================
