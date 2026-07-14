@@ -3,135 +3,575 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MEPT Secure Simulator - BST Edition</title>
+    <title>MEPT Marlins Speaking Simulator</title>
     <!-- Tailwind CSS CDN -->
-    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
-    <!-- CryptoJS for Secure Hashing -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
-    <link rel="stylesheet" href="speak.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        /* Custom Scrollbar for modern look */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #1e293b;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #475569;
+            border-radius: 4px;
+        }
+    </style>
 </head>
-<body class="bg-slate-900 font-sans antialiased selection:bg-sky-500 selection:text-white">
+<body class="bg-slate-900 text-slate-100 min-h-screen flex items-center justify-center p-4 selection:bg-sky-500 selection:text-white">
 
-    <!-- 1. SECURE AUTH SCREEN (Simplifed: Enter Access Key Only) -->
-    <div id="auth-screen" class="flex flex-col items-center justify-center min-h-screen px-4 bg-slate-900 text-white">
-        <div class="w-full max-w-md bg-slate-800 p-8 rounded-2xl shadow-xl border border-slate-700 text-center">
-            <div class="flex justify-center mb-4 text-sky-400">
-                <svg class="w-12 h-12" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path>
-                </svg>
-            </div>
-            <h2 class="text-2xl font-bold mb-6 text-slate-100">MEPT Secure Simulator</h2>
-            
-            <div class="mb-5 text-left">
-                <label class="block text-sm font-medium text-slate-400 mb-2">Enter Access Key</label>
-                <input type="text" id="activation-key-input" placeholder="•••••••" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-4 py-3 text-center tracking-widest font-mono text-lg text-emerald-400 focus:outline-none focus:border-sky-500 uppercase">
-            </div>
+    <!-- CONTAINER -->
+    <div class="w-full max-w-xl bg-slate-800/60 backdrop-blur-xl border border-slate-700/50 rounded-3xl shadow-2xl p-6 md:p-8 relative overflow-hidden">
+        
+        <!-- ==========================================
+             STAGE 1: AUTHENTICATION SCREEN (SECURE ACCESS)
+             ========================================== -->
+        <div id="auth-screen" class="block animate-fade-in">
+            <!-- 🌐 Student Motivation Banner & Features -->
+            <div class="text-center mb-8">
+                <span class="inline-block bg-sky-500/10 text-sky-400 text-xs font-bold px-3 py-1.5 rounded-full uppercase tracking-wider border border-sky-500/20">
+                    ⚓ Maritime English Proficiency Test (MEPT) Preparation
+                </span>
+                
+                <h1 class="text-2xl md:text-3xl font-extrabold text-white mt-4 tracking-tight">
+                    Marlins Speaking Simulator
+                </h1>
+                
+                <p class="text-slate-400 text-xs md:text-sm mt-3 max-w-md mx-auto leading-relaxed">
+                    စစ်မှန်သော <span class="text-amber-400 font-semibold">Marlins Exam Platform</span> အတိုင်း ပုံစံတူ နီးပါး ဖန်တီးထားသည့် ဒိုင်နမစ်စနစ် ဖြစ်ပါသည်။ 
+                    AI Examiner မှ မေးခွန်းများကို တိုက်ရိုက်ဖတ်ပြမည်ဖြစ်ပြီး၊ မိမိ၏ အသံဖြင့် တုံ့ပြန်ဖြေဆိုရမည်ဖြစ်၍ <span class="text-sky-400 font-semibold">Speaking Test</span> အတွက် အထူးလေ့ကျင့်ရန် မဖြစ်မနေ အသုံးပြုသင့်ပါသည်။
+                </p>
 
-            <button onclick="verifySecureActivation()" class="w-full bg-emerald-500 hover:bg-emerald-600 text-slate-950 font-bold py-3 px-4 rounded-xl transition duration-200 active:scale-98 cursor-pointer">
-                Authorize Device
-            </button>
-
-            <!-- Error Messages -->
-            <p id="auth-error" class="text-rose-400 text-sm font-semibold mt-4 hidden">⚠️ Invalid Key Format or Access Refused!</p>
-            <p id="device-lock-error" class="text-amber-400 text-sm font-semibold mt-4 hidden">⚠️ Security Alert: Key locked to another machine!</p>
-        </div>
-    </div>
-
-    <!-- 2. START DASHBOARD SCREEN -->
-    <div id="start-screen" class="hidden min-h-screen flex flex-col justify-between bg-slate-900 text-white p-4 md:p-8">
-        <header class="flex justify-between items-center max-w-5xl w-full mx-auto border-b border-slate-800 pb-4">
-            <div>
-                <h1 class="text-xl md:text-2xl font-black text-sky-400 flex items-center gap-2">⚓ MEPT Secure Simulator</h1>
-                <p class="text-xs text-slate-400 font-mono">FYIDC Advanced Multi-Platform Client</p>
-            </div>
-            <button onclick="lockAppAccess()" class="bg-rose-500/10 hover:bg-rose-500 text-rose-400 hover:text-white px-3 py-1.5 rounded-lg text-xs font-bold border border-rose-500/20 transition cursor-pointer">Logout</button>
-        </header>
-
-        <main class="max-w-3xl w-full mx-auto my-auto text-center py-8">
-            <h2 class="text-xl md:text-3xl font-extrabold mb-2 tracking-tight">Select Training Assessment Matrix</h2>
-            <p class="text-sm text-slate-400 mb-8 max-w-md mx-auto">Choose a structural scenario set below. Each set tests core BST knowledge, picture identification, and Marlins debate fluency.</p>
-            
-            <div id="set-selector-grid" class="grid grid-cols-2 sm:grid-cols-5 gap-3 md:gap-4 max-w-2xl mx-auto">
-                <!-- JavaScript renders 10 dynamic sets here -->
-            </div>
-        </main>
-        <footer class="text-center text-xs text-slate-500 font-mono max-w-5xl w-full mx-auto border-t border-slate-800 pt-4">⚓ FYIDC STCW Assessment Core v4.2</footer>
-    </div>
-
-    <!-- 3. ACTIVE EXAMINATION SCREEN -->
-    <div id="exam-screen" class="hidden min-h-screen bg-slate-950 text-slate-100 p-4 md:p-6 flex flex-col justify-between">
-        <!-- Top Metrics Header -->
-        <div class="flex justify-between items-center bg-slate-900 border border-slate-800 p-4 rounded-2xl max-w-5xl w-full mx-auto shadow-md">
-            <span id="question-number" class="bg-sky-500/10 border border-sky-500/20 text-sky-400 px-4 py-1.5 rounded-xl text-xs md:text-sm font-black font-mono">Q 1/5</span>
-            <div class="flex items-center gap-3">
-                <span id="timer-display" class="font-mono text-base md:text-lg font-bold text-amber-400">00:00</span>
-                <div class="w-24 md:w-40 bg-slate-950 rounded-full h-2.5 overflow-hidden border border-slate-800">
-                    <div id="timer-bar" class="bg-gradient-to-r from-amber-500 to-orange-500 h-full w-full transition-all duration-1000 ease-linear"></div>
+                <div class="grid grid-cols-3 gap-2 mt-6 max-w-sm mx-auto text-center text-[11px] md:text-xs">
+                    <div class="bg-slate-800/80 border border-slate-700/60 p-2.5 rounded-xl shadow-sm">
+                        <span class="block text-lg mb-1">🎙️</span>
+                        <span class="text-slate-300 font-medium block">Voice Recognition</span>
+                        <span class="text-slate-500 text-[10px]">အသံဖမ်းစနစ်</span>
+                    </div>
+                    <div class="bg-slate-800/80 border border-slate-700/60 p-2.5 rounded-xl shadow-sm">
+                        <span class="block text-lg mb-1">⏱️</span>
+                        <span class="text-slate-300 font-medium block">Real-time Timer</span>
+                        <span class="text-slate-500 text-[10px]">အချိန်ကိုက်စစ်ဆေးမှု</span>
+                    </div>
+                    <div class="bg-slate-800/80 border border-slate-700/60 p-2.5 rounded-xl shadow-sm">
+                        <span class="block text-lg mb-1">📊</span>
+                        <span class="text-slate-300 font-medium block">Marlins Grading</span>
+                        <span class="text-slate-500 text-[10px]">အလိုအလျောက် အမှတ်ပေးစနစ်</span>
+                    </div>
                 </div>
             </div>
-        </div>
 
-        <!-- Main Dynamic Canvas Content -->
-        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 max-w-5xl w-full mx-auto my-auto py-6 items-stretch">
-            <!-- Left Prompt Frame -->
-            <div class="lg:col-span-7 bg-slate-900 border border-slate-800 rounded-3xl p-5 md:p-6 shadow-xl flex flex-col justify-between min-h-[300px]">
+            <!-- Activation Input Box -->
+            <div class="space-y-4 max-w-sm mx-auto">
                 <div>
-                    <span class="text-[10px] tracking-widest font-mono text-slate-400 uppercase block mb-1">STCW Core Evaluation Prompt</span>
-                    <h3 id="question-prompt" class="text-base md:text-lg font-bold leading-relaxed text-slate-100">Loading evaluation criteria scenario...</h3>
+                    <label class="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">Enter Secure Activation Key</label>
+                    <input id="activation-key-input" type="text" placeholder="XXXX-XXXX-XXXX" 
+                           class="w-full bg-slate-900/90 border border-slate-700 focus:border-sky-500 text-white font-mono text-center text-lg rounded-xl py-3 px-4 outline-none transition uppercase tracking-widest placeholder:text-slate-600 shadow-inner">
                 </div>
                 
-                <div class="mt-4 pt-4 border-t border-slate-800/60">
-                    <span class="text-[10px] tracking-widest font-mono text-emerald-400 uppercase block mb-1">Live Audio Capturing Transcript</span>
-                    <p id="student-speech" class="text-sm text-slate-300 italic min-h-[60px] bg-slate-950/50 p-3 rounded-xl border border-slate-850">Awaiting audio examiner clearance...</p>
+                <button onclick="verifySecureActivation()" 
+                        class="w-full bg-gradient-to-r from-sky-600 to-blue-600 hover:from-sky-500 hover:to-blue-500 text-white font-bold py-3 px-4 rounded-xl shadow-lg transition active:scale-[0.98] cursor-pointer">
+                    Activate Device & Launch
+                </button>
+
+                <!-- Error Messages -->
+                <p id="auth-error" class="text-rose-400 text-xs text-center font-medium hidden">❌ Invalid token key. Please consult your training administrator.</p>
+                <p id="device-lock-error" class="text-amber-400 text-xs text-center font-medium hidden">🔒 Security Lock: This key is already registered to another device fingerprint.</p>
+            </div>
+        </div>
+
+        <!-- ==========================================
+             STAGE 2: RESPONSIVE DASHBOARD (START SCREEN)
+             ========================================== -->
+        <div id="start-screen" class="hidden animate-fade-in">
+            <div class="flex items-center justify-between mb-6 border-b border-slate-700/50 pb-4">
+                <div>
+                    <h2 class="text-xl font-bold text-white">Exam Simulator Sets</h2>
+                    <p class="text-xs text-slate-400">Select an assessment pool to evaluate fluency metrics.</p>
+                </div>
+                <button onclick="lockAppAccess()" class="text-xs bg-slate-700/50 hover:bg-rose-600/20 hover:text-rose-400 border border-slate-600/50 text-slate-300 px-3 py-1.5 rounded-lg transition cursor-pointer">
+                    Lock Terminal
+                </button>
+            </div>
+
+            <!-- FIX: ၁ စုံမှ ၁၀ စုံအထိ ခလုတ်အားလုံး ပေါ်မည့် နေရာ -->
+            <div id="set-selector-grid" class="grid grid-cols-2 sm:grid-cols-3 gap-3 my-6">
+                <!-- Javascript will render 10 Sets dynamically here -->
+            </div>
+        </div>
+
+        <!-- ==========================================
+             STAGE 3: LIVE ASSESSMENT INTERFACE (EXAM SCREEN)
+             ========================================== -->
+        <div id="exam-screen" class="hidden animate-fade-in space-y-6">
+            <!-- Header Progress & Timer -->
+            <div class="flex items-center justify-between bg-slate-900/50 p-3 rounded-xl border border-slate-700/30">
+                <span id="question-number" class="text-xs font-bold text-sky-400 uppercase tracking-widest">Q 1/7</span>
+                <div class="flex items-center space-x-2">
+                    <span class="text-[11px] text-slate-400 uppercase font-medium">Remaining Time:</span>
+                    <span id="timer-display" class="font-mono text-sm font-bold text-amber-400 bg-amber-500/10 border border-amber-500/20 px-2 py-0.5 rounded">00:00</span>
                 </div>
             </div>
 
-            <!-- Right Visual Canvas Frame -->
-            <div class="lg:col-span-5 bg-slate-900 border border-slate-800 rounded-3xl overflow-hidden p-4 shadow-xl flex flex-col items-center justify-center min-h-[300px]">
-                <img id="exam-picture" src="" alt="Marlins Visual Assessment" class="w-full h-full object-cover rounded-xl shadow-md hidden">
-                <div id="ai-avatar" class="text-center p-6">
-                    <div class="w-20 h-20 bg-sky-500/10 border border-sky-500/20 rounded-full flex items-center justify-center mx-auto mb-4 animate-pulse">
-                        <svg class="w-10 h-10 text-sky-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 100-6 3 3 0 000 6z"></path>
-                        </svg>
+            <!-- Dynamic Progress Bar -->
+            <div class="w-full bg-slate-900 h-1.5 rounded-full overflow-hidden">
+                <div id="timer-bar" class="bg-gradient-to-r from-sky-500 to-blue-500 h-full transition-all duration-1000 ease-linear" style="width: 100%;"></div>
+            </div>
+
+            <!-- Examiner Status Badge -->
+            <div class="flex justify-center">
+                <span id="examiner-status" class="bg-slate-700 text-slate-200 text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-wider animate-pulse">
+                    Awaiting Examiner...
+                </span>
+            </div>
+
+            <!-- Visual Component Area -->
+            <div class="relative w-full h-48 bg-slate-900 rounded-2xl overflow-hidden border border-slate-700/40 flex items-center justify-center">
+                <!-- AI Avatar Mode -->
+                <div id="ai-avatar" class="text-center space-y-2">
+                    <div class="w-16 h-16 bg-gradient-to-tr from-sky-500 to-blue-600 rounded-full mx-auto flex items-center justify-center shadow-lg shadow-sky-500/20 ring-4 ring-slate-800">
+                        <span class="text-2xl">🤖</span>
                     </div>
-                    <span id="examiner-status" class="text-xs font-mono font-bold tracking-wider text-slate-400 uppercase">System Initializing</span>
+                    <p class="text-xs font-semibold text-slate-400 uppercase tracking-wider">AI Examiner Active</p>
+                </div>
+                <!-- Picture Mode (Hidden by default) -->
+                <img id="exam-picture" src="" alt="Marlins Resource Scene" class="w-full h-full object-cover hidden">
+            </div>
+
+            <!-- Question Prompt Box -->
+            <div class="bg-slate-900/80 rounded-2xl p-4 border border-slate-700/50 shadow-inner">
+                <p id="question-prompt" class="text-sm md:text-base font-medium text-slate-100 leading-relaxed text-center">
+                    Initializing test prompt vector...
+                </p>
+            </div>
+
+            <!-- Real-time Speech Transcription Box -->
+            <div class="space-y-2">
+                <label class="block text-[11px] font-bold text-slate-400 uppercase tracking-wider">Live Candidate Response Stream</label>
+                <div class="w-full min-h-[70px] max-h-[100px] bg-slate-950/60 border border-slate-800 rounded-xl p-3 text-xs md:text-sm text-slate-300 font-mono overflow-y-auto leading-relaxed">
+                    <p id="student-speech">Awaiting audio examiner clearance...</p>
                 </div>
             </div>
-        </div>
 
-        <!-- Action Layout Control -->
-        <div class="flex justify-end max-w-5xl w-full mx-auto">
-            <button id="btn-next" class="bg-gradient-to-r from-sky-500 to-blue-600 hover:from-sky-600 hover:to-blue-700 text-white font-bold py-3 px-8 rounded-2xl shadow-lg transition active:scale-95 cursor-pointer text-sm">
-                Submit Response & Next ➔
+            <!-- Next Action Trigger Button -->
+            <button id="btn-next" class="w-full bg-slate-700 hover:bg-sky-600 text-white font-bold py-3 px-4 rounded-xl shadow-md transition active:scale-[0.99] flex items-center justify-center space-x-2 cursor-pointer">
+                <span>Skip / Submit Answer</span>
+                <span>➡️</span>
             </button>
         </div>
-    </div>
 
-    <!-- 4. EVALUATION REPORT SCORE SCREEN -->
-    <div id="finish-screen" class="hidden min-h-screen bg-slate-900 text-white p-4 md:p-8 flex flex-col justify-center items-center">
-        <div class="w-full max-w-xl bg-slate-800 border border-slate-700 rounded-3xl p-6 md:p-8 shadow-2xl text-center">
-            <div id="grade-badge" class="w-20 h-20 mx-auto flex items-center justify-center rounded-full text-4xl font-extrabold text-slate-950 shadow-inner bg-emerald-400 mb-4">A</div>
-            <h2 id="grade-title" class="text-2xl font-black tracking-tight mb-2">Grade A - Professional Pass</h2>
-            <p id="grade-desc" class="text-sm text-slate-400 px-4 mb-6">The candidate displays strong syntax flow, deep vocabulary control and natural delivery matching technical crew requirements.</p>
-            
-            <div class="bg-slate-900/60 border border-slate-750 rounded-2xl p-4 text-left space-y-3 mb-6 font-mono text-xs">
-                <div class="flex justify-between border-b border-slate-800 pb-2"><span class="text-slate-400">Lexical Vocabulary:</span> <span id="stat-vocab" class="text-slate-200 font-bold">Standard</span></div>
-                <div class="flex justify-between border-b border-slate-800 pb-2"><span class="text-slate-400">Grammar Architecture:</span> <span id="stat-grammar" class="text-slate-200 font-bold">Standard</span></div>
-                <div class="flex justify-between pb-1"><span class="text-slate-400">Fluency Production:</span> <span id="stat-fluency" class="text-slate-200 font-bold">Standard</span></div>
+        <!-- ==========================================
+             STAGE 4: ANALYTICS & GRADECARD (FINISH SCREEN)
+             ========================================== -->
+        <div id="finish-screen" class="hidden animate-fade-in text-center space-y-6">
+            <div class="space-y-2">
+                <h2 class="text-2xl font-extrabold text-white">Assessment Complete</h2>
+                <p class="text-xs text-slate-400">Automated Performance Metrics based on Marlins criteria.</p>
             </div>
 
-            <button onclick="resetToDashboard()" class="bg-slate-700 hover:bg-slate-600 text-white font-bold py-3 px-6 rounded-xl transition duration-150 active:scale-95 cursor-pointer text-sm">
-                Return to Dashboard Menu
+            <!-- Grade Badge Output -->
+            <div class="py-4">
+                <div id="grade-badge" class="w-20 h-20 mx-auto flex items-center justify-center rounded-full text-4xl font-extrabold text-slate-950 shadow-inner bg-emerald-400">
+                    -
+                </div>
+                <h3 id="grade-title" class="text-lg font-bold text-white mt-3">Evaluating...</h3>
+                <p id="grade-desc" class="text-xs text-slate-400 max-w-sm mx-auto mt-1 leading-relaxed">
+                    Processing response architecture logs.
+                </p>
+            </div>
+
+            <!-- Metric Specific Grid -->
+            <div class="bg-slate-900/60 border border-slate-700/40 rounded-2xl p-4 text-left space-y-3 text-xs">
+                <div class="flex justify-between border-b border-slate-800 pb-2">
+                    <span class="text-slate-400">Lexical Resource (Vocab):</span>
+                    <span id="stat-vocab" class="font-semibold text-slate-200">-</span>
+                </div>
+                <div class="flex justify-between border-b border-slate-800 pb-2">
+                    <span class="text-slate-400">Grammatical Range:</span>
+                    <span id="stat-grammar" class="font-semibold text-slate-200">-</span>
+                </div>
+                <div class="flex justify-between">
+                    <span class="text-slate-400">Fluency & Word Yield:</span>
+                    <span id="stat-fluency" class="font-semibold text-slate-200">-</span>
+                </div>
+            </div>
+
+            <!-- Reset Router -->
+            <button onclick="resetToDashboard()" class="w-full bg-sky-600 hover:bg-sky-500 text-white font-bold py-3 px-4 rounded-xl shadow-lg transition active:scale-[0.99] cursor-pointer">
+                Return to Simulator Dashboard
             </button>
         </div>
+
     </div>
+
+    <!-- ==========================================
+         JAVASCRIPT LOGIC ENGINE
+         ========================================== -->
     <script>
-        // iOS စစ်ဆေးခြင်း
-        if (/iPad|iPhone|iPod/.test(navigator.userAgent)) {
-            alert('📱 သင့်စက်က iOS ဖြစ်နေပါတယ်။\nVoice Recognition အလုပ်မလုပ်နိုင်ပါ။\nAndroid သို့မဟုတ် Chrome Browser ကိုသုံးပေးပါ။');
+        // ==========================================
+        // 1. ACCESS CONTROL & FINGERPRINT SECURITY
+        // ==========================================
+        const SECURE_ALLOWED_KEYS = ["6E5W1N1", "6E5W1N2", "6E5W1N3", "6E5W1N4", "6E5W1N5"];
+
+        function generateDeviceFingerprint() {
+            let navigator_info = window.navigator.userAgent + window.navigator.language + window.screen.colorDepth;
+            let hash = 0;
+            for (let i = 0; i < navigator_info.length; i++) {
+                hash = (hash << 5) - hash + navigator_info.charCodeAt(i);
+                hash |= 0;
+            }
+            return Math.abs(hash).toString(16);
         }
+
+        // ==========================================
+        // 2. DATA MATRIX: 10-SET MEPT SPEAKING
+        // ==========================================
+        const examSets = {
+            set1: [
+                { type: "short", timeLimit: 50, prompt: "Introduce yourself and tell me where you live.", image: "" },
+                { type: "short", timeLimit: 50, prompt: "Why do you want to become a seafarer?", image: "" },
+                { type: "short", timeLimit: 50, prompt: "What is your target rank on board, and what are the main duties?", image: "" },
+                { type: "short", timeLimit: 50, prompt: "What are your hobbies or interests in your free time?", image: "" },
+                { type: "short", timeLimit: 50, prompt: "How do you feel about working with a multicultural crew?", image: "" },
+                { type: "picture", timeLimit: 120, prompt: "Look at the picture. Describe the fire-fighting drill being performed on deck, including the equipment and PPE used.", image: "img/set1_firefight.jpg" },
+                { type: "debate", timeLimit: 120, prompt: "Marlins Debate: 'In very hot weather, seafarers should be allowed to not wear heavy boilersuits or safety shoes to prevent heatstroke.' What is your position?", image: "" }
+            ],
+            set2: [
+                { type: "short", timeLimit: 50, prompt: "Please state your full name and Passport number.", image: "" },
+                { type: "short", timeLimit: 50, prompt: "Who encouraged or inspired you to join the maritime industry?", image: "" },
+                { type: "short", timeLimit: 50, prompt: "How will you handle being away from your family for many months?", image: "" },
+                { type: "short", timeLimit: 50, prompt: "What is the most important quality of a good seafarer, in your opinion?", image: "" },
+                { type: "short", timeLimit: 50, prompt: "What is your long-term goal in this career?", image: "" },
+                { type: "picture", timeLimit: 120, prompt: "Look at the picture. Describe the mooring operation at the forward station, including the PPE and safety precautions.", image: "img/set2_mooring.jpg" },
+                { type: "debate", timeLimit: 120, prompt: "Marlins Debate: 'If a crewmember falls overboard, you should jump into the water immediately to save him before you lose sight of him.' Do you agree?", image: "" }
+            ],
+            set3: [
+                { type: "short", timeLimit: 50, prompt: "Please introduce yourself and state your date of birth.", image: "" },
+                { type: "short", timeLimit: 50, prompt: "Seafaring is a hard and stressful job. Why do you still want to do it?", image: "" },
+                { type: "short", timeLimit: 50, prompt: "Where did you complete your pre-sea and BST training?", image: "" },
+                { type: "short", timeLimit: 50, prompt: "If a company offers you a contract that is longer than usual, will you accept it?", image: "" },
+                { type: "short", timeLimit: 50, prompt: "What department will you work in, and what is your current knowledge about it?", image: "" },
+                { type: "picture", timeLimit: 120, prompt: "Look at the picture. Explain the meaning of the 'Snap-Back Zone' markings and why seafarers must avoid this area during mooring.", image: "img/set3_snapback.jpg" },
+                { type: "debate", timeLimit: 120, prompt: "Marlins Debate: 'You are busy, and you just need to enter a pump room for 2 minutes to check a gauge. It is okay to enter without a permit as long as you are quick.' Do you agree?", image: "" }
+            ],
+            set4: [
+                { type: "short", timeLimit: 50, prompt: "Introduce yourself and mention the type of ship you prefer to work on.", image: "" },
+                { type: "short", timeLimit: 50, prompt: "What is your strongest quality that will make you a good seafarer?", image: "" },
+                { type: "short", timeLimit: 50, prompt: "Seafaring involves a lot of teamwork. Can you give an example of how you work in a team?", image: "" },
+                { type: "short", timeLimit: 50, prompt: "What is your current English proficiency level for maritime work?", image: "" },
+                { type: "short", timeLimit: 50, prompt: "If your superior asks you to do something that is not safe, what will you do?", image: "" },
+                { type: "picture", timeLimit: 120, prompt: "Look at the picture. Describe the watchkeeping duties in the Engine Control Room and the importance of monitoring machinery parameters.", image: "img/set4_ecr.jpg" },
+                { type: "debate", timeLimit: 120, prompt: "Marlins Debate: 'Port State Control (PSC) is just trouble. Seafarers should hide any problems from the inspectors to avoid ship detention.' What is your view?", image: "" }
+            ],
+            set5: [
+                { type: "short", timeLimit: 50, prompt: "Introduce yourself and state your father's name.", image: "" },
+                { type: "short", timeLimit: 50, prompt: "What are your career aspirations for the next 5 years?", image: "" },
+                { type: "short", timeLimit: 50, prompt: "Seafarers face rough sea conditions. Are you physically and mentally ready?", image: "" },
+                { type: "short", timeLimit: 50, prompt: "How do you spend your free time while you are waiting for a ship contract?", image: "" },
+                { type: "short", timeLimit: 50, prompt: "If a crewmember from another country disrespects your culture, how will you respond?", image: "" },
+                { type: "picture", timeLimit: 120, prompt: "Look at the picture. Describe the CPR (Cardiopulmonary Resuscitation) procedure being performed and explain why first aid training is essential at sea.", image: "img/set5_cpr.jpg" },
+                { type: "debate", timeLimit: 120, prompt: "Marlins Debate: 'Safety Management System (SMS) paperwork is a waste of time. It is better to just focus on the physical job and skip the forms.' Argue your position.", image: "" }
+            ],
+            set6: [
+                { type: "short", timeLimit: 50, prompt: "Introduce yourself and tell me about your hometown.", image: "" },
+                { type: "short", timeLimit: 50, prompt: "If this is your first ship, what are you most looking forward to? (or describe your previous ship experience).", image: "" },
+                { type: "short", timeLimit: 50, prompt: "What are your salary expectations, and how do you plan to utilize your income?", image: "" },
+                { type: "short", timeLimit: 50, prompt: "How do you usually cope with sea sickness, bad weather, or high stress on board?", image: "" },
+                { type: "short", timeLimit: 50, prompt: "How important is it to maintain a good professional relationship with the Chief Officer or Chief Engineer?", image: "" },
+                { type: "picture", timeLimit: 120, prompt: "Look at the picture. Describe the abandon ship drill, specifically the launching of the lifeboat and the correct use of the life jacket.", image: "img/set6_lifeboat.jpg" },
+                { type: "debate", timeLimit: 120, prompt: "Marlins Debate: 'Social media and mobile phones should be completely banned on board to keep the crew focused on safety.' Do you agree or disagree?", image: "" }
+            ],
+            set7: [
+                { type: "short", timeLimit: 50, prompt: "Please state your full name and current residential address.", image: "" },
+                { type: "short", timeLimit: 50, prompt: "Can you describe any shore-based job or previous sea experience you have had?", image: "" },
+                { type: "short", timeLimit: 50, prompt: "In your opinion, who has the ultimate responsibility for safety on board a ship?", image: "" },
+                { type: "short", timeLimit: 50, prompt: "What do you do to keep yourself physically fit during a long sea voyage?", image: "" },
+                { type: "short", timeLimit: 50, prompt: "What do you know about garbage segregation and waste management according to MARPOL?", image: "" },
+                { type: "picture", timeLimit: 120, prompt: "Look at the picture. Explain how to correctly use a portable fire extinguisher (PASS method) on a small fire in the galley.", image: "img/set7_extinguisher.jpg" },
+                { type: "debate", timeLimit: 120, prompt: "Marlins Debate: 'On a busy turnaround day, it is acceptable to skip the daily safety inspection rounds to save time.' What is your argument?", image: "" }
+            ],
+            set8: [
+                { type: "short", timeLimit: 50, prompt: "Introduce yourself including your age and nationality.", image: "" },
+                { type: "short", timeLimit: 50, prompt: "Why did you choose this specific rank (e.g., OS, AB, Oiler, 3rd Officer) to apply for?", image: "" },
+                { type: "short", timeLimit: 50, prompt: "Can you briefly explain the 'Chain of Command' on a merchant vessel?", image: "" },
+                { type: "short", timeLimit: 50, prompt: "Tell me about a 'near-miss' accident you have witnessed or heard about. How could it have been prevented?", image: "" },
+                { type: "short", timeLimit: 50, prompt: "What does 'STCW' stand for, and why is this convention critical for your career?", image: "" },
+                { type: "picture", timeLimit: 120, prompt: "Look at the picture. Describe the potential safety hazards in the galley and the importance of wearing correct PPE while cooking.", image: "img/set8_galley.jpg" },
+                { type: "debate", timeLimit: 120, prompt: "Marlins Debate: 'Crew members should be allowed to keep a small amount of alcohol in their cabins to relax after long working hours.' Do you support this?", image: "" }
+            ],
+            set9: [
+                { type: "short", timeLimit: 50, prompt: "Introduce yourself and describe your educational background.", image: "" },
+                { type: "short", timeLimit: 50, prompt: "What specifically attracts you to deep-sea shipping or offshore work?", image: "" },
+                { type: "short", timeLimit: 50, prompt: "When the ship is berthing, how do you communicate with the Pilot effectively?", image: "" },
+                { type: "short", timeLimit: 50, prompt: "Describe an emergency drill (fire, man overboard, or abandon ship) that you have actively participated in.", image: "" },
+                { type: "short", timeLimit: 50, prompt: "How do you ensure that a proper lookout is maintained while you are on navigational watch?", image: "" },
+                { type: "picture", timeLimit: 120, prompt: "Look at the picture. Describe the bridge navigation equipment, including ECDIS and Radar, and how they assist in collision avoidance.", image: "img/set9_bridge.jpg" },
+                { type: "debate", timeLimit: 120, prompt: "Marlins Debate: 'When a Pilot is on board, the Master is completely relieved of all navigational responsibility.' Do you agree with this statement?", image: "" }
+            ],
+            set10: [
+                { type: "short", timeLimit: 50, prompt: "Introduce yourself and tell me about your family background.", image: "" },
+                { type: "short", timeLimit: 50, prompt: "What do you understand about MARPOL Annex V regarding the discharge of garbage at sea?", image: "" },
+                { type: "short", timeLimit: 50, prompt: "Seafaring can be lonely. How do you handle boredom and isolation during long voyages?", image: "" },
+                { type: "short", timeLimit: 50, prompt: "Why is it vital to complete a 'pre-arrival checklist' before entering a foreign port?", image: "" },
+                { type: "short", timeLimit: 50, prompt: "If you receive multiple conflicting orders from senior officers, how would you prioritize your tasks?", image: "" },
+                { type: "picture", timeLimit: 120, prompt: "Look at the picture. Describe the correct procedure for discharging ballast water and the environmental risks of oil spills during bunkering.", image: "img/set10_environment.jpg" },
+                { type: "debate", timeLimit: 120, prompt: "Marlins Debate: 'Regular crew safety drills are simply for passing inspections and do not actually prepare us for real emergencies.' Argue your position.", image: "" }
+            ]
+        };
+
+        // ==========================================
+        // 3. GLOBAL CONFIGURATIONS & STATE MANAGEMENT
+        // ==========================================
+        let currentActiveSet = [];
+        let currentIndex = 0;
+        let timerInterval = null;
+        let cumulativeWordCount = 0;
+
+        let speechSynth = window.speechSynthesis;
+        let speechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+        let recognizer = speechRecognition ? new speechRecognition() : null;
+
+        const authScreen = document.getElementById('auth-screen');
+        const startScreen = document.getElementById('start-screen');
+        const examScreen = document.getElementById('exam-screen');
+        const finishScreen = document.getElementById('finish-screen');
+        const keyInput = document.getElementById('activation-key-input');
+        const authError = document.getElementById('auth-error');
+        const deviceLockError = document.getElementById('device-lock-error');
+        const setGrid = document.getElementById('set-selector-grid');
+
+        const btnNext = document.getElementById('btn-next');
+        const qNumber = document.getElementById('question-number');
+        const timerDisplay = document.getElementById('timer-display');
+        const timerBar = document.getElementById('timer-bar');
+        const qPrompt = document.getElementById('question-prompt');
+        const studentSpeech = document.getElementById('student-speech');
+        const examPic = document.getElementById('exam-picture');
+        const aiAvatar = document.getElementById('ai-avatar');
+        const exStatus = document.getElementById('examiner-status');
+
+        const gradeBadge = document.getElementById('grade-badge');
+        const gradeTitle = document.getElementById('grade-title');
+        const gradeDesc = document.getElementById('grade-desc');
+        const statVocab = document.getElementById('stat-vocab');
+        const statGrammar = document.getElementById('stat-grammar');
+        const statFluency = document.getElementById('stat-fluency');
+
+        // ==========================================
+        // 4. FUNCTIONAL LOGIC & APP FLOW
+        // ==========================================
+        function verifySecureActivation() {
+            const entered = keyInput.value.trim().toUpperCase();
+            const currentDevice = generateDeviceFingerprint();
+
+            authError.classList.add('hidden');
+            deviceLockError.classList.add('hidden');
+
+            if (SECURE_ALLOWED_KEYS.includes(entered)) {
+                const savedDeviceForThisKey = localStorage.getItem(`lock_${entered}`);
+
+                if (savedDeviceForThisKey && savedDeviceForThisKey !== currentDevice) {
+                    deviceLockError.classList.remove('hidden');
+                    return;
+                }
+
+                localStorage.setItem(`lock_${entered}`, currentDevice);
+                localStorage.setItem('session_active', 'true');
+
+                authScreen.classList.add('hidden');
+                startScreen.classList.remove('hidden');
+                initResponsiveDashboard();
+            } else {
+                authError.classList.remove('hidden');
+            }
+        }
+
+        function lockAppAccess() {
+            localStorage.removeItem('session_active');
+            startScreen.classList.add('hidden');
+            authScreen.classList.remove('hidden');
+            keyInput.value = '';
+        }
+
+        // FIX: ၁ စုံမှ ၁၀ စုံအထိ ခလုတ်တွေအကုန် အမှားအယွင်းမရှိ ပေါ်လာစေရန် ပြင်ဆင်ပြီးသား Loop
+        function initResponsiveDashboard() {
+            setGrid.innerHTML = '';
+            for (let i = 1; i <= 10; i++) { 
+                const btn = document.createElement('button');
+                btn.className = "bg-slate-700 hover:bg-sky-600 text-white font-bold py-3 px-2 rounded-xl text-xs md:text-sm shadow-sm transition active:scale-95 cursor-pointer text-center";
+                btn.innerText = `⚓ Set ${i}`;
+                btn.onclick = () => launchSelectedSet(`set${i}`);
+                setGrid.appendChild(btn);
+            }
+        }
+
+        if (recognizer) {
+            recognizer.continuous = true;
+            recognizer.interimResults = true;
+            recognizer.lang = 'en-US';
+            recognizer.onresult = (event) => {
+                let text = '';
+                for (let i = event.resultIndex; i < event.results.length; ++i) {
+                    text += event.results[i][0].transcript;
+                }
+                studentSpeech.innerText = text;
+            };
+        }
+
+        btnNext.addEventListener('click', () => nextQuestion());
+
+        function launchSelectedSet(setName) {
+            currentActiveSet = examSets[setName];
+            currentIndex = 0;
+            cumulativeWordCount = 0;
+            startScreen.classList.add('hidden');
+            examScreen.classList.remove('hidden');
+            loadQuestion(currentIndex);
+        }
+
+        function loadQuestion(index) {
+            if (index >= currentActiveSet.length) {
+                processMarlinsGradeMetric();
+                return;
+            }
+
+            clearInterval(timerInterval);
+            if (recognizer) { try { recognizer.stop(); } catch (e) {} }
+            studentSpeech.innerText = "Awaiting audio examiner clearance...";
+
+            let currentQ = currentActiveSet[index];
+            qNumber.innerText = `Q ${index + 1}/${currentActiveSet.length}`;
+            qPrompt.innerText = currentQ.prompt;
+            timerDisplay.innerText = formatTime(currentQ.timeLimit);
+            timerBar.style.width = '100%';
+
+            if (currentQ.image) {
+                examPic.src = currentQ.image;
+                examPic.classList.remove('hidden');
+                aiAvatar.classList.add('hidden');
+            } else {
+                examPic.classList.add('hidden');
+                aiAvatar.classList.remove('hidden');
+            }
+
+            triggerAIExaminerVoice(currentQ.prompt, currentQ.timeLimit);
+        }
+
+        function triggerAIExaminerVoice(text, limit) {
+            exStatus.innerText = "Examiner reading... (1/2)";
+            let speak1 = new SpeechSynthesisUtterance(text);
+            speak1.lang = 'en-US';
+            speak1.rate = 0.85;
+
+            speak1.onend = () => {
+                setTimeout(() => {
+                    exStatus.innerText = "Examiner repeating... (2/2)";
+                    let speak2 = new SpeechSynthesisUtterance(text);
+                    speak2.lang = 'en-US';
+                    speak2.rate = 0.85;
+
+                    speak2.onend = () => {
+                        exStatus.innerText = "🎤 SPEAK NOW";
+                        studentSpeech.innerText = "Listening to voice input...";
+                        runCountdown(limit);
+                        if (recognizer) { try { recognizer.start(); } catch (e) {} }
+                    };
+                    speechSynth.speak(speak2);
+                }, 1000);
+            };
+            speechSynth.speak(speak1);
+        }
+
+        function runCountdown(seconds) {
+            let timeLeft = seconds;
+            let total = seconds;
+
+            timerInterval = setInterval(() => {
+                timeLeft--;
+                timerDisplay.innerText = formatTime(timeLeft);
+                let percent = (timeLeft / total) * 100;
+                timerBar.style.width = `${percent}%`;
+
+                if (timeLeft <= 0) {
+                    captureCurrentSpeechLength();
+                    clearInterval(timerInterval);
+                    nextQuestion();
+                }
+            }, 1000);
+        }
+
+        function nextQuestion() {
+            speechSynth.cancel();
+            captureCurrentSpeechLength();
+            currentIndex++;
+            loadQuestion(currentIndex);
+        }
+
+        function captureCurrentSpeechLength() {
+            const rawText = studentSpeech.innerText;
+            if (rawText && !rawText.includes("Awaiting") && !rawText.includes("Listening")) {
+                const words = rawText.trim().split(/\s+/).length;
+                cumulativeWordCount += words;
+            }
+        }
+
+        function processMarlinsGradeMetric() {
+            examScreen.classList.add('hidden');
+            finishScreen.classList.remove('hidden');
+            if (recognizer) { try { recognizer.stop(); } catch (e) {} }
+
+            if (cumulativeWordCount >= 120) {
+                gradeBadge.className = "w-20 h-20 mx-auto flex items-center justify-center rounded-full text-4xl font-extrabold text-slate-950 shadow-inner bg-emerald-400";
+                gradeBadge.innerText = "A";
+                gradeTitle.innerText = "Grade A - Professional Pass";
+                gradeDesc.innerText = "The candidate displays strong syntax flow, deep vocabulary control and natural delivery matching technical crew requirements.";
+                statVocab.innerText = "Broad Technical Spectrum";
+                statGrammar.innerText = "Highly Cohesive & Standard";
+                statFluency.innerText = "Continuous Structure (>120 Words)";
+            } else if (cumulativeWordCount >= 50 && cumulativeWordCount < 120) {
+                gradeBadge.className = "w-20 h-20 mx-auto flex items-center justify-center rounded-full text-4xl font-extrabold text-slate-950 shadow-inner bg-sky-400";
+                gradeBadge.innerText = "B";
+                gradeTitle.innerText = "Grade B - Operational Pass";
+                gradeDesc.innerText = "Clear functional understanding. Can convey basic emergency actions, though sentence length is slightly restricted.";
+                statVocab.innerText = "Functional Maritime Terms";
+                statGrammar.innerText = "Adequate Structure";
+                statFluency.innerText = "Intermittent Pauses (50-120 Words)";
+            } else {
+                gradeBadge.className = "w-20 h-20 mx-auto flex items-center justify-center rounded-full text-4xl font-extrabold text-slate-950 shadow-inner bg-rose-400";
+                gradeBadge.innerText = "C";
+                gradeTitle.innerText = "Grade C - Development Required";
+                gradeDesc.innerText = "Speech structure requires core enhancement. Review safe execution prompts and work on vocabulary extension routines.";
+                statVocab.innerText = "Limited / Basic Terms Only";
+                statGrammar.innerText = "Fragmented Clauses";
+                statFluency.innerText = "Needs Expansion (<50 Words)";
+            }
+        }
+
+        function resetToDashboard() {
+            finishScreen.classList.add('hidden');
+            startScreen.classList.remove('hidden');
+            initResponsiveDashboard();
+        }
+
+        function formatTime(secs) {
+            let m = Math.floor(secs / 60).toString().padStart(2, '0');
+            let s = (secs % 60).toString().padStart(2, '0');
+            return `${m}:${s}`;
+        }
+
+        window.onload = () => {
+            if (localStorage.getItem('session_active') === 'true') {
+                authScreen.classList.add('hidden');
+                startScreen.classList.remove('hidden');
+                initResponsiveDashboard();
+            }
+        };
     </script>
-    <script src="speak.js"></script>
 </body>
 </html>
