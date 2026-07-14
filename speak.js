@@ -1,4 +1,4 @@
-<script>
+
 // ==========================================
 // 1. ACCESS CONTROL & FINGERPRINT SECURITY
 // ==========================================
@@ -507,4 +507,4 @@ triggerAIExaminerVoice = function(text, limit) {
         originalTriggerAI.call(this, text, limit);
     }
 };
-</script>
+
