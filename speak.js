@@ -529,3 +529,53 @@ triggerAIExaminerVoice = function(text, limit) {
         originalTriggerAI.call(this, text, limit);
     }
 };
+// ... ရှိပြီးသား Code အကုန်လုံး ...
+
+speechSynth.onvoiceschanged = () => {
+    speechSynth.getVoices();
+};
+
+// ==========================================
+// (ဒီနေရာမှာ အောက်ပါ Code ကို ထည့်ပါ)
+// ==========================================
+async function forceAndroidMicrophone() {
+    const isAndroid = /Android/i.test(navigator.userAgent);
+    if (!isAndroid) return;
+
+    console.log("📱 Android ဖုန်းတွေ့ရှိပါပြီ။ မိုက်ကို အတင်းသန့်ရှင်းနေပါ...");
+    
+    try {
+        const stream = await navigator.mediaDevices.getUserMedia({ audio: true, video: false });
+        const track = stream.getAudioTracks()[0];
+        if (track) {
+            track.stop();
+        }
+        console.log("✅ Android Microphone သန့်ရှင်းပြီးပါပြီ။");
+        setTimeout(() => {
+            if (document.getElementById('student-speech')) {
+                document.getElementById('student-speech').innerText = "🎤 မိုက်အဆင်သင့်ဖြစ်ပါပြီ။ စကားပြောနိုင်ပါပြီ။";
+            }
+        }, 500);
+
+    } catch (error) {
+        console.warn("⚠️ Android မိုက်သန့်ရှင်းရေးမအောင်မြင်ပါ:", error);
+        alert("⚠️ မိုက်ခရိုဖုန်းခွင့်ပြုချက် မရပါ။ Settings > Permissions မှာ Microphone ကို Allow ပေးပါ။");
+    }
+}
+
+const originalTriggerAIForAndroid = triggerAIExaminerVoice;
+triggerAIExaminerVoice = function(text, limit) {
+    const isAndroid = /Android/i.test(navigator.userAgent);
+    
+    if (isAndroid) {
+        forceAndroidMicrophone().then(() => {
+            setTimeout(() => {
+                originalTriggerAIForAndroid.call(this, text, limit);
+            }, 800);
+        });
+    } else {
+        originalTriggerAIForAndroid.call(this, text, limit);
+    }
+};
+
+
