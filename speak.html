@@ -126,7 +126,12 @@
             </button>
         </div>
     </div>
-
+    <script>
+        // iOS စစ်ဆေးခြင်း
+        if (/iPad|iPhone|iPod/.test(navigator.userAgent)) {
+            alert('📱 သင့်စက်က iOS ဖြစ်နေပါတယ်။\nVoice Recognition အလုပ်မလုပ်နိုင်ပါ။\nAndroid သို့မဟုတ် Chrome Browser ကိုသုံးပေးပါ။');
+        }
+    </script>
     <script src="speak.js"></script>
 </body>
 </html>
