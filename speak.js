@@ -1,3 +1,6 @@
+hereဈ/* ============================================================
+   speak.js (UPDATED - Audio Recording + Voice to Text)
+   ============================================================ */
 
 // ============================================================
 // 1. SECURE KEYS & DEVICE FINGERPRINT
@@ -15,7 +18,7 @@ const SECURE_ALLOWED_KEYS = [
   "UDhEMko1NjA=", "UzRZOUUwMw==", "TTNXN1I1NDI=", "RzhQMlQ2MTA=", "WjFNOUs4NDM=",
   "WDRCN1YyMTk=", "TjNXMUo1NjQ=", "QzhHNFMyMTA=", "RjZUMk44OTU=", "TDNGOVk1MTI=",
   "SDFNN0Q2MzQ=", "UDRLMlc4MTU=", "VDlSMUI1NDI=", "VjNaOEMxOTA=", "SjZONEYzMjE=",
-  "RzFTNlU0ODk=", "TThDNUszMTA=", "VjNIOUIyMTU=", "TDZZMVo4NDM=", "UjlQNFc1MjE=",
+  "RzFTNlU0ODk=", "MThDNUszMTA=", "VjNIOUIyMTU=", "TDZZMVo4NDM=", "UjlQNFc1MjE=",
   "RjJCOE02MTQ=", "WDFLN1A5NTA=", "TjhGM1YyMTk=", "WzRDMVo3ODY=", "TDlENUgyMTA=",
   "SzNUOEY1NDA=", "UDZNMlA4MTc=", "SjFWOVg1NDM=", "RDhCNFcyMTk=", "SDJZN1o2MTQ=",
   "RzlTM1I0NTA=", "QzFYN004OTI=", "RjhQMlQ2MTA=", "QjRON1c1MjM=", "UzlNMlY0MTU=",
@@ -41,7 +44,6 @@ function verifySecureActivation() {
   authError.classList.add('hidden');
   deviceLockError.classList.add('hidden');
 
-  // အရင်က ပါခဲ့တဲ့ Reset ခလုတ်ကို ဖယ်ရှားလိုက်ပါ
   const oldResetBtn = document.getElementById('custom-reset-btn');
   if (oldResetBtn) oldResetBtn.remove();
 
@@ -50,16 +52,12 @@ function verifySecureActivation() {
   if (SECURE_ALLOWED_KEYS.includes(encodedEntered)) {
     const savedDeviceForThisKey = localStorage.getItem(`lock_${entered}`);
 
-    // ---------- ပင်မ ပြင်ဆင်ချက် (Strict Device Lock) ----------
-    // အကယ်၍ ဒီ Key ကို တစ်ခြားစက်မှာ သိမ်းဆည်းထားပြီးသားဆိုရင်
     if (savedDeviceForThisKey && savedDeviceForThisKey !== currentDevice) {
       deviceLockError.classList.remove('hidden');
-      // Reset ခလုတ် မပါတော့ဘဲ သတိပေးစာတစ်ကြောင်းပဲ ပြမယ်
-      deviceLockError.innerText = "🔒 ဒီ Activation Key ကို အခြားစက်တွင် သုံးထားပြီးဖြစ်ပါတယ်။ ကျေးဇူးပြု၍ သင့်ကိုယ်ပိုင် Key ကိုသာ သုံးပါ။ (This key is already locked to another device.)";
-      return; // ဒီနေရာမှာပဲ ရပ်လိုက်မယ် (ဝင်ခွင့်မပေးဘူး)
+      deviceLockError.innerText = "🔒 ဒီ Activation Key ကို အခြားစက်တွင် သုံးထားပြီးဖြစ်ပါတယ်။ ကျေးဇူးပြု၍ သင့်ကိုယ်ပိုင် Key ကိုသာ သုံးပါ။";
+      return;
     }
 
-    // အကယ်၍ ဒီ Key ကို ဘယ်စက်မှ မသုံးရသေးဘူး သို့မဟုတ် ဒီစက်မှာ သုံးထားပြီးသားဆိုရင်
     localStorage.setItem(`lock_${entered}`, currentDevice);
     localStorage.setItem('session_active', 'true');
     authScreen.classList.add('hidden');
@@ -79,7 +77,7 @@ function lockAppAccess() {
 }
 
 // ============================================================
-// 2. EXAM SETS WITH KEYWORDS (Semantic Matching)
+// 2. EXAM SETS (အရင်အတိုင်း)
 // ============================================================
 const examSets = {
   set1: [
@@ -170,385 +168,4 @@ const examSets = {
     { type: "short", timeLimit: 50, prompt: "Why is it vital to complete a 'pre-arrival checklist' before entering a foreign port?", image: "", keywords: ["vital", "pre-arrival", "checklist", "entering", "foreign", "port"] },
     { type: "short", timeLimit: 50, prompt: "If you receive multiple conflicting orders from senior officers, how would you prioritize your tasks?", image: "", keywords: ["conflicting", "orders", "senior", "prioritize", "tasks"] },
     { type: "picture", timeLimit: 120, prompt: "Look at the picture. Describe the correct procedure for discharging ballast water and the environmental risks of oil spills during bunkering.", image: "set10_environment.png", keywords: ["ballast", "water", "discharging", "environmental", "oil", "spills", "bunkering"] },
-    { type: "debate", timeLimit: 120, prompt: "Marlins Debate: 'Regular crew safety drills are simply for passing inspections and do not actually prepare us for real emergencies.' Argue your position.", image: "", keywords: ["safety", "drills", "inspections", "prepare", "real", "emergencies", "argue"] }
-  ]
-};
-
-// ============================================================
-// 3. GLOBAL STATE (UPDATED)
-// ============================================================
-let currentActiveSet = [];
-let currentIndex = 0;
-let timerInterval = null;
-let questionScores = [];
-let currentSpeechAccumulator = "";
-let isRecordingActive = false;
-let mediaStream = null;
-let isFirstLoad = true;
-
-let speechSynth = window.speechSynthesis;
-let speechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-let recognizer = speechRecognition ? new speechRecognition() : null;
-
-// DOM refs
-const authScreen = document.getElementById('auth-screen');
-const startScreen = document.getElementById('start-screen');
-const examScreen = document.getElementById('exam-screen');
-const finishScreen = document.getElementById('finish-screen');
-const keyInput = document.getElementById('activation-key-input');
-const authError = document.getElementById('auth-error');
-const deviceLockError = document.getElementById('device-lock-error');
-const setGrid = document.getElementById('set-selector-grid');
-
-const btnNext = document.getElementById('btn-next');
-const qNumber = document.getElementById('question-number');
-const timerDisplay = document.getElementById('timer-display');
-const timerBar = document.getElementById('timer-bar');
-const qPrompt = document.getElementById('question-prompt');
-const studentSpeech = document.getElementById('student-speech');
-const examPic = document.getElementById('exam-picture');
-const aiAvatar = document.getElementById('ai-avatar');
-const exStatus = document.getElementById('examiner-status');
-
-const gradeBadge = document.getElementById('grade-badge');
-const gradeTitle = document.getElementById('grade-title');
-const gradeDesc = document.getElementById('grade-desc');
-const statVocab = document.getElementById('stat-vocab');
-const statGrammar = document.getElementById('stat-grammar');
-const statFluency = document.getElementById('stat-fluency');
-
-// ============================================================
-// 4. VOICE HELPERS (UPDATED - Continuous Listening)
-// ============================================================
-
-function getMaleVoice() {
-  const voices = speechSynth.getVoices();
-  if (!voices || voices.length === 0) return null;
-  const preferred = [
-    'Google UK English Male', 'Google US English Male',
-    'Microsoft David Desktop', 'Microsoft David', 'Alex', 'Samantha'
-  ];
-  for (let p of preferred) {
-    const found = voices.find(v => v.name.includes(p));
-    if (found) return found;
-  }
-  const male = voices.find(v => v.name.toLowerCase().includes('male'));
-  if (male) return male;
-  const nonFemale = voices.find(v => !v.name.toLowerCase().includes('female'));
-  return nonFemale || voices[0];
-}
-
-// မိုက်ခွင့်ပြုချက် ကြိုတောင်းပြီး stream သိမ်းထားမယ်
-async function requestMicrophonePermission() {
-  try {
-    if (mediaStream) {
-      return mediaStream;
-    }
-    const stream = await navigator.mediaDevices.getUserMedia({ audio: true, video: false });
-    mediaStream = stream;
-    console.log("✅ Microphone permission granted & stream saved.");
-    return stream;
-  } catch (e) {
-    console.warn("⚠️ Microphone permission denied:", e);
-    return null;
-  }
-}
-
-// Recognizer ကို ဆက်တိုက် နားထောင်ခိုင်းမယ်
-function startContinuousRecognition() {
-  if (!recognizer) return;
-  try {
-    recognizer.stop();
-  } catch (e) {}
-  recognizer.continuous = true;
-  recognizer.interimResults = false;
-  recognizer.lang = 'en-US';
-
-  recognizer.onresult = (event) => {
-    let transcript = '';
-    for (let i = event.resultIndex; i < event.results.length; i++) {
-      if (event.results[i].isFinal) {
-        transcript += event.results[i][0].transcript;
-      }
-    }
-    if (transcript.trim() !== '') {
-      currentSpeechAccumulator += ' ' + transcript.trim();
-      studentSpeech.innerText = currentSpeechAccumulator.trim();
-      console.log("🗣️ Accumulated:", currentSpeechAccumulator.trim());
-    }
-  };
-
-  recognizer.onerror = (e) => {
-    console.warn("Speech error:", e);
-    if (isRecordingActive) {
-      setTimeout(() => {
-        try { recognizer.start(); } catch (err) {}
-      }, 300);
-    }
-  };
-
-  recognizer.onend = () => {
-    console.log("⏹️ Recognition ended.");
-    if (isRecordingActive) {
-      setTimeout(() => {
-        try { recognizer.start(); } catch (err) {}
-      }, 200);
-    }
-  };
-
-  try {
-    recognizer.start();
-    isRecordingActive = true;
-    console.log("🎤 Continuous recognition started.");
-  } catch (e) {
-    console.warn("⚠️ Could not start recognition:", e);
-  }
-}
-
-// Recognizer ကို ရပ်မယ်
-function stopContinuousRecognition() {
-  isRecordingActive = false;
-  if (recognizer) {
-    try {
-      recognizer.stop();
-      console.log("⏹️ Recognition stopped.");
-    } catch (e) {}
-  }
-}
-
-// AI အသံဖတ်ပေးပြီး မိုက်ကို ဆက်တိုက်ဖွင့်မယ်
-function triggerAIExaminerVoice(text, limit) {
-  requestMicrophonePermission().then(() => {
-    exStatus.innerText = "Examiner reading... (1/2)";
-    const maleVoice = getMaleVoice();
-    const isAndroid = /Android/i.test(navigator.userAgent);
-    const pitch = isAndroid ? 0.65 : 1.0;
-
-    const speak1 = new SpeechSynthesisUtterance(text);
-    speak1.lang = 'en-US';
-    speak1.rate = 0.9;
-    speak1.pitch = pitch;
-    speak1.volume = 1;
-    if (maleVoice) speak1.voice = maleVoice;
-
-    speak1.onend = () => {
-      setTimeout(() => {
-        exStatus.innerText = "Examiner repeating... (2/2)";
-        const speak2 = new SpeechSynthesisUtterance(text);
-        speak2.lang = 'en-US';
-        speak2.rate = 0.9;
-        speak2.pitch = pitch;
-        speak2.volume = 1;
-        if (maleVoice) speak2.voice = maleVoice;
-        speak2.onend = () => {
-          exStatus.innerText = "🎤 SPEAK NOW";
-          studentSpeech.innerText = "Listening...";
-          currentSpeechAccumulator = "";
-          startContinuousRecognition();
-          runCountdown(limit);
-        };
-        speechSynth.speak(speak2);
-      }, 800);
-    };
-    speechSynth.speak(speak1);
-  });
-}
-
-// ============================================================
-// 5. SEMANTIC MATCHING & SCORING
-// ============================================================
-function calculateMatchPercentage(question, speech) {
-  if (!question.keywords || question.keywords.length === 0) return 0;
-  const lowerSpeech = speech.toLowerCase();
-  let matched = 0;
-  for (let kw of question.keywords) {
-    if (lowerSpeech.includes(kw.toLowerCase())) {
-      matched++;
-    }
-  }
-  return (matched / question.keywords.length) * 100;
-}
-
-function captureCurrentQuestionScore() {
-  const currentQuestion = currentActiveSet[currentIndex];
-  if (!currentQuestion) return;
-  const raw = currentSpeechAccumulator.trim();
-  if (raw.length === 0) {
-    questionScores.push(0);
-    return;
-  }
-  const score = calculateMatchPercentage(currentQuestion, raw);
-  questionScores.push(score);
-  console.log(`📊 Q${currentIndex+1} Match: ${score.toFixed(1)}% (Speech: "${raw}")`);
-}
-
-// ============================================================
-// 6. TIMER & QUESTION FLOW (UPDATED)
-// ============================================================
-function runCountdown(seconds) {
-  let timeLeft = seconds;
-  const total = seconds;
-  timerInterval = setInterval(() => {
-    timeLeft--;
-    timerDisplay.innerText = formatTime(timeLeft);
-    const percent = (timeLeft / total) * 100;
-    timerBar.style.width = `${Math.max(0, percent)}%`;
-    if (timeLeft <= 0) {
-      clearInterval(timerInterval);
-      captureCurrentQuestionScore();
-      stopContinuousRecognition();
-      nextQuestion();
-    }
-  }, 1000);
-}
-
-function nextQuestion() {
-  speechSynth.cancel();
-  stopContinuousRecognition();
-  captureCurrentQuestionScore(); 
-  currentIndex++;
-  if (currentIndex < currentActiveSet.length) {
-    loadQuestion(currentIndex);
-  } else {
-    processFinalGrade();
-  }
-}
-
-function loadQuestion(index) {
-  if (index >= currentActiveSet.length) {
-    processFinalGrade();
-    return;
-  }
-  clearInterval(timerInterval);
-  stopContinuousRecognition();
-  currentSpeechAccumulator = "";
-  studentSpeech.innerText = "Awaiting audio examiner clearance...";
-
-  const q = currentActiveSet[index];
-  qNumber.innerText = `Q ${index+1}/${currentActiveSet.length}`;
-  qPrompt.innerText = q.prompt;
-  timerDisplay.innerText = formatTime(q.timeLimit);
-  timerBar.style.width = '100%';
-
-  if (q.image) {
-    examPic.src = q.image;
-    examPic.classList.remove('hidden');
-    aiAvatar.classList.add('hidden');
-  } else {
-    examPic.classList.add('hidden');
-    aiAvatar.classList.remove('hidden');
-  }
-
-  triggerAIExaminerVoice(q.prompt, q.timeLimit);
-}
-
-// ============================================================
-// 7. FINAL GRADE PROCESSING
-// ============================================================
-function processFinalGrade() {
-  stopContinuousRecognition();
-  examScreen.classList.add('hidden');
-  finishScreen.classList.remove('hidden');
-  if (recognizer) { try { recognizer.stop(); } catch (e) {} }
-
-  const total = questionScores.reduce((a, b) => a + b, 0);
-  const avg = questionScores.length > 0 ? total / questionScores.length : 0;
-  const avgRounded = Math.round(avg);
-
-  let grade, title, desc, vocabText, grammarText, fluencyText;
-
-  if (avg >= 85) {
-    grade = "A";
-    title = "Grade A – Professional Pass";
-    desc = "အောင်မြင်ပါတယ်! ပိုပြီးသွတ်အောင်ကြိုးစားလေ့ကျင်ပေးပါ။ (Excellent relevance)";
-    vocabText = "90%+ Match";
-    grammarText = "Pass";
-    fluencyText = "Keep shining!";
-    gradeBadge.className = "badge-grade bg-emerald-400";
-  } else if (avg >= 65) {
-    grade = "B";
-    title = "Grade B – Operational Pass";
-    desc = "အောင်မြင်ပါတယ်! ပိုပြီးသွတ်အောင်ကြိုးစားလေ့ကျင်ပေးပါ။ (Good relevance)";
-    vocabText = "65-85% Match";
-    grammarText = "Pass";
-    fluencyText = "Keep improving!";
-    gradeBadge.className = "badge-grade bg-sky-400";
-  } else {
-    grade = "C";
-    title = "Grade C – Development Required";
-    desc = "မင်းအများကြီးကြိုးစားပေးပါနော် fighting! (Needs more practice)";
-    vocabText = "<65% Match";
-    grammarText = "Fail";
-    fluencyText = "Fighting!";
-    gradeBadge.className = "badge-grade bg-rose-400";
-  }
-
-  gradeBadge.innerText = grade;
-  gradeTitle.innerText = title;
-  gradeDesc.innerText = desc;
-  statVocab.innerText = vocabText;
-  statGrammar.innerText = grammarText;
-  statFluency.innerText = fluencyText;
-}
-
-// ============================================================
-// 8. DASHBOARD & HELPERS
-// ============================================================
-function initResponsiveDashboard() {
-  setGrid.innerHTML = '';
-  for (let i = 1; i <= 10; i++) {
-    const btn = document.createElement('button');
-    btn.className = "bg-slate-700 hover:bg-sky-600 text-white font-bold py-3 px-2 rounded-xl text-xs md:text-sm shadow-sm transition active:scale-95 cursor-pointer text-center";
-    btn.innerText = `⚓ Set ${i}`;
-    btn.onclick = () => launchSelectedSet(`set${i}`);
-    setGrid.appendChild(btn);
-  }
-}
-
-function launchSelectedSet(setName) {
-  currentActiveSet = examSets[setName];
-  currentIndex = 0;
-  questionScores = [];
-  currentSpeechAccumulator = "";
-  startScreen.classList.add('hidden');
-  examScreen.classList.remove('hidden');
-  loadQuestion(0);
-}
-
-function resetToDashboard() {
-  stopContinuousRecognition();
-  finishScreen.classList.add('hidden');
-  startScreen.classList.remove('hidden');
-  initResponsiveDashboard();
-}
-
-function formatTime(secs) {
-  const m = Math.floor(secs / 60).toString().padStart(2, '0');
-  const s = (secs % 60).toString().padStart(2, '0');
-  return `${m}:${s}`;
-}
-
-// ============================================================
-// 9. INIT (Early Mic Permission)
-// ============================================================
-window.onload = () => {
-  speechSynth.getVoices();
-  // ဖုန်းတွေအတွက် မိုက်ခွင့်ပြုချက် ကြိုတောင်းမယ်
-  requestMicrophonePermission();
-
-  if (localStorage.getItem('session_active') === 'true') {
-    authScreen.classList.add('hidden');
-    startScreen.classList.remove('hidden');
-    initResponsiveDashboard();
-  }
-};
-
-speechSynth.onvoiceschanged = () => {
-  speechSynth.getVoices();
-};
-
-// Global functions
-window.verifySecureActivation = verifySecureActivation;
-window.lockAppAccess = lockAppAccess;
-window.resetToDashboard = resetToDashboard;
-window.launchSelectedSet = launchSelectedSet;
+    { type: "debate", timeLimit: 120, prompt: "Marlins Debate: 'Regular crew safety drills are simply for passing inspections and do not actually prepare us for real emergencies.'
