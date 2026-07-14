@@ -1,200 +1,161 @@
+<!-- ============================================================
+     index.html
+     ============================================================ -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MEPT Marlins Speaking Simulator</title>
-    <!-- Tailwind CSS CDN -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Custom CSS Link -->
-    <link rel="stylesheet" href="speak.css">
-    <!-- Existing JS Link (defer ကြောင့် UI အောက်ရောက်မှ အလုပ်လုပ်မှာပါ) -->
-    <script src="speak.js" defer></script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>MEPT – Marlins Speaking Simulator</title>
+  <!-- Tailwind via CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="speak.css" />
 </head>
-<body class="bg-slate-900 text-slate-100 min-h-screen flex items-center justify-center p-4 selection:bg-sky-500 selection:text-white">
+<body>
 
-    <!-- CONTAINER BOX -->
-    <div class="w-full max-w-xl bg-slate-800/60 backdrop-blur-xl border border-slate-700/50 rounded-3xl shadow-2xl p-6 md:p-8 relative overflow-hidden">
-        
-        <!-- ==========================================
-             STAGE 1: AUTHENTICATION SCREEN (SECURE ACCESS)
-             ========================================== -->
-        <div id="auth-screen" class="block animate-fade-in">
-            <!-- 🌐 Student Motivation Banner & Features -->
-            <div class="text-center mb-8">
-                <span class="inline-block bg-sky-500/10 text-sky-400 text-xs font-bold px-3 py-1.5 rounded-full uppercase tracking-wider border border-sky-500/20">
-                    ⚓ Maritime English Proficiency Test (MEPT) Preparation
-                </span>
-                
-                <h1 class="text-2xl md:text-3xl font-extrabold text-white mt-4 tracking-tight">
-                    Marlins Speaking Simulator
-                </h1>
-                
-                <p class="text-slate-400 text-xs md:text-sm mt-3 max-w-md mx-auto leading-relaxed">
-                    စစ်မှန်သော <span class="text-amber-400 font-semibold">Marlins Exam Platform</span> အတိုင်း ပုံစံတူ နီးပါး ဖန်တီးထားသည့် ဒိုင်နမစ်စနစ် ဖြစ်ပါသည်။ 
-                   Examiner မှ မေးခွန်းများကို တိုက်ရိုက်ဖတ်ပြမည်ဖြစ်ပြီး၊ မိမိ၏ အသံဖြင့် တုံ့ပြန်ဖြေဆိုရမည်ဖြစ်၍ <span class="text-sky-400 font-semibold">Speaking Test</span> အတွက် အထူးလေ့ကျင့်ရန် မဖြစ်မနေ အသုံးပြုသင့်ပါသည်။
-                </p>
+<div class="app-wrapper">
 
-                <div class="grid grid-cols-3 gap-2 mt-6 max-w-sm mx-auto text-center text-[11px] md:text-xs">
-                    <div class="bg-slate-800/80 border border-slate-700/60 p-2.5 rounded-xl shadow-sm">
-                        <span class="block text-lg mb-1">🎙️</span>
-                        <span class="text-slate-300 font-medium block">Voice Recognition</span>
-                        <span class="text-slate-500 text-[10px]">အသံဖမ်းစနစ်</span>
-                    </div>
-                    <div class="bg-slate-800/80 border border-slate-700/60 p-2.5 rounded-xl shadow-sm">
-                        <span class="block text-lg mb-1">⏱️</span>
-                        <span class="text-slate-300 font-medium block">Real-time Timer</span>
-                        <span class="text-slate-500 text-[10px]">အချိန်ကိုက်စစ်ဆေးမှု</span>
-                    </div>
-                    <div class="bg-slate-800/80 border border-slate-700/60 p-2.5 rounded-xl shadow-sm">
-                        <span class="block text-lg mb-1">📊</span>
-                        <span class="text-slate-300 font-medium block">Marlins Grading</span>
-                        <span class="text-slate-500 text-[10px]">အလိုအလျောက် အမှတ်ပေးစနစ်</span>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Activation Input Box -->
-            <div class="space-y-4 max-w-sm mx-auto">
-                <div>
-                    <label class="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">Enter Secure Activation Key</label>
-                    <input id="activation-key-input" type="text" placeholder="XXXX-XXXX-XXXX" 
-                           class="w-full bg-slate-900/90 border border-slate-700 focus:border-sky-500 text-white font-mono text-center text-lg rounded-xl py-3 px-4 outline-none transition uppercase tracking-widest placeholder:text-slate-600 shadow-inner">
-                </div>
-                
-                <button onclick="verifySecureActivation()" 
-                        class="w-full bg-gradient-to-r from-sky-600 to-blue-600 hover:from-sky-500 hover:to-blue-500 text-white font-bold py-3 px-4 rounded-xl shadow-lg transition active:scale-[0.98] cursor-pointer">
-                    Activate Device & Launch
-                </button>
-
-                <!-- Error Messages -->
-                <p id="auth-error" class="text-rose-400 text-xs text-center font-medium hidden">❌ Invalid token key. Please consult your training administrator.</p>
-                <p id="device-lock-error" class="text-amber-400 text-xs text-center font-medium hidden">🔒 Security Lock: This key is already registered to another device fingerprint.</p>
-            </div>
+  <!-- HEADER -->
+  <header class="app-header">
+    <div class="header-content">
+      <div class="flex items-center gap-3">
+        <span class="text-3xl">⚓</span>
+        <div>
+          <h1 class="text-xl md:text-2xl font-extrabold text-white leading-tight">
+            Maritime English Proficiency Test (MEPT)
+          </h1>
+          <p class="text-sm text-sky-300 font-medium tracking-wide">
+            Marlins Speaking Simulator
+          </p>
         </div>
-
-        <!-- ==========================================
-             STAGE 2: RESPONSIVE DASHBOARD (START SCREEN)
-             ========================================== -->
-        <div id="start-screen" class="hidden animate-fade-in">
-            <div class="flex items-center justify-between mb-6 border-b border-slate-700/50 pb-4">
-                <div>
-                    <h2 class="text-xl font-bold text-white">Exam Simulator Sets</h2>
-                    <p class="text-xs text-slate-400">Select an assessment pool to evaluate fluency metrics.</p>
-                </div>
-                <button onclick="lockAppAccess()" class="text-xs bg-slate-700/50 hover:bg-rose-600/20 hover:text-rose-400 border border-slate-600/50 text-slate-300 px-3 py-1.5 rounded-lg transition cursor-pointer">
-                    Lock Terminal
-                </button>
-            </div>
-
-            <!-- ၁ စုံမှ ၁၀ စုံအထိ ခလုတ်အားလုံး ပေါ်မည့်နေရာ -->
-            <div id="set-selector-grid" class="grid grid-cols-2 sm:grid-cols-3 gap-3 my-6">
-                <!-- Javascript မှ ခလုတ်များကို လာဆွဲပါလိမ့်မည် -->
-            </div>
-        </div>
-
-        <!-- ==========================================
-             STAGE 3: LIVE ASSESSMENT INTERFACE (EXAM SCREEN)
-             ========================================== -->
-        <div id="exam-screen" class="hidden animate-fade-in space-y-6">
-            <!-- Header Progress & Timer -->
-            <div class="flex items-center justify-between bg-slate-900/50 p-3 rounded-xl border border-slate-700/30">
-                <span id="question-number" class="text-xs font-bold text-sky-400 uppercase tracking-widest">Q 1/7</span>
-                <div class="flex items-center space-x-2">
-                    <span class="text-[11px] text-slate-400 uppercase font-medium">Remaining Time:</span>
-                    <span id="timer-display" class="font-mono text-sm font-bold text-amber-400 bg-amber-500/10 border border-amber-500/20 px-2 py-0.5 rounded">00:00</span>
-                </div>
-            </div>
-
-            <!-- Dynamic Progress Bar -->
-            <div class="w-full bg-slate-900 h-1.5 rounded-full overflow-hidden">
-                <div id="timer-bar" class="bg-gradient-to-r from-sky-500 to-blue-500 h-full transition-all duration-1000 ease-linear" style="width: 100%;"></div>
-            </div>
-
-            <!-- Examiner Status Badge -->
-            <div class="flex justify-center">
-                <span id="examiner-status" class="bg-slate-700 text-slate-200 text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-wider animate-pulse">
-                    Awaiting Examiner...
-                </span>
-            </div>
-
-            <!-- Visual Component Area -->
-            <div class="relative w-full h-48 bg-slate-900 rounded-2xl overflow-hidden border border-slate-700/40 flex items-center justify-center">
-                <!-- AI Avatar Mode -->
-                <div id="ai-avatar" class="text-center space-y-2">
-                    <div class="w-16 h-16 bg-gradient-to-tr from-sky-500 to-blue-600 rounded-full mx-auto flex items-center justify-center shadow-lg shadow-sky-500/20 ring-4 ring-slate-800">
-                        <span class="text-2xl">🤖</span>
-                    </div>
-                    <p class="text-xs font-semibold text-slate-400 uppercase tracking-wider">AI Examiner Active</p>
-                </div>
-                <!-- Picture Mode -->
-                <img id="exam-picture" src="" alt="Marlins Resource Scene" class="w-full h-full object-cover hidden">
-            </div>
-
-            <!-- Question Prompt Box -->
-            <div class="bg-slate-900/80 rounded-2xl p-4 border border-slate-700/50 shadow-inner">
-                <p id="question-prompt" class="text-sm md:text-base font-medium text-slate-100 leading-relaxed text-center">
-                    Initializing test prompt vector...
-                </p>
-            </div>
-
-            <!-- Real-time Speech Transcription Box -->
-            <div class="space-y-2">
-                <label class="block text-[11px] font-bold text-slate-400 uppercase tracking-wider">Live Candidate Response Stream</label>
-                <div class="w-full min-h-[70px] max-h-[100px] bg-slate-950/60 border border-slate-800 rounded-xl p-3 text-xs md:text-sm text-slate-300 font-mono overflow-y-auto leading-relaxed">
-                    <p id="student-speech">Awaiting audio examiner clearance...</p>
-                </div>
-            </div>
-
-            <!-- Next Action Trigger Button -->
-            <button id="btn-next" class="w-full bg-slate-700 hover:bg-sky-600 text-white font-bold py-3 px-4 rounded-xl shadow-md transition active:scale-[0.99] flex items-center justify-center space-x-2 cursor-pointer">
-                <span>Skip / Submit Answer</span>
-                <span>➡️</span>
-            </button>
-        </div>
-
-        <!-- ==========================================
-             STAGE 4: ANALYTICS & GRADECARD (FINISH SCREEN)
-             ========================================== -->
-        <div id="finish-screen" class="hidden animate-fade-in text-center space-y-6">
-            <div class="space-y-2">
-                <h2 class="text-2xl font-extrabold text-white">Assessment Complete</h2>
-                <p class="text-xs text-slate-400">Automated Performance Metrics based on Marlins criteria.</p>
-            </div>
-
-            <!-- Grade Badge Output -->
-            <div class="py-4">
-                <div id="grade-badge" class="w-20 h-20 mx-auto flex items-center justify-center rounded-full text-4xl font-extrabold text-slate-950 shadow-inner bg-emerald-400">
-                    -
-                </div>
-                <h3 id="grade-title" class="text-lg font-bold text-white mt-3">Evaluating...</h3>
-                <p id="grade-desc" class="text-xs text-slate-400 max-w-sm mx-auto mt-1 leading-relaxed">
-                    Processing response architecture logs.
-                </p>
-            </div>
-
-            <!-- Metric Specific Grid -->
-            <div class="bg-slate-900/60 border border-slate-700/40 rounded-2xl p-4 text-left space-y-3 text-xs">
-                <div class="flex justify-between border-b border-slate-800 pb-2">
-                    <span class="text-slate-400">Lexical Resource (Vocab):</span>
-                    <span id="stat-vocab" class="font-semibold text-slate-200">-</span>
-                </div>
-                <div class="flex justify-between border-b border-slate-800 pb-2">
-                    <span class="text-slate-400">Grammatical Range:</span>
-                    <span id="stat-grammar" class="font-semibold text-slate-200">-</span>
-                </div>
-                <div class="flex justify-between">
-                    <span class="text-slate-400">Fluency & Word Yield:</span>
-                    <span id="stat-fluency" class="font-semibold text-slate-200">-</span>
-                </div>
-            </div>
-
-            <!-- Reset Router -->
-            <button onclick="resetToDashboard()" class="w-full bg-sky-600 hover:bg-sky-500 text-white font-bold py-3 px-4 rounded-xl shadow-lg transition active:scale-[0.99] cursor-pointer">
-                Return to Simulator Dashboard
-            </button>
-        </div>
-
+      </div>
+      <div class="hidden sm:flex items-center gap-4 text-slate-300 text-xs">
+        <span class="flex items-center gap-1"><span class="text-sky-400">🎙️</span> Voice Recog</span>
+        <span class="flex items-center gap-1"><span class="text-sky-400">⏱️</span> Real‑time Timer</span>
+        <span class="flex items-center gap-1"><span class="text-sky-400">📊</span> Semantic Grading</span>
+      </div>
     </div>
+    <div class="flex sm:hidden justify-center gap-4 mt-1 text-[10px] text-slate-400">
+      <span>🎙️ Voice</span>
+      <span>⏱️ Timer</span>
+      <span>📊 Grading</span>
+    </div>
+  </header>
+
+  <!-- GLASS CARD -->
+  <div class="glass-card">
+
+    <!-- ===== AUTH SCREEN ===== -->
+    <div id="auth-screen">
+      <div class="text-center mb-6">
+        <span class="text-5xl block mb-2">🔐</span>
+        <h2 class="text-2xl font-bold text-white">Secure Activation</h2>
+        <p class="text-slate-400 text-sm mt-1">Enter your 12‑digit activation key</p>
+      </div>
+      <div class="space-y-4">
+        <input id="activation-key-input" type="password" placeholder="e.g. AB12CD34EF56"
+          class="w-full bg-slate-800 text-white border border-slate-700 rounded-2xl px-5 py-4 text-center text-lg tracking-[0.2em] font-mono focus:outline-none focus:ring-2 focus:ring-sky-500" />
+        <button onclick="verifySecureActivation()"
+          class="w-full bg-sky-600 hover:bg-sky-700 text-white font-bold py-4 rounded-2xl text-lg transition active:scale-95 shadow-lg shadow-sky-600/20">
+          🔓 Activate
+        </button>
+        <div id="auth-error" class="hidden text-rose-400 text-sm text-center mt-2"></div>
+        <div id="device-lock-error" class="hidden text-amber-400 text-sm text-center mt-2"></div>
+      </div>
+      <div class="mt-6 text-center text-[11px] text-slate-500 border-t border-slate-700/50 pt-4">
+        <span>⚓ One key – one device. Secure &amp; private.</span>
+      </div>
+    </div>
+
+    <!-- ===== START DASHBOARD ===== -->
+    <div id="start-screen" class="hidden">
+      <div class="flex items-center justify-between mb-5">
+        <h2 class="text-xl font-bold text-white flex items-center gap-2">
+          <span>📋</span> Select Exam Set
+        </h2>
+        <button onclick="lockAppAccess()" class="text-sm text-slate-400 hover:text-white bg-slate-800 px-4 py-1.5 rounded-full transition">
+          🚪 Logout
+        </button>
+      </div>
+      <p class="text-slate-400 text-sm mb-4">
+        Choose one of the 10 official Marlins‑style sets below.
+      </p>
+      <div id="set-selector-grid" class="grid-2-cols"></div>
+    </div>
+
+    <!-- ===== EXAM SCREEN ===== -->
+    <div id="exam-screen" class="hidden">
+      <div class="flex items-center justify-between mb-3">
+        <span id="question-number" class="text-sm font-medium text-sky-400 bg-slate-800 px-4 py-1.5 rounded-full">Q 1/7</span>
+        <span id="timer-display" class="text-2xl font-mono text-white bg-slate-800 px-4 py-1 rounded-xl">01:00</span>
+      </div>
+      <div class="timer-bar-bg mb-4">
+        <div id="timer-bar" class="timer-bar-fill" style="width:100%"></div>
+      </div>
+
+      <div class="flex items-center gap-3 mb-2">
+        <div class="ai-avatar-box">
+          <div class="ai-avatar" id="ai-avatar">🧑‍✈️</div>
+        </div>
+        <span id="examiner-status" class="text-sm text-slate-400">Examiner reading...</span>
+      </div>
+
+      <div class="speech-bubble" id="question-prompt">Loading question...</div>
+      <img id="exam-picture" class="hidden w-full rounded-2xl mt-3 max-h-56 object-cover border border-slate-700" alt="exam picture" />
+
+      <div class="mt-4 bg-slate-900/70 rounded-2xl p-4 border border-slate-700/50">
+        <div class="flex items-center gap-2 text-slate-400 text-xs uppercase tracking-wider mb-1">
+          <span>🎤</span> Your response (accumulated)
+        </div>
+        <div id="student-speech" class="text-white text-base min-h-[48px] break-words">Awaiting audio examiner clearance...</div>
+      </div>
+
+      <button id="btn-next" class="w-full mt-5 bg-slate-700 hover:bg-slate-600 text-white font-bold py-3.5 rounded-2xl text-lg transition active:scale-95">
+        ⏩ Next / Finish
+      </button>
+    </div>
+
+    <!-- ===== FINISH SCREEN ===== -->
+    <div id="finish-screen" class="hidden">
+      <div class="text-center">
+        <div id="grade-badge" class="badge-grade bg-emerald-400">A</div>
+        <h3 id="grade-title" class="text-2xl font-bold text-white">Grade A – Professional Pass</h3>
+        <p id="grade-desc" class="text-slate-300 text-sm mt-2 max-w-sm mx-auto">Strong syntax, deep vocabulary, natural delivery.</p>
+      </div>
+      <div class="mt-6 grid grid-cols-3 gap-3 text-center">
+        <div class="bg-slate-800 p-3 rounded-2xl">
+          <div class="text-xs text-slate-400">Match Rate</div>
+          <div id="stat-vocab" class="text-white font-semibold text-sm">90%</div>
+        </div>
+        <div class="bg-slate-800 p-3 rounded-2xl">
+          <div class="text-xs text-slate-400">Result</div>
+          <div id="stat-grammar" class="text-white font-semibold text-sm">Pass</div>
+        </div>
+        <div class="bg-slate-800 p-3 rounded-2xl">
+          <div class="text-xs text-slate-400">Message</div>
+          <div id="stat-fluency" class="text-white font-semibold text-sm">Keep going!</div>
+        </div>
+      </div>
+      <button onclick="resetToDashboard()" class="w-full mt-6 bg-sky-600 hover:bg-sky-700 text-white font-bold py-4 rounded-2xl text-lg transition active:scale-95 shadow-lg shadow-sky-600/20">
+        🔁 Back to Sets
+      </button>
+    </div>
+
+  </div> <!-- end glass-card -->
+
+  <!-- FOOTER -->
+  <footer class="app-footer">
+    <p class="text-[11px] text-slate-500">
+      ⚓ Maritime English Proficiency Test (MEPT) · Marlins Speaking Simulator
+      <span class="hidden sm:inline">— Semantic keyword matching for authentic grading.</span>
+    </p>
+    <p class="text-[10px] text-slate-600 mt-0.5">
+      Designed for authentic Marlins‑style preparation.
+    </p>
+  </footer>
+
+</div> <!-- end app-wrapper -->
+
+<script src="speak.js"></script>
 </body>
 </html>
