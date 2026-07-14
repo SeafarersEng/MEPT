@@ -1,6 +1,3 @@
-/* ============================================================
-   script.js
-   ============================================================ */
 
 // ============================================================
 // 1. SECURE KEYS & DEVICE FINGERPRINT
@@ -187,14 +184,16 @@ const examSets = {
 };
 
 // ============================================================
-// 3. GLOBAL STATE
+// 3. GLOBAL STATE (UPDATED)
 // ============================================================
 let currentActiveSet = [];
 let currentIndex = 0;
 let timerInterval = null;
-let questionScores = []; // မေးခွန်းတိုင်းရဲ့ ရာခိုင်နှုန်းကို သိမ်းမယ်
-
+let questionScores = [];
 let currentSpeechAccumulator = "";
+let isRecordingActive = false;
+let mediaStream = null;
+let isFirstLoad = true;
 
 let speechSynth = window.speechSynthesis;
 let speechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
@@ -228,8 +227,9 @@ const statGrammar = document.getElementById('stat-grammar');
 const statFluency = document.getElementById('stat-fluency');
 
 // ============================================================
-// 4. VOICE HELPERS
+// 4. VOICE HELPERS (UPDATED - Continuous Listening)
 // ============================================================
+
 function getMaleVoice() {
   const voices = speechSynth.getVoices();
   if (!voices || voices.length === 0) return null;
@@ -247,76 +247,32 @@ function getMaleVoice() {
   return nonFemale || voices[0];
 }
 
-async function forceAndroidMicrophone() {
-  const isAndroid = /Android/i.test(navigator.userAgent);
-  if (!isAndroid) return;
+// မိုက်ခွင့်ပြုချက် ကြိုတောင်းပြီး stream သိမ်းထားမယ်
+async function requestMicrophonePermission() {
   try {
+    if (mediaStream) {
+      return mediaStream;
+    }
     const stream = await navigator.mediaDevices.getUserMedia({ audio: true, video: false });
-    const track = stream.getAudioTracks()[0];
-    if (track) track.stop();
-    console.log("✅ Android mic cleared");
+    mediaStream = stream;
+    console.log("✅ Microphone permission granted & stream saved.");
+    return stream;
   } catch (e) {
-    console.warn("⚠️ Mic permission issue", e);
+    console.warn("⚠️ Microphone permission denied:", e);
+    return null;
   }
 }
 
-function triggerAIExaminerVoice(text, limit) {
-  const isAndroid = /Android/i.test(navigator.userAgent);
-  if (isAndroid) {
-    forceAndroidMicrophone().then(() => {
-      setTimeout(() => {
-        _speakExaminer(text, limit);
-      }, 600);
-    });
-  } else {
-    _speakExaminer(text, limit);
-  }
-}
-
-function _speakExaminer(text, limit) {
-  exStatus.innerText = "Examiner reading... (1/2)";
-  const maleVoice = getMaleVoice();
-  const isAndroid = /Android/i.test(navigator.userAgent);
-  const pitch = isAndroid ? 0.65 : 1.0;
-
-  const speak1 = new SpeechSynthesisUtterance(text);
-  speak1.lang = 'en-US';
-  speak1.rate = 0.9;
-  speak1.pitch = pitch;
-  speak1.volume = 1;
-  if (maleVoice) speak1.voice = maleVoice;
-
-  speak1.onend = () => {
-    setTimeout(() => {
-      exStatus.innerText = "Examiner repeating... (2/2)";
-      const speak2 = new SpeechSynthesisUtterance(text);
-      speak2.lang = 'en-US';
-      speak2.rate = 0.9;
-      speak2.pitch = pitch;
-      speak2.volume = 1;
-      if (maleVoice) speak2.voice = maleVoice;
-      speak2.onend = () => {
-        exStatus.innerText = "🎤 SPEAK NOW";
-        studentSpeech.innerText = "Listening...";
-        currentSpeechAccumulator = "";
-        runCountdown(limit);
-        if (recognizer) {
-          try { recognizer.start(); } catch (e) {}
-        }
-      };
-      speechSynth.speak(speak2);
-    }, 800);
-  };
-  speechSynth.speak(speak1);
-}
-
-// ============================================================
-// 5. SPEECH RECOGNITION – Accumulate all utterances
-// ============================================================
-if (recognizer) {
+// Recognizer ကို ဆက်တိုက် နားထောင်ခိုင်းမယ်
+function startContinuousRecognition() {
+  if (!recognizer) return;
+  try {
+    recognizer.stop();
+  } catch (e) {}
   recognizer.continuous = true;
   recognizer.interimResults = false;
   recognizer.lang = 'en-US';
+
   recognizer.onresult = (event) => {
     let transcript = '';
     for (let i = event.resultIndex; i < event.results.length; i++) {
@@ -327,15 +283,88 @@ if (recognizer) {
     if (transcript.trim() !== '') {
       currentSpeechAccumulator += ' ' + transcript.trim();
       studentSpeech.innerText = currentSpeechAccumulator.trim();
+      console.log("🗣️ Accumulated:", currentSpeechAccumulator.trim());
     }
   };
+
   recognizer.onerror = (e) => {
     console.warn("Speech error:", e);
+    if (isRecordingActive) {
+      setTimeout(() => {
+        try { recognizer.start(); } catch (err) {}
+      }, 300);
+    }
   };
+
+  recognizer.onend = () => {
+    console.log("⏹️ Recognition ended.");
+    if (isRecordingActive) {
+      setTimeout(() => {
+        try { recognizer.start(); } catch (err) {}
+      }, 200);
+    }
+  };
+
+  try {
+    recognizer.start();
+    isRecordingActive = true;
+    console.log("🎤 Continuous recognition started.");
+  } catch (e) {
+    console.warn("⚠️ Could not start recognition:", e);
+  }
+}
+
+// Recognizer ကို ရပ်မယ်
+function stopContinuousRecognition() {
+  isRecordingActive = false;
+  if (recognizer) {
+    try {
+      recognizer.stop();
+      console.log("⏹️ Recognition stopped.");
+    } catch (e) {}
+  }
+}
+
+// AI အသံဖတ်ပေးပြီး မိုက်ကို ဆက်တိုက်ဖွင့်မယ်
+function triggerAIExaminerVoice(text, limit) {
+  requestMicrophonePermission().then(() => {
+    exStatus.innerText = "Examiner reading... (1/2)";
+    const maleVoice = getMaleVoice();
+    const isAndroid = /Android/i.test(navigator.userAgent);
+    const pitch = isAndroid ? 0.65 : 1.0;
+
+    const speak1 = new SpeechSynthesisUtterance(text);
+    speak1.lang = 'en-US';
+    speak1.rate = 0.9;
+    speak1.pitch = pitch;
+    speak1.volume = 1;
+    if (maleVoice) speak1.voice = maleVoice;
+
+    speak1.onend = () => {
+      setTimeout(() => {
+        exStatus.innerText = "Examiner repeating... (2/2)";
+        const speak2 = new SpeechSynthesisUtterance(text);
+        speak2.lang = 'en-US';
+        speak2.rate = 0.9;
+        speak2.pitch = pitch;
+        speak2.volume = 1;
+        if (maleVoice) speak2.voice = maleVoice;
+        speak2.onend = () => {
+          exStatus.innerText = "🎤 SPEAK NOW";
+          studentSpeech.innerText = "Listening...";
+          currentSpeechAccumulator = "";
+          startContinuousRecognition();
+          runCountdown(limit);
+        };
+        speechSynth.speak(speak2);
+      }, 800);
+    };
+    speechSynth.speak(speak1);
+  });
 }
 
 // ============================================================
-// 6. SEMANTIC MATCHING & SCORING (NEW)
+// 5. SEMANTIC MATCHING & SCORING
 // ============================================================
 function calculateMatchPercentage(question, speech) {
   if (!question.keywords || question.keywords.length === 0) return 0;
@@ -359,11 +388,11 @@ function captureCurrentQuestionScore() {
   }
   const score = calculateMatchPercentage(currentQuestion, raw);
   questionScores.push(score);
-  console.log(`📊 Q${currentIndex+1} Match: ${score.toFixed(1)}%`);
+  console.log(`📊 Q${currentIndex+1} Match: ${score.toFixed(1)}% (Speech: "${raw}")`);
 }
 
 // ============================================================
-// 7. TIMER & QUESTION FLOW
+// 6. TIMER & QUESTION FLOW (UPDATED)
 // ============================================================
 function runCountdown(seconds) {
   let timeLeft = seconds;
@@ -375,7 +404,8 @@ function runCountdown(seconds) {
     timerBar.style.width = `${Math.max(0, percent)}%`;
     if (timeLeft <= 0) {
       clearInterval(timerInterval);
-      captureCurrentQuestionScore(); // အချိန်ကုန်ဆုံးရင် ဒီမေးခွန်းအတွက် ရမှတ်သိမ်းမယ်
+      captureCurrentQuestionScore();
+      stopContinuousRecognition();
       nextQuestion();
     }
   }, 1000);
@@ -383,7 +413,7 @@ function runCountdown(seconds) {
 
 function nextQuestion() {
   speechSynth.cancel();
-  // သေချာအောင် ထပ်သိမ်းမယ် (အချိန်မကုန်ခင် Next နှိပ်ရင်)
+  stopContinuousRecognition();
   captureCurrentQuestionScore(); 
   currentIndex++;
   if (currentIndex < currentActiveSet.length) {
@@ -399,9 +429,7 @@ function loadQuestion(index) {
     return;
   }
   clearInterval(timerInterval);
-  if (recognizer) {
-    try { recognizer.stop(); } catch (e) {}
-  }
+  stopContinuousRecognition();
   currentSpeechAccumulator = "";
   studentSpeech.innerText = "Awaiting audio examiner clearance...";
 
@@ -424,14 +452,14 @@ function loadQuestion(index) {
 }
 
 // ============================================================
-// 8. FINAL GRADE PROCESSING (Semantic based)
+// 7. FINAL GRADE PROCESSING
 // ============================================================
 function processFinalGrade() {
+  stopContinuousRecognition();
   examScreen.classList.add('hidden');
   finishScreen.classList.remove('hidden');
   if (recognizer) { try { recognizer.stop(); } catch (e) {} }
 
-  // မေးခွန်းအားလုံးရဲ့ ပျမ်းမျှရမှတ်
   const total = questionScores.reduce((a, b) => a + b, 0);
   const avg = questionScores.length > 0 ? total / questionScores.length : 0;
   const avgRounded = Math.round(avg);
@@ -473,7 +501,7 @@ function processFinalGrade() {
 }
 
 // ============================================================
-// 9. DASHBOARD & HELPERS
+// 8. DASHBOARD & HELPERS
 // ============================================================
 function initResponsiveDashboard() {
   setGrid.innerHTML = '';
@@ -497,6 +525,7 @@ function launchSelectedSet(setName) {
 }
 
 function resetToDashboard() {
+  stopContinuousRecognition();
   finishScreen.classList.add('hidden');
   startScreen.classList.remove('hidden');
   initResponsiveDashboard();
@@ -509,20 +538,25 @@ function formatTime(secs) {
 }
 
 // ============================================================
-// 10. INIT
+// 9. INIT (Early Mic Permission)
 // ============================================================
 window.onload = () => {
   speechSynth.getVoices();
+  // ဖုန်းတွေအတွက် မိုက်ခွင့်ပြုချက် ကြိုတောင်းမယ်
+  requestMicrophonePermission();
+
   if (localStorage.getItem('session_active') === 'true') {
     authScreen.classList.add('hidden');
     startScreen.classList.remove('hidden');
     initResponsiveDashboard();
   }
 };
+
 speechSynth.onvoiceschanged = () => {
   speechSynth.getVoices();
 };
 
+// Global functions
 window.verifySecureActivation = verifySecureActivation;
 window.lockAppAccess = lockAppAccess;
 window.resetToDashboard = resetToDashboard;
