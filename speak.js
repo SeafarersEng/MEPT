@@ -1,5 +1,7 @@
-
-
+<script>
+// ==========================================
+// 1. ACCESS CONTROL & FINGERPRINT SECURITY
+// ==========================================
 const SECURE_ALLOWED_KEYS = [
   "WThWMk01NTA=", "UjRCOVEzMTI=", "SzFXN1o4NDU=", "VDNENVg2MTk=", "TTZQMUg4NzI=",
   "RjlZM1cyMTA=", "QjJWOEs1NDM=", "SDRNMVo3NjA=", "QzhGNVAyMTk=", "WDNUOVE2NTQ=",
@@ -11,7 +13,7 @@ const SECURE_ALLOWED_KEYS = [
   "WjRXMUY4OTA=", "RjZWM1MyMTk=", "TjhENUs0MzE=", "UjJNN1E2NTQ=", "QzFKOVQ4NTI=",
   "TDNQOVk4MTI=", "WDdSMkI2NTQ=", "UTRXMUg1NzY=", "VDJCOFg5MDE=", "SzdWMU40MzI=",
   "UDhEMko1NjA=", "UzRZOUUwMw==", "TTNXN1I1NDI=", "RzhQMlQ2MTA=", "WjFNOUs4NDM=",
-  "WDRCN1YyMTk=", "TjNXMUo1NjQ=", "QzhHNFMyMTA=", "UjZUMk44OTU=", "TDNGOVk1MTI=",
+  "WDRCN1YyMTk=", "TjNXMUo1NjQ=", "QzhHNFMyMTA=", "RjZUMk44OTU=", "TDNGOVk1MTI=",
   "SDFNN0Q2MzQ=", "UDRLMlc4MTU=", "VDlSMUI1NDI=", "VjNaOEMxOTA=", "SjZONEYzMjE=",
   "RzFTNlU0ODk=", "TThDNUszMTA=", "VjNIOUIyMTU=", "TDZZMVo4NDM=", "UjlQNFc1MjE=",
   "RjJCOE02MTQ=", "WDFLN1A5NTA=", "TjhGM1YyMTk=", "VzRDMVo3ODY=", "TDlENUgyMTA=",
@@ -19,7 +21,7 @@ const SECURE_ALLOWED_KEYS = [
   "RzlTM1I0NTA=", "QzFYN004OTI=", "RjhQMlQ2MTA=", "QjRON1c1MjM=", "UzlNMlY0MTU=",
   "TjJUMVc2NDU=", "WjdRNEY4OTA=", "SzJQOFY0NTY=", "SjlGMlM2MTA=", "RzNNNUM3MTk=",
   "RDhWMVg0MjM=", "VDRRMk44MTU=", "UjNIOVo1NDA=", "QjdLMk00MzE=", "UDFXNlM4NzI=",
-  "WThHMU4zNTQ=", "RjRSOUI2MTA=", "TTJYN0s4OTE=", "UzZQM0M1NDI=", "TjlUMUY4MzA=",
+  "WThHMU4zNTQ=", "RjRSOUI2MTA=", "TTJYN0s4OTE=", "UzZQM0M1NDI=", "NjlUMUY4MzA=",
   "VzhWMlE2NTQ=", "SzRCOVoxMDM=", "TDdNM0g1NDI=", "WDFEOVA4NjA=", "WjZGMkM3NDM="
 ];
 
@@ -43,7 +45,7 @@ const examSets = {
         { type: "short", timeLimit: 50, prompt: "What is your target rank on board, and what are the main duties?", image: "" },
         { type: "short", timeLimit: 50, prompt: "What are your hobbies or interests in your free time?", image: "" },
         { type: "short", timeLimit: 50, prompt: "How do you feel about working with a multicultural crew?", image: "" },
-        { type: "picture", timeLimit: 120, prompt: "Look at the picture. Describe the fire-fighting drill being performed on deck, including the equipment and PPE used.", image: "set1_firefight.png" },
+        { type: "picture", timeLimit: 120, prompt: "Look at the picture. Describe the fire-fighting drill being performed on deck, including the equipment and PPE used.", image: "img/set1_firefight.jpg" },
         { type: "debate", timeLimit: 120, prompt: "Marlins Debate: 'In very hot weather, seafarers should be allowed to not wear heavy boilersuits or safety shoes to prevent heatstroke.' What is your position?", image: "" }
     ],
     set2: [
@@ -52,7 +54,7 @@ const examSets = {
         { type: "short", timeLimit: 50, prompt: "How will you handle being away from your family for many months?", image: "" },
         { type: "short", timeLimit: 50, prompt: "What is the most important quality of a good seafarer, in your opinion?", image: "" },
         { type: "short", timeLimit: 50, prompt: "What is your long-term goal in this career?", image: "" },
-        { type: "picture", timeLimit: 120, prompt: "Look at the picture. Describe the mooring operation at the forward station, including the PPE and safety precautions.", image: "set2_mooring.png" },
+        { type: "picture", timeLimit: 120, prompt: "Look at the picture. Describe the mooring operation at the forward station, including the PPE and safety precautions.", image: "img/set2_mooring.jpg" },
         { type: "debate", timeLimit: 120, prompt: "Marlins Debate: 'If a crewmember falls overboard, you should jump into the water immediately to save him before you lose sight of him.' Do you agree?", image: "" }
     ],
     set3: [
@@ -61,7 +63,7 @@ const examSets = {
         { type: "short", timeLimit: 50, prompt: "Where did you complete your pre-sea and BST training?", image: "" },
         { type: "short", timeLimit: 50, prompt: "If a company offers you a contract that is longer than usual, will you accept it?", image: "" },
         { type: "short", timeLimit: 50, prompt: "What department will you work in, and what is your current knowledge about it?", image: "" },
-        { type: "picture", timeLimit: 120, prompt: "Look at the picture. Explain the meaning of the 'Snap-Back Zone' markings and why seafarers must avoid this area during mooring.", image: "set3_snapback.png" },
+        { type: "picture", timeLimit: 120, prompt: "Look at the picture. Explain the meaning of the 'Snap-Back Zone' markings and why seafarers must avoid this area during mooring.", image: "img/set3_snapback.jpg" },
         { type: "debate", timeLimit: 120, prompt: "Marlins Debate: 'You are busy, and you just need to enter a pump room for 2 minutes to check a gauge. It is okay to enter without a permit as long as you are quick.' Do you agree?", image: "" }
     ],
     set4: [
@@ -70,7 +72,7 @@ const examSets = {
         { type: "short", timeLimit: 50, prompt: "Seafaring involves a lot of teamwork. Can you give an example of how you work in a team?", image: "" },
         { type: "short", timeLimit: 50, prompt: "What is your current English proficiency level for maritime work?", image: "" },
         { type: "short", timeLimit: 50, prompt: "If your superior asks you to do something that is not safe, what will you do?", image: "" },
-        { type: "picture", timeLimit: 120, prompt: "Look at the picture. Describe the watchkeeping duties in the Engine Control Room and the importance of monitoring machinery parameters.", image: "set4_ecr.png" },
+        { type: "picture", timeLimit: 120, prompt: "Look at the picture. Describe the watchkeeping duties in the Engine Control Room and the importance of monitoring machinery parameters.", image: "img/set4_ecr.jpg" },
         { type: "debate", timeLimit: 120, prompt: "Marlins Debate: 'Port State Control (PSC) is just trouble. Seafarers should hide any problems from the inspectors to avoid ship detention.' What is your view?", image: "" }
     ],
     set5: [
@@ -79,7 +81,7 @@ const examSets = {
         { type: "short", timeLimit: 50, prompt: "Seafarers face rough sea conditions. Are you physically and mentally ready?", image: "" },
         { type: "short", timeLimit: 50, prompt: "How do you spend your free time while you are waiting for a ship contract?", image: "" },
         { type: "short", timeLimit: 50, prompt: "If a crewmember from another country disrespects your culture, how will you respond?", image: "" },
-        { type: "picture", timeLimit: 120, prompt: "Look at the picture. Describe the CPR (Cardiopulmonary Resuscitation) procedure being performed and explain why first aid training is essential at sea.", image: "set5_cpr.png" },
+        { type: "picture", timeLimit: 120, prompt: "Look at the picture. Describe the CPR (Cardiopulmonary Resuscitation) procedure being performed and explain why first aid training is essential at sea.", image: "img/set5_cpr.jpg" },
         { type: "debate", timeLimit: 120, prompt: "Marlins Debate: 'Safety Management System (SMS) paperwork is a waste of time. It is better to just focus on the physical job and skip the forms.' Argue your position.", image: "" }
     ],
     set6: [
@@ -168,7 +170,33 @@ const statGrammar = document.getElementById('stat-grammar');
 const statFluency = document.getElementById('stat-fluency');
 
 // ==========================================
-// 4. FUNCTIONAL LOGIC & APP FLOW
+// 4. HELPER FUNCTION: Get Male Voice
+// ==========================================
+function getMaleVoice() {
+    const voices = speechSynth.getVoices();
+    
+    const preferredVoices = [
+        'Google UK English Male',
+        'Microsoft David Desktop',
+        'Microsoft David',
+        'Google US English Male',
+        'Samantha',
+        'Alex'
+    ];
+    
+    for (let preferred of preferredVoices) {
+        const found = voices.find(voice => voice.name.includes(preferred));
+        if (found) return found;
+    }
+    
+    const maleVoice = voices.find(voice => voice.name.toLowerCase().includes('male'));
+    if (maleVoice) return maleVoice;
+    
+    return voices[0] || null;
+}
+
+// ==========================================
+// 5. FUNCTIONAL LOGIC & APP FLOW
 // ==========================================
 function verifySecureActivation() {
     const entered = keyInput.value.trim().toUpperCase();
@@ -177,7 +205,6 @@ function verifySecureActivation() {
     authError.classList.add('hidden');
     deviceLockError.classList.add('hidden');
 
-    // သုံးစွဲသူရိုက်ထည့်တဲ့ Plaintext Key ကို Base64 ပြောင်းပြီး စစ်ဆေးပါ
     const encodedEntered = btoa(entered);
 
     if (SECURE_ALLOWED_KEYS.includes(encodedEntered)) {
@@ -269,18 +296,30 @@ function loadQuestion(index) {
     triggerAIExaminerVoice(currentQ.prompt, currentQ.timeLimit);
 }
 
+// ==========================================
+// 6. AI EXAMINER VOICE - MALE & CLEAR
+// ==========================================
 function triggerAIExaminerVoice(text, limit) {
     exStatus.innerText = "Examiner reading... (1/2)";
+    
+    const maleVoice = getMaleVoice();
+    
     let speak1 = new SpeechSynthesisUtterance(text);
     speak1.lang = 'en-US';
-    speak1.rate = 0.85;
+    speak1.rate = 0.9;
+    speak1.pitch = 1.0;
+    speak1.volume = 1;
+    if (maleVoice) speak1.voice = maleVoice;
 
     speak1.onend = () => {
         setTimeout(() => {
             exStatus.innerText = "Examiner repeating... (2/2)";
             let speak2 = new SpeechSynthesisUtterance(text);
             speak2.lang = 'en-US';
-            speak2.rate = 0.85;
+            speak2.rate = 0.9;
+            speak2.pitch = 1.0;
+            speak2.volume = 1;
+            if (maleVoice) speak2.voice = maleVoice;
 
             speak2.onend = () => {
                 exStatus.innerText = "🎤 SPEAK NOW";
@@ -372,9 +411,100 @@ function formatTime(secs) {
 }
 
 window.onload = () => {
+    speechSynth.getVoices();
+    
     if (localStorage.getItem('session_active') === 'true') {
         authScreen.classList.add('hidden');
         startScreen.classList.remove('hidden');
         initResponsiveDashboard();
     }
 };
+
+speechSynth.onvoiceschanged = () => {
+    speechSynth.getVoices();
+};
+
+// ==========================================
+// 7. MOBILE VOICE RECOGNITION FIXES
+// ==========================================
+document.addEventListener('DOMContentLoaded', function() {
+    const startBtn = document.createElement('button');
+    startBtn.id = 'mic-start-btn';
+    startBtn.className = 'hidden';
+    document.body.appendChild(startBtn);
+    
+    if (recognizer) {
+        const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
+        if (isIOS) {
+            alert('⚠️ သင့်စက်က iOS ဖြစ်နေပါတယ်။ Voice Recognition အတွက် Android သို့မဟုတ် Desktop Chrome ကိုသုံးပေးပါ။');
+        }
+    }
+});
+
+if (recognizer) {
+    recognizer.continuous = true;
+    recognizer.interimResults = true;
+    recognizer.lang = 'en-US';
+    
+    if ('webkitSpeechRecognition' in window) {
+        recognizer.continuous = true;
+        recognizer.interimResults = true;
+    }
+    
+    recognizer.onerror = (event) => {
+        console.error('Speech Recognition Error:', event.error);
+        if (event.error === 'not-allowed') {
+            alert('⚠️ မိုက်ခရိုဖုန်းခွင့်ပြုချက် လိုအပ်ပါတယ်။ ခွင့်ပြုပေးပါ။');
+        } else if (event.error === 'no-speech') {
+            studentSpeech.innerText = "No speech detected. Please try again.";
+            setTimeout(() => {
+                if (recognizer) {
+                    try { recognizer.start(); } catch (e) {}
+                }
+            }, 1000);
+        }
+    };
+}
+
+function showMobileMicButton() {
+    const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+    if (isMobile) {
+        const micBtn = document.getElementById('mic-start-btn');
+        if (micBtn) {
+            micBtn.classList.remove('hidden');
+            micBtn.innerHTML = '🎤 စကားပြောရန် နှိပ်ပါ';
+            micBtn.onclick = () => {
+                if (recognizer) {
+                    try {
+                        recognizer.start();
+                        studentSpeech.innerText = "🎤 စကားပြောနေပါ...";
+                    } catch (e) {
+                        console.log('Already listening or error:', e);
+                    }
+                }
+            };
+        }
+    }
+}
+
+const originalTriggerAI = triggerAIExaminerVoice;
+triggerAIExaminerVoice = function(text, limit) {
+    const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+    
+    if (isMobile) {
+        if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+            navigator.mediaDevices.getUserMedia({ audio: true })
+                .then(() => {
+                    originalTriggerAI.call(this, text, limit);
+                })
+                .catch(() => {
+                    alert('⚠️ မိုက်ခရိုဖုန်းခွင့်ပြုချက် လိုအပ်ပါတယ်။ Settings မှာ ခွင့်ပြုပေးပါ။');
+                });
+        } else {
+            originalTriggerAI.call(this, text, limit);
+        }
+    } else {
+        originalTriggerAI.call(this, text, limit);
+    }
+};
+</script>
