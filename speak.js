@@ -654,31 +654,73 @@ let selectedSetName = "set1";
 // DEVICE FINGERPRINT
 // ===============================
 
+// ===============================
+// DEVICE FINGERPRINT (ပိုမိုတိကျအောင်ပြင်ဆင်ထား)
+// ===============================
+
 function generateDeviceFingerprint() {
-    let data = navigator.userAgent + navigator.language + screen.width;
+    let data = 
+        navigator.userAgent + "|" +
+        navigator.language + "|" +
+        screen.width + "x" + screen.height + "|" +
+        screen.colorDepth + "|" +
+        navigator.hardwareConcurrency + "|" +
+        (navigator.deviceMemory || "unknown");
+    
     let hash = 0;
     for (let i = 0; i < data.length; i++) {
         hash = ((hash << 5) - hash) + data.charCodeAt(i);
         hash |= 0;
     }
-    return Math.abs(hash).toString(16);
+    return Math.abs(hash).toString(16) + "_" + data.length.toString(16);
 }
 
 // ===============================
 // LOGIN
 // ===============================
 
+// ===============================
+// LOGIN - STRICT 1 KEY = 1 DEVICE
+// ===============================
+
 function verifySecureActivation() {
     let input = document.getElementById("keyInput").value.trim().toUpperCase();
     let encoded = btoa(input);
+    let currentDevice = generateDeviceFingerprint();
+    
     let error = document.getElementById("authError");
+    let deviceError = document.getElementById("deviceLockError");
+    
+    // Error messages ကို ဖျောက်ထားမယ်
+    error.classList.add("hidden");
+    deviceError.classList.add("hidden");
 
+    // Key စာရင်းထဲမှာ ရှိမရှိ စစ်မယ်
     if (SECURE_ALLOWED_KEYS.includes(encoded)) {
+        
+        // ဒီ Key ကို ဘယ်စက်မှာ သိမ်းထားလဲ ကြည့်မယ်
+        let savedDevice = localStorage.getItem("lock_" + input);
+        
+        // ---------- အဓိက စစ်ဆေးချက် ----------
+        // အကယ်၍ ဒီ Key ကို တစ်ခြားစက်မှာ သိမ်းထားပြီးသားဆိုရင်
+        if (savedDevice && savedDevice !== currentDevice) {
+            // ဝင်ခွင့် လုံးဝမပေးဘူး
+            deviceError.innerHTML = "🔒 ဒီ Activation Key ကို အခြားစက်တွင် သုံးထားပြီးဖြစ်ပါတယ်။<br><small style='color:#94a3b8;'>This key is already locked to another device.</small>";
+            deviceError.classList.remove("hidden");
+            return; // ဒီမှာပဲ ရပ်လိုက်မယ်
+        }
+        
+        // ---------- Key ကို ဒီစက်မှာ သိမ်းမယ် ----------
+        localStorage.setItem("lock_" + input, currentDevice);
         localStorage.setItem("session_active", "true");
+        
+        // Login အောင်မြင်ပြီး Start Screen ကိုပြမယ်
         document.getElementById("authScreen").classList.add("hidden");
         document.getElementById("startScreen").classList.remove("hidden");
         showSetSelector();
+        
     } else {
+        // Key မှားနေရင်
         error.innerHTML = "❌ Invalid Activation Key";
         error.classList.remove("hidden");
     }
