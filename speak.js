@@ -1,5 +1,6 @@
 // ============================================================
-// speak.js - Mobile Optimized
+// speak.js - FIXED loadQuestion
+// 10 Sets × 7 Questions
 // ============================================================
 
 // ===============================
@@ -28,7 +29,6 @@ const SECURE_ALLOWED_KEYS = [
     "VzhWMlE2NTQ=", "SzRCOVoxMDM=", "TDdNM0g1NDI=", "WDFEOVA4NjA=", "WjZGMkM3NDM="
 ];
 
-// Raw (Decoded) keys
 const RAW_ALLOWED_KEYS = SECURE_ALLOWED_KEYS.map(k => atob(k));
 
 // ===============================
@@ -236,7 +236,7 @@ function startExam() {
 }
 
 // ===============================
-// 9. LOAD QUESTION
+// 9. LOAD QUESTION (FIXED)
 // ===============================
 function loadQuestion() {
     selectedQuestion = currentSet[currentQuestion];
@@ -254,6 +254,7 @@ function loadQuestion() {
         img.classList.add("hidden");
     }
 
+    // 🔥 ဒီမှာ သေချာရှင်းပါ
     clearTranscript();
     deleteRecording();
 
@@ -265,44 +266,25 @@ function loadQuestion() {
 }
 
 // ===============================
-// 10. READ QUESTION (FOR BUTTON)
+// 10. READ QUESTION (FOR BUTTON TOO)
 // ===============================
 function readQuestion() {
     let text = document.getElementById("questionText").innerText;
     if (!text) return;
-    
-    // Mobile: Voices ကိုကြိုပြင်ဆင်မယ်
-    if (window.speechSynthesis.getVoices().length === 0) {
-        let checkCount = 0;
-        let maxChecks = 20;
-        let interval = setInterval(function() {
-            checkCount++;
-            if (window.speechSynthesis.getVoices().length > 0 || checkCount >= maxChecks) {
-                clearInterval(interval);
-                speakText(text);
-                setTimeout(function() {
-                    speakText(text);
-                    setTimeout(function() {
-                        if (typeof startSpeechRecognition === 'function') {
-                            startSpeechRecognition();
-                            document.getElementById("recordStatus").innerHTML = "🎤 Listening...";
-                        }
-                    }, 1500);
-                }, 3500);
-            }
-        }, 200);
-    } else {
+
+    // ပထမအကြိမ် ဖတ်မယ်
+    speakText(text);
+
+    // ဒုတိယအကြိမ် ဖတ်ပြီး မိုက်ကိုစမယ်
+    setTimeout(function() {
         speakText(text);
         setTimeout(function() {
-            speakText(text);
-            setTimeout(function() {
-                if (typeof startSpeechRecognition === 'function') {
-                    startSpeechRecognition();
-                    document.getElementById("recordStatus").innerHTML = "🎤 Listening...";
-                }
-            }, 1500);
-        }, 3500);
-    }
+            if (!document.getElementById("examScreen").classList.contains("hidden")) {
+                startSpeechRecognition();
+                document.getElementById("recordStatus").innerHTML = "🎤 Listening... Speak now!";
+            }
+        }, 1500);
+    }, 3500);
 }
 
 // ===============================
@@ -310,7 +292,7 @@ function readQuestion() {
 // ===============================
 function speakText(text) {
     if (!("speechSynthesis" in window)) {
-        alert("Text To Speech is not supported");
+        console.warn("Text To Speech is not supported");
         return;
     }
 
@@ -319,40 +301,29 @@ function speakText(text) {
     let speech = new SpeechSynthesisUtterance();
     speech.text = text;
     speech.lang = "en-US";
-    
-    let isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
-    speech.rate = isMobile ? 0.8 : 0.9;
+    speech.rate = 0.85;
     speech.pitch = 1;
     speech.volume = 1;
 
     let voices = window.speechSynthesis.getVoices();
     if (voices.length > 0) {
-        let preferredVoice = null;
-        let preferredNames = [
-            "Google UK English Male",
-            "Google US English Male",
-            "Microsoft David",
-            "Samantha",
-            "Alex"
-        ];
+        let preferred = ["Google UK English Male", "Google US English Male", "Microsoft David", "Samantha", "Alex"];
+        let selected = null;
         
-        for (let name of preferredNames) {
-            let found = voices.find(v => v.name.includes(name));
+        for (let p of preferred) {
+            let found = voices.find(v => v.name.includes(p));
             if (found) {
-                preferredVoice = found;
+                selected = found;
                 break;
             }
         }
         
-        if (!preferredVoice) {
-            preferredVoice = voices.find(v => 
-                v.name.toLowerCase().includes("male") ||
-                v.name.includes("David")
-            );
+        if (!selected) {
+            selected = voices.find(v => v.name.toLowerCase().includes("male")) || voices[0];
         }
         
-        if (preferredVoice) {
-            speech.voice = preferredVoice;
+        if (selected) {
+            speech.voice = selected;
         }
     }
 
@@ -430,7 +401,7 @@ function finishExam() {
 // 15. AUTO LOGIN CHECK
 // ===============================
 window.onload = function() {
-    // ဖုန်းအတွက် Microphone ခွင့်ပြုချက် ကြိုတောင်းမယ်
+    // မိုက်ခွင့်ပြုချက်ကို ကြိုတောင်းမယ်
     if (navigator.mediaDevices) {
         navigator.mediaDevices.getUserMedia({ audio: true })
             .then(function(stream) {
@@ -438,16 +409,8 @@ window.onload = function() {
                 stream.getTracks().forEach(track => track.stop());
             })
             .catch(function(err) {
-                console.warn("⚠️ Microphone permission not granted yet.");
+                console.warn("⚠️ Microphone permission not granted yet. User will be prompted when recording starts.");
             });
-    }
-
-    // ဖုန်းအတွက် Voices ကို ကြိုတင်ယူမယ်
-    if (window.speechSynthesis) {
-        window.speechSynthesis.getVoices();
-        window.speechSynthesis.onvoiceschanged = function() {
-            window.speechSynthesis.getVoices();
-        };
     }
 
     if (localStorage.getItem("session_active") === "true") {
