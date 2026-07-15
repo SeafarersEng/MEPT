@@ -1,66 +1,43 @@
 /* ==========================================
-   speech.js - Mobile Optimized
+   speech.js - FIXED for multiple questions
    MEPT Speaking Test
 ========================================== */
 
-let recognition;
+let recognition = null;
 let finalTranscript = "";
 let isListening = false;
-let isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+let recognitionAttempts = 0;
+let maxRecognitionAttempts = 3;
 
 // ==========================================
-// TEXT TO SPEECH - Mobile Ready
+// TEXT TO SPEECH - Question Read Twice
 // ==========================================
 
 function readQuestion() {
     let text = document.getElementById("questionText").innerText;
     if (!text) return;
-    
-    // Mobile: Voices ကိုကြိုပြင်ဆင်မယ်
-    if (isMobile) {
-        prepareVoicesForMobile(function() {
-            speakText(text);
-            setTimeout(function() {
-                speakText(text);
-            }, 4000);
-        });
-    } else {
+
+    // ပထမအကြိမ် ဖတ်မယ်
+    speakText(text);
+
+    // ဒုတိယအကြိမ် ဖတ်ပြီး မိုက်ကိုစမယ်
+    setTimeout(function() {
         speakText(text);
         setTimeout(function() {
-            speakText(text);
-        }, 3500);
-    }
+            if (!document.getElementById("examScreen").classList.contains("hidden")) {
+                startSpeechRecognition();
+            }
+        }, 1500);
+    }, 3500);
 }
 
 // ==========================================
-// PREPARE VOICES FOR MOBILE
-// ==========================================
-
-function prepareVoicesForMobile(callback) {
-    if (window.speechSynthesis.getVoices().length > 0) {
-        callback();
-        return;
-    }
-    
-    // Voices မရသေးရင် စောင့်မယ်
-    let checkCount = 0;
-    let maxChecks = 20;
-    let interval = setInterval(function() {
-        checkCount++;
-        if (window.speechSynthesis.getVoices().length > 0 || checkCount >= maxChecks) {
-            clearInterval(interval);
-            callback();
-        }
-    }, 200);
-}
-
-// ==========================================
-// SPEAK TEXT (Mobile Optimized)
+// SPEAK FUNCTION
 // ==========================================
 
 function speakText(text) {
     if (!("speechSynthesis" in window)) {
-        alert("Text To Speech is not supported");
+        console.warn("Text To Speech is not supported");
         return;
     }
 
@@ -69,42 +46,29 @@ function speakText(text) {
     let speech = new SpeechSynthesisUtterance();
     speech.text = text;
     speech.lang = "en-US";
-    speech.rate = isMobile ? 0.8 : 0.9;  // Mobile အတွက် နည်းနည်းနှေး
+    speech.rate = 0.85;
     speech.pitch = 1;
     speech.volume = 1;
 
-    // Mobile အတွက် အသံကို ကြိုရွေးမယ်
     let voices = window.speechSynthesis.getVoices();
     if (voices.length > 0) {
-        let preferredVoice = null;
+        let preferred = ["Google UK English Male", "Google US English Male", "Microsoft David", "Samantha", "Alex"];
+        let selected = null;
         
-        // ဦးစားပေး အသံများ
-        let preferredNames = [
-            "Google UK English Male",
-            "Google US English Male",
-            "Microsoft David",
-            "Samantha",
-            "Alex"
-        ];
-        
-        for (let name of preferredNames) {
-            let found = voices.find(v => v.name.includes(name));
+        for (let p of preferred) {
+            let found = voices.find(v => v.name.includes(p));
             if (found) {
-                preferredVoice = found;
+                selected = found;
                 break;
             }
         }
         
-        // မတွေ့ရင် ယောက်ျားအသံကိုရှာ
-        if (!preferredVoice) {
-            preferredVoice = voices.find(v => 
-                v.name.toLowerCase().includes("male") ||
-                v.name.includes("David")
-            );
+        if (!selected) {
+            selected = voices.find(v => v.name.toLowerCase().includes("male")) || voices[0];
         }
         
-        if (preferredVoice) {
-            speech.voice = preferredVoice;
+        if (selected) {
+            speech.voice = selected;
         }
     }
 
@@ -112,14 +76,21 @@ function speakText(text) {
 }
 
 // ==========================================
-// SPEECH RECOGNITION - Mobile Optimized
+// START SPEECH RECOGNITION (FIXED)
 // ==========================================
 
 function startSpeechRecognition() {
     const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
     
     if (!SpeechRecognition) {
-        alert("Speech Recognition is not supported. Please use Chrome.");
+        alert("Speech Recognition is not supported. Please use Chrome or Edge.");
+        return;
+    }
+
+    // မိုက်ခွင့်ပြုချက် ရှိမရှိ စစ်မယ်
+    if (recognitionAttempts >= maxRecognitionAttempts) {
+        console.warn("Max recognition attempts reached. Please click 'Listen Question' again.");
+        document.getElementById("recordStatus").innerHTML = "⚠️ Please click 'Listen Question' again";
         return;
     }
 
@@ -131,116 +102,145 @@ function startSpeechRecognition() {
         return;
     }
 
-    recognition = new SpeechRecognition();
-    recognition.lang = "en-US";
-    recognition.continuous = false;  // 🔥 Mobile အတွက် continuous ကို false ထားတယ် (ပိုကောင်း)
-    recognition.interimResults = true;
-    recognition.maxAlternatives = 1;
-    
-    // Mobile အတွက် timeout ကိုတိုးမယ်
-    if (isMobile) {
-        // ဒါကို တိုက်ရိုက်မသတ်မှတ်နိုင်ပေမယ့် onend မှာ ပြန်စမယ်
-    }
+    // 🔥 အဓိက ပြင်ဆင်ချက်: recognition object အသစ်ဖန်တီးမယ်
+    try {
+        recognition = new SpeechRecognition();
+        recognition.lang = "en-US";
+        recognition.continuous = true;
+        recognition.interimResults = true;
+        recognition.maxAlternatives = 1;
 
-    finalTranscript = "";
+        // ဒီမေးခွန်းအတွက် transcript ကို ရှင်းမယ်
+        finalTranscript = "";
 
-    recognition.onstart = function() {
-        isListening = true;
-        console.log("🎤 Speech recognition started (Mobile mode)");
-        document.getElementById("recordStatus").innerHTML = "🎤 Listening...";
-        document.getElementById("recordStatus").style.color = "#38bdf8";
-    };
+        recognition.onstart = function() {
+            isListening = true;
+            recognitionAttempts = 0;
+            console.log("🎤 Speech recognition started");
+            document.getElementById("recordStatus").innerHTML = "🎤 Listening... Speak now!";
+            document.getElementById("recordStatus").style.color = "#38bdf8";
+        };
 
-    recognition.onresult = function(event) {
-        let interim = "";
-        let final = "";
+        recognition.onresult = function(event) {
+            let interim = "";
+            let final = "";
 
-        for (let i = event.resultIndex; i < event.results.length; i++) {
-            let transcript = event.results[i][0].transcript;
-            if (event.results[i].isFinal) {
-                final += transcript + " ";
-            } else {
-                interim += transcript;
-            }
-        }
-
-        if (final) {
-            finalTranscript += final;
-        }
-
-        // Show in textarea
-        let displayText = finalTranscript + interim;
-        document.getElementById("transcript").value = displayText;
-        
-        // Mobile: textarea ကို auto scroll
-        let textarea = document.getElementById("transcript");
-        textarea.scrollTop = textarea.scrollHeight;
-        
-        // သုံးစွဲသူ ပြောနေတယ်ဆိုတာ သိစေဖို့ status update
-        if (interim) {
-            document.getElementById("recordStatus").innerHTML = "🎤 Speaking... (interim)";
-        } else if (final) {
-            document.getElementById("recordStatus").innerHTML = "✅ Captured: " + final.trim();
-        }
-    };
-
-    recognition.onerror = function(event) {
-        console.log("Speech Error:", event.error);
-        
-        // Mobile: error ဖြစ်ရင် သုံးစွဲဲသူကို ပြန်စခိုင်းမယ်
-        if (event.error === "not-allowed") {
-            alert("Please allow microphone access in your browser settings.");
-        } else if (event.error === "no-speech") {
-            document.getElementById("recordStatus").innerHTML = "🔇 No speech detected. Please speak again.";
-            // ပြန်စမယ်
-            setTimeout(function() {
-                if (!document.getElementById("examScreen").classList.contains("hidden")) {
-                    startSpeechRecognition();
+            for (let i = event.resultIndex; i < event.results.length; i++) {
+                let transcript = event.results[i][0].transcript;
+                if (event.results[i].isFinal) {
+                    final += transcript + " ";
+                } else {
+                    interim += transcript;
                 }
-            }, 1000);
-        } else if (event.error !== "aborted") {
-            // အခြား error အတွက် ပြန်စမယ်
+            }
+
+            // Final transcript ကို သိမ်းမယ်
+            if (final) {
+                finalTranscript += final;
+            }
+
+            // Textarea မှာ ပြမယ် (Interim + Final)
+            let displayText = finalTranscript + interim;
+            document.getElementById("transcript").value = displayText;
+            
+            // Auto scroll
+            let textarea = document.getElementById("transcript");
+            textarea.scrollTop = textarea.scrollHeight;
+
+            // အခြေအနေပြမယ်
+            if (interim) {
+                document.getElementById("recordStatus").innerHTML = "🎤 Speaking... (processing)";
+            } else if (final) {
+                document.getElementById("recordStatus").innerHTML = "✅ Captured: " + final.trim().substring(0, 30) + "...";
+            }
+        };
+
+        recognition.onerror = function(event) {
+            console.log("Speech Error:", event.error);
+            
+            // Permission error
+            if (event.error === "not-allowed") {
+                document.getElementById("recordStatus").innerHTML = "❌ Please allow microphone access";
+                document.getElementById("recordStatus").style.color = "#ef4444";
+                alert("Please allow microphone access in your browser settings.");
+                return;
+            }
+            
+            // No speech detected
+            if (event.error === "no-speech") {
+                document.getElementById("recordStatus").innerHTML = "🔇 No speech detected. Say something!";
+                document.getElementById("recordStatus").style.color = "#eab308";
+                
+                // ထပ်စမ်းမယ်
+                setTimeout(function() {
+                    if (!document.getElementById("examScreen").classList.contains("hidden") && !isListening) {
+                        startSpeechRecognition();
+                    }
+                }, 1000);
+                return;
+            }
+            
+            // အခြား error များ
+            if (event.error !== "aborted") {
+                document.getElementById("recordStatus").innerHTML = "⚠️ Error: " + event.error;
+                recognitionAttempts++;
+                
+                if (recognitionAttempts < maxRecognitionAttempts) {
+                    setTimeout(function() {
+                        if (!document.getElementById("examScreen").classList.contains("hidden")) {
+                            startSpeechRecognition();
+                        }
+                    }, 2000);
+                } else {
+                    document.getElementById("recordStatus").innerHTML = "❌ Please click 'Listen Question' again";
+                    document.getElementById("recordStatus").style.color = "#ef4444";
+                }
+            }
+        };
+
+        // 🔥 အဓိက ပြင်ဆင်ချက်: onend မှာ recognition ကို null လုပ်မယ်
+        recognition.onend = function() {
+            isListening = false;
+            recognition = null;  // 🔥 အရေးကြီးဆုံး
+            console.log("⏹ Speech recognition ended");
+            
+            // စာမေးပွဲထဲမှာဆိုရင် ပြန်စမယ်
+            if (!document.getElementById("examScreen").classList.contains("hidden")) {
+                // အချိန်ကျန်သေးရင် ပြန်စမယ်
+                let timerDisplay = document.getElementById("timer");
+                if (timerDisplay) {
+                    let timeParts = timerDisplay.innerText.split(":");
+                    let seconds = parseInt(timeParts[0]) * 60 + parseInt(timeParts[1]);
+                    if (seconds > 5) {
+                        setTimeout(function() {
+                            if (!document.getElementById("examScreen").classList.contains("hidden")) {
+                                startSpeechRecognition();
+                            }
+                        }, 500);
+                    } else {
+                        document.getElementById("recordStatus").innerHTML = "⏱️ Time almost up!";
+                    }
+                }
+            } else {
+                document.getElementById("recordStatus").innerHTML = "⏹ Stopped";
+                document.getElementById("recordStatus").style.color = "";
+            }
+        };
+
+        recognition.start();
+
+    } catch (e) {
+        console.error("Error starting recognition:", e);
+        document.getElementById("recordStatus").innerHTML = "❌ Error starting microphone";
+        recognitionAttempts++;
+        
+        if (recognitionAttempts < maxRecognitionAttempts) {
             setTimeout(function() {
                 if (!document.getElementById("examScreen").classList.contains("hidden")) {
                     startSpeechRecognition();
                 }
             }, 2000);
         }
-    };
-
-    recognition.onend = function() {
-        isListening = false;
-        console.log("⏹ Speech recognition ended");
-        document.getElementById("recordStatus").style.color = "";
-        
-        // Exam screen ထဲမှာဆိုရင် ပြန်စမယ် (Mobile အတွက် continuous ကို simulate လုပ်တယ်)
-        if (!document.getElementById("examScreen").classList.contains("hidden")) {
-            // Time ကျန်သေးရင် ပြန်စမယ်
-            let timerDisplay = document.getElementById("timer");
-            if (timerDisplay) {
-                let timeParts = timerDisplay.innerText.split(":");
-                let seconds = parseInt(timeParts[0]) * 60 + parseInt(timeParts[1]);
-                if (seconds > 5) {
-                    setTimeout(function() {
-                        if (!document.getElementById("examScreen").classList.contains("hidden")) {
-                            startSpeechRecognition();
-                        }
-                    }, 500);
-                }
-            }
-        }
-    };
-
-    try {
-        recognition.start();
-    } catch (e) {
-        console.warn("Could not start recognition:", e);
-        // တစ်ခါမရရင် ထပ်စမ်းမယ်
-        setTimeout(function() {
-            if (!document.getElementById("examScreen").classList.contains("hidden")) {
-                startSpeechRecognition();
-            }
-        }, 1000);
     }
 }
 
@@ -255,6 +255,7 @@ function stopSpeechRecognition() {
         } catch (e) {
             console.log("Recognition already stopped");
         }
+        recognition = null;
         isListening = false;
     }
     document.getElementById("recordStatus").innerHTML = "⏹ Stopped";
@@ -276,6 +277,8 @@ function getTranscript() {
 function clearTranscript() {
     finalTranscript = "";
     document.getElementById("transcript").value = "";
+    document.getElementById("recordStatus").innerHTML = "Ready";
+    document.getElementById("recordStatus").style.color = "";
 }
 
 // ==========================================
@@ -288,29 +291,12 @@ function stopAllSpeech() {
 }
 
 // ==========================================
-// PRELOAD VOICES (Mobile Ready)
+// PRELOAD VOICES
 // ==========================================
 
-// Page Load ဖြစ်တာနဲ့ Voices ကို ကြိုယူမယ်
 if (window.speechSynthesis) {
-    // အရင်ဆုံး ချက်ချင်းယူမယ်
     window.speechSynthesis.getVoices();
-    
-    // Voices ပြောင်းလဲရင် ထပ်ယူမယ်
     window.speechSynthesis.onvoiceschanged = function() {
-        let voices = window.speechSynthesis.getVoices();
-        console.log("✅ Available voices:", voices.length);
-        if (isMobile) {
-            voices.forEach(function(v) {
-                console.log("  -", v.name, "(", v.lang, ")");
-            });
-        }
+        window.speechSynthesis.getVoices();
     };
-    
-    // Mobile: နောက်ထပ် ၁ စက္ကန့်အကြာမှာ ထပ်ယူမယ်
-    if (isMobile) {
-        setTimeout(function() {
-            window.speechSynthesis.getVoices();
-        }, 1000);
-    }
 }
