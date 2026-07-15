@@ -67,6 +67,9 @@
   },
   {    "username": "LinHtetNaing", "password": "std03@2026", "startDate": "2026-07-06", "expireDate": "2026-09-08", "name": "Lin Htet Naing"
   },
+  
+  {    "username": "Moe Moe", "password": "moe@2026", "startDate": "2026-07-11", "expireDate": "2026-07-22", "name": "Moe Moe"
+  },
   {  "username": "Thiha Zaw",  "password": "std04@2026",  "startDate": "2026-07-06",  "expireDate": "2026-08-10",  "name": "Thiha Zaw"
   },
   {    "username": "Han Htoo Zaw","password": "std05@2026","startDate": "2026-07-08","expireDate": "2026-07-15","name": "Han Htoo Zaw"
