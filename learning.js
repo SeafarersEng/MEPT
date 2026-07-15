@@ -1316,7 +1316,157 @@ const SPEAKING_TOPICS = [
 ];
 
 // ============================================================
-// 6. LISTENING DATA (5 EXERCISES)
+// 6. SPEAKING PICTURE DESCRIPTIONS (12 TOPICS) - WITH PNG IMAGES
+// ============================================================
+const SPEAKING_PICTURE_TOPICS = [
+    {
+        id: 101,
+        category: "Emergency Response",
+        imageEmoji: "🆘",
+        imageFile: "man-overboard.png",
+        title: "Man Overboard",
+        question: "Describe the picture. What is happening and why is it important?",
+        sample_answer_en: "In the picture, I can see a man overboard emergency. The crew members are throwing a lifebuoy to save the person. It is very important to keep a continuous lookout to maintain safety.",
+        sample_answer_mm: "ပုံထဲမှာ လူတစ်ယောက် ရေထဲကျတဲ့ အရေးပေါ်အခြေအနေကို မြင်ရပါတယ်။ သင်္ဘောသားတွေဟာ သူ့ကိုကယ်ဖို့ အသက်ကယ်ဘွယာလှမ်းပစ်ပေးနေပါတယ်။ ဘေးကင်းဖို့အတွက် မျက်ခြေမပြတ် စောင့်ကြည့်နေဖို့ အထူးအရေးကြီးပါတယ်။",
+        strategy: "ပုံထဲမှာ မြင်ရတာကို ရှင်းရှင်းလင်းလင်း ဖော်ပြပါ။ အရေးပေါ်အခြေအနေနဲ့ ဘေးကင်းရေးအရေးပါပုံကို ဆက်စပ်ပြောပါ။",
+        vocabulary: "man overboard, lifebuoy, lookout, emergency, rescue"
+    },
+    {
+        id: 102,
+        category: "Safety Procedures",
+        imageEmoji: "🚪",
+        imageFile: "enclosed-space.png",
+        title: "Enclosed Space Entry",
+        question: "Describe the picture. What are the crew members doing and why?",
+        sample_answer_en: "In the picture, I can see an enclosed space entry preparation. The crew members are checking the hatch and atmosphere tools. It is very important to test the oxygen level before entering to prevent accidents.",
+        sample_answer_mm: "ပုံထဲမှာ ကန့်သတ်အလုံပိတ်ခန်းထဲဝင်ဖို့ ပြင်ဆင်နေတာကို မြင်ရပါတယ်။ သင်္ဘောသားတွေဟာ ပေါက်ဝနဲ့ လေထုတိုင်းတာတဲ့ကိရိယာတွေကို စစ်ဆေးနေပါတယ်။ မတော်တဆမှုမဖြစ်အောင် မဝင်ခင် အောက်ဆီဂျင်ပမာဏကို စစ်ဆေးဖို့ အထူးအရေးကြီးပါတယ်။",
+        strategy: "ပုံထဲက ပြင်ဆင်မှုအဆင့်တွေကို ဖော်ပြပြီး ဘေးကင်းရေးအတွက် ဘာကြောင့်အရေးကြီးလဲ ရှင်းပြပါ။",
+        vocabulary: "enclosed space, hatch, atmosphere tools, oxygen level, prevention"
+    },
+    {
+        id: 103,
+        category: "Medical Emergency",
+        imageEmoji: "🏥",
+        imageFile: "medical-emergency-1.png",
+        title: "Medical Emergency (Card 1)",
+        question: "Describe the picture. What is happening and what should the crew do?",
+        sample_answer_en: "In the picture, I can see a medical emergency on board. The crew members are giving first aid to an injured seafarer. It is very important for all seafarers to know basic first aid skills.",
+        sample_answer_mm: "ပုံထဲမှာ သင်္ဘောပေါ်က ဆေးဘက်ဆိုင်ရာ အရေးပေါ်အခြေအနေကို မြင်ရပါတယ်။ သင်္ဘောသားတွေဟာ ဒဏ်ရာရနေတဲ့ လုပ်ဖော်ကိုင်ဖက်ကို ရှေးဦးသူနာပြုစုနည်း ပေးနေပါတယ်။ သင်္ဘောသားအားလုံး ရှေးဦးသူနာပြုစုနည်း သိထားဖို့ အထူးအရေးကြီးပါတယ်။",
+        strategy: "ပုံထဲက အရေးပေါ်အခြေအနေကို ဖော်ပြပြီး သင်္ဘောသားတွေရဲ့ တုံ့ပြန်မှုနဲ့ ရှေးဦးသူနာပြုစုနည်းရဲ့ အရေးပါပုံကို ပြောပါ။",
+        vocabulary: "medical emergency, first aid, injured, seafarer, basic skills"
+    },
+    {
+        id: 104,
+        category: "Mooring Operations",
+        imageEmoji: "⚓",
+        imageFile: "mooring-danger.png",
+        title: "Mooring Operation Danger",
+        question: "Describe the picture. What are the risks and how can they be avoided?",
+        sample_answer_en: "In the picture, I can see a mooring operation on the deck. The crew members are handling heavy mooring ropes. It is very important to stay clear of the snapback zone for personal safety.",
+        sample_answer_mm: "ပုံထဲမှာ ကုန်းပတ်ပေါ်က သင်္ဘောဆိပ်ကပ်ခြင်း လုပ်ငန်းစဉ်ကို မြင်ရပါတယ်။ သင်္ဘောသားတွေဟာ လေးလံတဲ့ ဇာတ်ကြိုးတွေကို ကိုင်တွယ်နေကြပါတယ်။ ကိုယ်ခန္ဓာဘေးကင်းဖို့အတွက် ကြိုးပြတ်ထွက်နိုင်တဲ့ နေရာ (Snapback Zone) ကနေ ဝေးဝေးနေဖို့ အထူးအရေးကြီးပါတယ်။",
+        strategy: "ပုံထဲက အန္တရာယ်များကို ဖော်ပြပြီး ဘေးကင်းရေးသတိထားရမယ့် အချက်တွေကို ရှင်းပြပါ။",
+        vocabulary: "mooring operation, snapback zone, heavy ropes, personal safety, handling"
+    },
+    {
+        id: 105,
+        category: "Medical Emergency",
+        imageEmoji: "🛏️",
+        imageFile: "medical-emergency-2.png",
+        title: "Medical Emergency (Card 2)",
+        question: "Describe the picture. What is the crew preparing and why?",
+        sample_answer_en: "In the picture, I can see another medical emergency case. The crew is preparing a stretcher to transport the sick patient. It is very important to handle the injured person carefully and call the captain.",
+        sample_answer_mm: "ပုံထဲမှာ နောက်ထပ် ဆေးဘက်ဆိုင်ရာ အရေးပေါ်အခြေအနေတစ်ခုကို မြင်ရပါတယ်။ သင်္ဘောသားတွေဟာ လူနာကိုသယ်ဖို့ လူနာတင်ထမ်းစင်ကို ပြင်ဆင်နေပါတယ်။ လူနာကို ဂရုတစိုက် ကိုင်တွယ်ဖို့နဲ့ ကပ္ပတိန်ကို အကြောင်းကြားဖို့ အထူးအရေးကြီးပါတယ်။",
+        strategy: "ပုံထဲက ပြင်ဆင်မှုတွေကို ဖော်ပြပြီး ဆေးဘက်ဆိုင်ရာ အရေးပေါ်အခြေအနေမှာ ဘယ်လိုတုံ့ပြန်ရမလဲ ရှင်းပြပါ။",
+        vocabulary: "medical emergency, stretcher, transport, patient, captain"
+    },
+    {
+        id: 106,
+        category: "Mooring Operations",
+        imageEmoji: "🏗️",
+        imageFile: "mooring-winch.png",
+        title: "Mooring the Danger",
+        question: "Describe the picture. What are the crew monitoring and why?",
+        sample_answer_en: "In the picture, I can see crew members working near the mooring winch. They are monitoring the tension of the ropes. It is very important to wear proper PPE and stand in a safe area.",
+        sample_answer_mm: "ပုံထဲမှာ သင်္ဘောသားတွေ မော်တာဝင်ချ်နားမှာ အလုပ်လုပ်နေတာကို မြင်ရပါတယ်။ သူတို့ဟာ ကြိုးတွေရဲ့ တင်းအားကို စောင့်ကြည့်နေကြပါတယ်။ အကာအကွယ်ဝတ်စုံ စနစ်တကျဝတ်ဆင်ဖို့နဲ့ ဘေးကင်းတဲ့နေရာမှာ ရပ်ဖို့ အထူးအရေးကြီးပါတယ်။",
+        strategy: "ပုံထဲက လုပ်ဆောင်ချက်တွေနဲ့ အန္တရာယ်ကင်းရှင်းရေး အစီအမံတွေကို ဆက်စပ်ပြောပါ။",
+        vocabulary: "mooring winch, tension, monitoring, PPE, safe area"
+    },
+    {
+        id: 107,
+        category: "Shipboard Policies",
+        imageEmoji: "🍺",
+        imageFile: "alcohol-policy.png",
+        title: "Alcohol Policies",
+        question: "Describe the picture. What is the problem and what should be done?",
+        sample_answer_en: "In the picture, I can see some crew members drinking alcohol on board. This is a dangerous behavior. It is very important to follow the ship's zero-alcohol policy to keep the ship safe.",
+        sample_answer_mm: "ပုံထဲမှာ သင်္ဘောသားတချို့ သင်္ဘောပေါ်မှာ အရက်သောက်နေတာကို မြင်ရပါတယ်။ ဒါဟာ အန္တရာယ်ရှိတဲ့ အပြုအမူဖြစ်ပါတယ်။ သင်္ဘောဘေးကင်းဖို့အတွက် သင်္ဘောရဲ့ အရက်မသောက်ရ စည်းကမ်းကို လိုက်နာဖို့ အထူးအရေးကြီးပါတယ်။",
+        strategy: "ပုံထဲက မှားယွင်းတဲ့ အပြုအမူကို ဖော်ပြပြီး မှန်ကန်တဲ့ စည်းကမ်းကို ရှင်းပြပါ။",
+        vocabulary: "alcohol, dangerous behavior, zero-alcohol policy, safety, regulations"
+    },
+    {
+        id: 108,
+        category: "Environmental Protection",
+        imageEmoji: "🗑️",
+        imageFile: "garbage-management.png",
+        title: "Garbage Management",
+        question: "Describe the picture. How is the crew managing waste and why?",
+        sample_answer_en: "In the picture, I can see the crew managing garbage on the ship. They are sorting different types of waste into color bins. It is very important to segregate garbage correctly to protect the marine environment.",
+        sample_answer_mm: "ပုံထဲမှာ သင်္ဘောသားတွေ အမှိုက်သိမ်းဆည်းနေတာကို မြင်ရပါတယ်။ သူတို့ဟာ အမှိုက်အမျိုးအစားအလိုက် အရောင်ခွဲထားတဲ့ ပုံးတွေထဲ စနစ်တကျ ခွဲထည့်နေကြပါတယ်။ ပင်လယ်ပြင်ပတ်ဝန်းကျင်ကို ကာကွယ်ဖို့ အမှိုက်ကို မှန်ကန်စွာ ခွဲခြားစွန့်ပစ်ဖို့ အထူးအရေးကြီးပါတယ်။",
+        strategy: "ပုံထဲက အမှိုက်ခွဲခြားပုံကို ဖော်ပြပြီး သဘာဝပတ်ဝန်းကျင်အတွက် အရေးပါပုံကို ရှင်းပြပါ။",
+        vocabulary: "garbage management, waste sorting, color bins, marine environment, segregation"
+    },
+    {
+        id: 109,
+        category: "Environmental Protection",
+        imageEmoji: "🛢️",
+        imageFile: "oil-pollution.png",
+        title: "Oil Pollution",
+        question: "Describe the picture. What is happening and how should it be handled?",
+        sample_answer_en: "In the picture, I can see an oil spill on the deck, causing pollution. The crew members are trying to clean it up quickly. It is very important to follow MARPOL regulations to prevent environmental damage.",
+        sample_answer_mm: "ပုံထဲမှာ ကုန်းပတ်ပေါ်မှာ ဆီယိုဖိတ်ပြီး ညစ်ညမ်းမှုဖြစ်နေတာကို မြင်ရပါတယ်။ သင်္ဘောသားတွေဟာ အမြန်ဆုံး လိုက်လံသန့်ရှင်းရေးလုပ်နေကြပါတယ်။ ပတ်ဝန်းကျင်ပျက်စီးမှုကို တားဆီးဖို့ MARPOL စည်းမျဉ်းတွေကို လိုက်နာဖို့ အထူးအရေးကြီးပါတယ်။",
+        strategy: "ပုံထဲက ဆီယိုဖိတ်မှုနဲ့ သန့်ရှင်းရေးလုပ်ပုံကို ဖော်ပြပြီး MARPOL စည်းမျဉ်းတွေရဲ့ အရေးပါပုံကို ရှင်းပြပါ။",
+        vocabulary: "oil spill, pollution, clean up, MARPOL regulations, environmental damage"
+    },
+    {
+        id: 110,
+        category: "Safety Procedures",
+        imageEmoji: "🚫",
+        imageFile: "restricted-area.png",
+        title: "Restricted Area",
+        question: "Describe the picture. What does the sign mean and what should crew do?",
+        sample_answer_en: "In the picture, I can see a 'No Entry' sign for a restricted area. Some crew members are standing near the door. It is very important to get permission before entering these secure zones.",
+        sample_answer_mm: "ပုံထဲမှာ ဝင်ခွင့်မရှိတဲ့ ကန့်သတ်နယ်မြေ သတိပေးဆိုင်းဘုတ်ကို မြင်ရပါတယ်။ သင်္ဘောသားတချို့ တံခါးနားမှာ ရပ်နေကြပါတယ်။ ဒီလို လုံခြုံရေးအရ ကန့်သတ်ထားတဲ့ နေရာတွေကို မဝင်ခင် ခွင့်ပြုချက်ရယူဖို့ အထူးအရေးကြီးပါတယ်။",
+        strategy: "ပုံထဲက သတိပေးဆိုင်းဘုတ်ရဲ့ အဓိပ္ပါယ်ကို ဖော်ပြပြီး လိုက်နာရမယ့် စည်းကမ်းကို ရှင်းပြပါ။",
+        vocabulary: "restricted area, No Entry sign, permission, secure zones, safety"
+    },
+    {
+        id: 111,
+        category: "Emergency Response",
+        imageEmoji: "🔥",
+        imageFile: "fire-fighting.png",
+        title: "Fire Fighting",
+        question: "Describe the picture. What emergency is happening and how is it being handled?",
+        sample_answer_en: "In the picture, I can see a fire drill or emergency on board. The crew members are fighting the fire using a powerful water hose. It is very important to act fast and maintain good communication.",
+        sample_answer_mm: "ပုံထဲမှာ သင်္ဘောပေါ်က မီးငြှိမ်းသတ်မှု လေ့ကျင့်ခန်း သို့မဟုတ် အရေးပေါ်အခြေအနေကို မြင်ရပါတယ်။ သင်္ဘောသားတွေဟာ အားပြင်းတဲ့ မီးသတ်ပိုက်ကို သုံးပြီး မီးငြှိမ်းသတ်နေကြပါတယ်။ မြန်မြန်ဆန်ဆန် တုံ့ပြန်ဖို့နဲ့ အချင်းချင်း ဆက်သွယ်မှု ကောင်းမွန်ဖို့ အထူးအရေးကြီးပါတယ်။",
+        strategy: "ပုံထဲက မီးငြှိမ်းသတ်ပုံကို ဖော်ပြပြီး အရေးပေါ်အချိန်မှာ မြန်ဆန်စွာ တုံ့ပြန်ခြင်းရဲ့ အရေးပါပုံကို ရှင်းပြပါ။",
+        vocabulary: "fire drill, fire fighting, water hose, communication, emergency response"
+    },
+    {
+        id: 112,
+        category: "Weather Conditions",
+        imageEmoji: "🌊",
+        imageFile: "heavy-weather.png",
+        title: "Heavy Weather",
+        question: "Describe the picture. What is the condition and how should the crew prepare?",
+        sample_answer_en: "In the picture, I can see the ship sailing in heavy weather and rough seas. The crew members are holding onto the handrails. It is very important to secure all loose items on deck before the storm hits.",
+        sample_answer_mm: "ပုံထဲမှာ သင်္ဘောဟာ မုန်တိုင်းထန်ပြီး လှိုင်းကြီးတဲ့ ပင်လယ်ထဲ သွားနေတာကို မြင်ရပါတယ်။ သင်္ဘောသားတွေဟာ လက်ရန်းတွေကို ကိုင်ထားကြပါတယ်။ မုန်တိုင်းမလာခင် ကုန်းပတ်ပေါ်က မမြဲတဲ့ပစ္စည်းမှန်သမျှကို ကျပ်ကျပ်တည်းတည်း ချည်နှောင်ထားဖို့ အထူးအရေးကြီးပါတယ်။",
+        strategy: "ပုံထဲက ရာသီဥတုအခြေအနေကို ဖော်ပြပြီး မုန်တိုင်းအတွက် ပြင်ဆင်ရမယ့် နည်းလမ်းတွေကို ရှင်းပြပါ။",
+        vocabulary: "heavy weather, rough seas, handrails, secure loose items, storm preparation"
+    }
+];
+
+// ============================================================
+// 7. LISTENING DATA (5 EXERCISES)
 // ============================================================
 const LISTENING_DATA = [
     // ===== ဆရာ့ရဲ့ Listening ၅ ပုဒ် အကုန်ထည့်ပါ =====
@@ -1324,7 +1474,7 @@ const LISTENING_DATA = [
         id: 1,
         type: "short",
         title: "Exercise 1: Morning Briefing (Part 1)",
-        audioUrl: "listening_ex1_5.mp3", // ⚠️ ဆရာ့ကိုယ်ပိုင် Audio URL ဖြင့် အစားထိုးပါ
+        audioUrl: "listening_ex1_5.mp3",
         description: "Listen to the morning briefing between the bosun and the deckhand.",
         questions: [
             {
@@ -1351,7 +1501,7 @@ const LISTENING_DATA = [
         id: 2,
         type: "short",
         title: "Exercise 2: Morning Briefing (Part 2)",
-        audioUrl: "listening_ex1_5.mp3", // ⚠️ တူညီတဲ့ Audio ကိုပဲ သုံးပါ
+        audioUrl: "listening_ex1_5.mp3",
         description: "Listen again to the morning briefing and answer these questions.",
         questions: [
             {
@@ -1378,7 +1528,7 @@ const LISTENING_DATA = [
         id: 3,
         type: "short",
         title: "Exercise 3: Morning Briefing (Part 3)",
-        audioUrl: "listening_ex1_5.mp3", // ⚠️ တူညီတဲ့ Audio ကိုပဲ သုံးပါ
+        audioUrl: "listening_ex1_5.mp3",
         description: "Listen again and focus on the weather and safety meeting.",
         questions: [
             {
@@ -1405,7 +1555,7 @@ const LISTENING_DATA = [
         id: 4,
         type: "short",
         title: "Exercise 4: Morning Briefing (Part 4)",
-        audioUrl: "listening_ex1_5.mp3", // ⚠️ တူညီတဲ့ Audio ကိုပဲ သုံးပါ
+        audioUrl: "listening_ex1_5.mp3",
         description: "Listen again and answer these questions.",
         questions: [
             {
@@ -1432,7 +1582,7 @@ const LISTENING_DATA = [
         id: 5,
         type: "short",
         title: "Exercise 5: Morning Briefing (Part 5)",
-        audioUrl: "listening_ex1_5.mp3", // ⚠️ တူညီတဲ့ Audio ကိုပဲ သုံးပါ
+        audioUrl: "listening_ex1_5.mp3",
         description: "Final set of questions from the morning briefing.",
         questions: [
             {
@@ -1463,7 +1613,7 @@ const LISTENING_DATA = [
         id: 6,
         type: "short",
         title: "Exercise 6: Cargo Operation",
-        audioUrl: "listening_ex6.mp3", // ⚠️ ဆရာ့ကိုယ်ပိုင် Audio URL ဖြင့် အစားထိုးပါ
+        audioUrl: "listening_ex6.mp3",
         description: "Listen to the conversation between the Chief Officer and the Bosun about cargo loading.",
         questions: [
             {
@@ -1490,7 +1640,7 @@ const LISTENING_DATA = [
         id: 7,
         type: "short",
         title: "Exercise 7: Safety Drill",
-        audioUrl: "listening_ex7.mp3", // ⚠️ ဆရာ့ကိုယ်ပိုင် Audio URL ဖြင့် အစားထိုးပါ
+        audioUrl: "listening_ex7.mp3",
         description: "Listen to the conversation between the Captain and the Chief Engineer about the fire drill.",
         questions: [
             {
@@ -1517,7 +1667,7 @@ const LISTENING_DATA = [
         id: 8,
         type: "short",
         title: "Exercise 8: Watchkeeping Duty",
-        audioUrl: "listening_ex8.mp3", // ⚠️ ဆရာ့ကိုယ်ပိုင် Audio URL ဖြင့် အစားထိုးပါ
+        audioUrl: "listening_ex8.mp3",
         description: "Listen to the conversation between the Officer and the Lookout.",
         questions: [
             {
@@ -1548,7 +1698,7 @@ const LISTENING_DATA = [
         id: 9,
         type: "long",
         title: "Exercise 9: Galley Hygiene (Long)",
-        audioUrl: "listening_ex9.mp3", // ⚠️ ဆရာ့ကိုယ်ပိုင် Audio URL ဖြင့် အစားထိုးပါ
+        audioUrl: "listening_ex9.mp3",
         description: "Listen to the detailed conversation about galley hygiene between the Chief Steward and the Cook.",
         questions: [
             {
@@ -1587,7 +1737,7 @@ const LISTENING_DATA = [
         id: 10,
         type: "long",
         title: "Exercise 10: Mooring Operation (Long)",
-        audioUrl: "listening_ex10.mp3", // ⚠️ ဆရာ့ကိုယ်ပိုင် Audio URL ဖြင့် အစားထိုးပါ
+        audioUrl: "listening_ex10.mp3",
         description: "Listen to the detailed conversation about mooring operation.",
         questions: [
             {
@@ -1623,8 +1773,9 @@ const LISTENING_DATA = [
         ]
     }
 ];
+
 // ============================================================
-// 7. UI CORE LOGIC
+// 8. UI CORE LOGIC
 // ============================================================
 document.addEventListener("DOMContentLoaded", () => {
     const loginSection = document.getElementById("loginSection");
@@ -1707,7 +1858,6 @@ document.addEventListener("DOMContentLoaded", () => {
         if (e.key === "Enter") handleValidation();
     });
 
-    // ⭐ Logout လုပ်တဲ့အခါ Audio Play Count အကုန်ရှင်းမယ်
     logoutBtn.addEventListener("click", () => {
         mainSection.classList.remove("active");
         loginSection.style.display = "block";
@@ -1813,30 +1963,89 @@ document.addEventListener("DOMContentLoaded", () => {
             wList.innerHTML = '<p style="color:#64748b; text-align:center;">⚠️ Writing data not found.</p>';
         }
 
-        // Speaking
+        // ============================================================
+        // SPEAKING - Combined (Regular + Picture Topics with PNG Images)
+        // ============================================================
         const sList = document.getElementById("speakingList");
-        if (sList && SPEAKING_TOPICS.length > 0) {
-            sList.innerHTML = SPEAKING_TOPICS.map(t => `
-                <div class="speaking-card">
-                    <span class="speaking-tag"><i class="fas fa-tag"></i> ${t.category}</span>
-                    <h3><i class="fas fa-question-circle"></i> ${t.question}</h3>
-                    <div class="speaking-prompt">
-                        <strong>💡 ဖြေဆိုရန် အကြံပြုချက်:</strong><br>
-                        ${t.strategy}
-                    </div>
-                    <div class="vocab-box">
-                        <strong>📚 အဓိက ဝေါဟာရများ:</strong><br>
-                        ${t.vocabulary.split(',').map(v => `<span>${v.trim()}</span>`).join(' ')}
-                    </div>
-                    <button class="reveal-trigger-btn" onclick="toggleSpeakingAnswer(this)">Show Sample Answer</button>
-                    <div class="explanation-box">
-                        <div class="exp-row">
-                            <span class="exp-label"><i class="fas fa-comment-dots"></i> နမူနာအဖြေ</span>
-                            <div class="sample-answer-box">${t.sample_answer}</div>
+        if (sList && SPEAKING_TOPICS.length > 0 && SPEAKING_PICTURE_TOPICS.length > 0) {
+            const allSpeakingTopics = [...SPEAKING_TOPICS, ...SPEAKING_PICTURE_TOPICS];
+            
+            sList.innerHTML = allSpeakingTopics.map(t => {
+                const isPictureTopic = t.imageFile !== undefined;
+                
+                if (isPictureTopic) {
+                    // PICTURE TOPIC CARD with PNG Image
+                    return `
+                        <div class="speaking-card picture-topic" style="border-left: 4px solid #2563eb;">
+                            <span class="speaking-tag" style="background: #2563eb20; color: #2563eb;">
+                                <i class="fas fa-image"></i> ${t.category} - Picture Description
+                            </span>
+                            <h3><i class="fas fa-image"></i> ${t.imageEmoji} ${t.title}</h3>
+                            
+                            <!-- 📸 PNG Image Display -->
+                            <div class="picture-container" style="margin: 12px 0; text-align: center;">
+                                <img src="img/${t.imageFile}" alt="${t.title}" 
+                                     style="max-width: 100%; max-height: 250px; border-radius: 8px; 
+                                            border: 2px solid #e2e8f0; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+                            </div>
+                            
+                            <div class="speaking-prompt" style="background: #eff6ff; padding: 12px; border-radius: 8px; margin: 10px 0;">
+                                <strong>📌 ပုံအကြောင်း မေးခွန်း:</strong><br>
+                                ${t.question}
+                            </div>
+                            <div class="speaking-prompt">
+                                <strong>💡 ဖြေဆိုရန် အကြံပြုချက်:</strong><br>
+                                ${t.strategy}
+                            </div>
+                            <div class="vocab-box">
+                                <strong>📚 အဓိက ဝေါဟာရများ:</strong><br>
+                                ${t.vocabulary.split(',').map(v => `<span>${v.trim()}</span>`).join(' ')}
+                            </div>
+                            <button class="reveal-trigger-btn" onclick="togglePictureAnswer(this, '${t.id}')" 
+                                    style="background: #2563eb; color: white; border: none; padding: 8px 16px; border-radius: 6px; cursor: pointer; margin-top: 8px;">
+                                <i class="fas fa-eye"></i> Show Sample Answer (English + Myanmar)
+                            </button>
+                            <div class="explanation-box" id="picture_answer_${t.id}">
+                                <div class="exp-row">
+                                    <span class="exp-label"><i class="fas fa-flag-us"></i> English Answer</span>
+                                    <div class="sample-answer-box" style="background: #f0fdf4; padding: 10px; border-radius: 6px; border-left: 3px solid #16a34a;">
+                                        ${t.sample_answer_en}
+                                    </div>
+                                </div>
+                                <div class="exp-row" style="margin-top: 10px;">
+                                    <span class="exp-label"><i class="fas fa-flag-mm"></i> မြန်မာလို အဖြေ</span>
+                                    <div class="sample-answer-box" style="background: #fef3c7; padding: 10px; border-radius: 6px; border-left: 3px solid #d97706;">
+                                        ${t.sample_answer_mm}
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                </div>
-            `).join('');
+                    `;
+                } else {
+                    // REGULAR SPEAKING TOPIC CARD (existing format)
+                    return `
+                        <div class="speaking-card">
+                            <span class="speaking-tag"><i class="fas fa-tag"></i> ${t.category}</span>
+                            <h3><i class="fas fa-question-circle"></i> ${t.question}</h3>
+                            <div class="speaking-prompt">
+                                <strong>💡 ဖြေဆိုရန် အကြံပြုချက်:</strong><br>
+                                ${t.strategy}
+                            </div>
+                            <div class="vocab-box">
+                                <strong>📚 အဓိက ဝေါဟာရများ:</strong><br>
+                                ${t.vocabulary.split(',').map(v => `<span>${v.trim()}</span>`).join(' ')}
+                            </div>
+                            <button class="reveal-trigger-btn" onclick="toggleSpeakingAnswer(this)">Show Sample Answer</button>
+                            <div class="explanation-box">
+                                <div class="exp-row">
+                                    <span class="exp-label"><i class="fas fa-comment-dots"></i> နမူနာအဖြေ</span>
+                                    <div class="sample-answer-box">${t.sample_answer}</div>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                }
+            }).join('');
         } else if (sList) {
             sList.innerHTML = '<p style="color:#64748b; text-align:center;">⚠️ Speaking data not found.</p>';
         }
@@ -1918,7 +2127,7 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 // ============================================================
-// 8. TOGGLE FUNCTIONS
+// 9. TOGGLE FUNCTIONS
 // ============================================================
 window.toggleExplanation = (btn) => {
     const box = btn.nextElementSibling;
@@ -1938,7 +2147,19 @@ window.toggleSpeakingAnswer = (btn) => {
 };
 
 // ============================================================
-// 9. LISTENING FUNCTIONS
+// 10. TOGGLE PICTURE ANSWER (NEW)
+// ============================================================
+window.togglePictureAnswer = (btn, id) => {
+    const box = document.getElementById(`picture_answer_${id}`);
+    if (!box) return;
+    const isShown = box.classList.toggle("show");
+    btn.innerHTML = isShown 
+        ? '<i class="fas fa-eye-slash"></i> Hide Sample Answer' 
+        : '<i class="fas fa-eye"></i> Show Sample Answer (English + Myanmar)';
+};
+
+// ============================================================
+// 11. LISTENING FUNCTIONS
 // ============================================================
 function updateBadge(badge, count, limit) {
     if (badge) {
@@ -2010,7 +2231,7 @@ window.checkListeningAnswers = (itemId) => {
 };
 
 // ============================================================
-// 10. COPY PROTECTION
+// 12. COPY PROTECTION
 // ============================================================
 document.addEventListener('contextmenu', e => e.preventDefault());
 document.addEventListener('selectstart', e => e.preventDefault());
@@ -2024,3 +2245,4 @@ document.addEventListener('keydown', e => {
 
 console.log("✅ MEPT Core Preparation App loaded successfully!");
 console.log("🔑 Available keys:", Object.keys(SECURITY_KEYS).map(k => atob(k)));
+console.log("📸 Picture topics loaded:", SPEAKING_PICTURE_TOPICS.length);
