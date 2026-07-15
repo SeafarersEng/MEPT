@@ -10,18 +10,31 @@
 <body>
 
     <!-- ===============================
-         ACTIVATION SCREEN
-    ================================ -->
+     ACTIVATION SCREEN
+================================ -->
 
-    <div id="authScreen" class="screen">
-        <h1>⚓ MEPT Speaking Test</h1>
-        <p>Enter Activation Key</p>
-        <input type="text" id="keyInput" placeholder="Activation Key">
-        <button onclick="verifySecureActivation()">Activate</button>
-        <p id="authError" class="error hidden"></p>
-        <p id="deviceLockError" class="error hidden"></p>
-    </div>
+<div id="authScreen" class="screen">
 
+    <h1>⚓ MEPT Speaking Test</h1>
+
+    <p>Enter Activation Key</p>
+
+    <input 
+        type="text" 
+        id="keyInput"
+        placeholder="Activation Key"
+    >
+
+    <button onclick="verifySecureActivation()">
+        Activate
+    </button>
+
+    <p id="authError" class="error hidden"></p>
+
+    <!-- 👇 ဒီ Element ကို ထည့်ပါ -->
+    <p id="deviceLockError" class="error hidden"></p>
+
+</div>
     <!-- ===============================
          START SCREEN
     ================================ -->
