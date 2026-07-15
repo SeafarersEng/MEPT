@@ -1,161 +1,114 @@
-<!-- ============================================================
-     index.html
-     ============================================================ -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <title>MEPT – Marlins Speaking Simulator</title>
-  <!-- Tailwind via CDN -->
-  <script src="https://cdn.tailwindcss.com"></script>
-  <link rel="stylesheet" href="speak.css" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MEPT Speaking Test</title>
+    <link rel="stylesheet" href="speak.css">
 </head>
+
 <body>
 
-<div class="app-wrapper">
+    <!-- ===============================
+         ACTIVATION SCREEN
+    ================================ -->
 
-  <!-- HEADER -->
-  <header class="app-header">
-    <div class="header-content">
-      <div class="flex items-center gap-3">
-        <span class="text-3xl">⚓</span>
-        <div>
-          <h1 class="text-xl md:text-2xl font-extrabold text-white leading-tight">
-            Maritime English Proficiency Test (MEPT)
-          </h1>
-          <p class="text-sm text-sky-300 font-medium tracking-wide">
-            Marlins Speaking Simulator
-          </p>
-        </div>
-      </div>
-      <div class="hidden sm:flex items-center gap-4 text-slate-300 text-xs">
-        <span class="flex items-center gap-1"><span class="text-sky-400">🎙️</span> Voice Recog</span>
-        <span class="flex items-center gap-1"><span class="text-sky-400">⏱️</span> Real‑time Timer</span>
-        <span class="flex items-center gap-1"><span class="text-sky-400">📊</span> Semantic Grading</span>
-      </div>
-    </div>
-    <div class="flex sm:hidden justify-center gap-4 mt-1 text-[10px] text-slate-400">
-      <span>🎙️ Voice</span>
-      <span>⏱️ Timer</span>
-      <span>📊 Grading</span>
-    </div>
-  </header>
-
-  <!-- GLASS CARD -->
-  <div class="glass-card">
-
-    <!-- ===== AUTH SCREEN ===== -->
-    <div id="auth-screen">
-      <div class="text-center mb-6">
-        <span class="text-5xl block mb-2">🔐</span>
-        <h2 class="text-2xl font-bold text-white">Secure Activation</h2>
-        <p class="text-slate-400 text-sm mt-1">Enter your 12‑digit activation key</p>
-      </div>
-      <div class="space-y-4">
-        <input id="activation-key-input" type="password" placeholder="e.g. AB12CD34EF56"
-          class="w-full bg-slate-800 text-white border border-slate-700 rounded-2xl px-5 py-4 text-center text-lg tracking-[0.2em] font-mono focus:outline-none focus:ring-2 focus:ring-sky-500" />
-        <button onclick="verifySecureActivation()"
-          class="w-full bg-sky-600 hover:bg-sky-700 text-white font-bold py-4 rounded-2xl text-lg transition active:scale-95 shadow-lg shadow-sky-600/20">
-          🔓 Activate
-        </button>
-        <div id="auth-error" class="hidden text-rose-400 text-sm text-center mt-2"></div>
-        <div id="device-lock-error" class="hidden text-amber-400 text-sm text-center mt-2"></div>
-      </div>
-      <div class="mt-6 text-center text-[11px] text-slate-500 border-t border-slate-700/50 pt-4">
-        <span>⚓ One key – one device. Secure &amp; private.</span>
-      </div>
+    <div id="authScreen" class="screen">
+        <h1>⚓ MEPT Speaking Test</h1>
+        <p>Enter Activation Key</p>
+        <input type="text" id="keyInput" placeholder="Activation Key">
+        <button onclick="verifySecureActivation()">Activate</button>
+        <p id="authError" class="error hidden"></p>
+        <p id="deviceLockError" class="error hidden"></p>
     </div>
 
-    <!-- ===== START DASHBOARD ===== -->
-    <div id="start-screen" class="hidden">
-      <div class="flex items-center justify-between mb-5">
-        <h2 class="text-xl font-bold text-white flex items-center gap-2">
-          <span>📋</span> Select Exam Set
-        </h2>
-        <button onclick="lockAppAccess()" class="text-sm text-slate-400 hover:text-white bg-slate-800 px-4 py-1.5 rounded-full transition">
-          🚪 Logout
-        </button>
-      </div>
-      <p class="text-slate-400 text-sm mb-4">
-        Choose one of the 10 official Marlins‑style sets below.
-      </p>
-      <div id="set-selector-grid" class="grid-2-cols"></div>
+    <!-- ===============================
+         START SCREEN
+    ================================ -->
+
+    <div id="startScreen" class="screen hidden">
+        <h1>Maritime English Speaking Test</h1>
+        <p>Select your exam set below:</p>
+        
+        <div id="setSelector" class="set-grid"></div>
+
+        <button onclick="lockAppAccess()" class="logout-btn">Logout</button>
     </div>
 
-    <!-- ===== EXAM SCREEN ===== -->
-    <div id="exam-screen" class="hidden">
-      <div class="flex items-center justify-between mb-3">
-        <span id="question-number" class="text-sm font-medium text-sky-400 bg-slate-800 px-4 py-1.5 rounded-full">Q 1/7</span>
-        <span id="timer-display" class="text-2xl font-mono text-white bg-slate-800 px-4 py-1 rounded-xl">01:00</span>
-      </div>
-      <div class="timer-bar-bg mb-4">
-        <div id="timer-bar" class="timer-bar-fill" style="width:100%"></div>
-      </div>
+    <!-- ===============================
+         EXAM SCREEN
+    ================================ -->
 
-      <div class="flex items-center gap-3 mb-2">
-        <div class="ai-avatar-box">
-          <div class="ai-avatar" id="ai-avatar">🧑‍✈️</div>
+    <div id="examScreen" class="screen hidden">
+
+        <div class="header">
+            <h2>
+                Question <span id="questionNumber">1</span>
+                / <span id="totalQuestion">7</span>
+            </h2>
+            <div id="timer">00:50</div>
         </div>
-        <span id="examiner-status" class="text-sm text-slate-400">Examiner reading...</span>
-      </div>
 
-      <div class="speech-bubble" id="question-prompt">Loading question...</div>
-      <img id="exam-picture" class="hidden w-full rounded-2xl mt-3 max-h-56 object-cover border border-slate-700" alt="exam picture" />
-
-      <div class="mt-4 bg-slate-900/70 rounded-2xl p-4 border border-slate-700/50">
-        <div class="flex items-center gap-2 text-slate-400 text-xs uppercase tracking-wider mb-1">
-          <span>🎤</span> Your response (accumulated)
+        <div class="card">
+            <h3 id="questionType">Short Answer</h3>
+            <p id="questionText">Question will appear here</p>
+            <img id="questionImage" src="" class="question-image hidden">
+            <button onclick="readQuestion()">🔊 Listen Question</button>
         </div>
-        <div id="student-speech" class="text-white text-base min-h-[48px] break-words">Awaiting audio examiner clearance...</div>
-      </div>
 
-      <button id="btn-next" class="w-full mt-5 bg-slate-700 hover:bg-slate-600 text-white font-bold py-3.5 rounded-2xl text-lg transition active:scale-95">
-        ⏩ Next / Finish
-      </button>
+        <!-- RECORD SECTION -->
+        <div class="card">
+            <h3>Voice Recording</h3>
+            <div id="recordStatus">Ready</div>
+
+            <button id="startRecordBtn" onclick="startRecording()">🎤 Start Record</button>
+            <button id="stopRecordBtn" onclick="stopRecording()" disabled>⏹ Stop</button>
+            <button onclick="deleteRecording()">🗑 Delete</button>
+            <button onclick="recordAgain()">🔄 Record Again</button>
+
+            <br><br>
+            <audio id="audioPlayer" controls class="hidden"></audio>
+        </div>
+
+        <!-- SPEECH TO TEXT -->
+        <div class="card">
+            <h3>Your Answer Text</h3>
+            <textarea id="transcript" readonly placeholder="Speech text will appear here"></textarea>
+        </div>
+
+        <button onclick="submitAnswer()">Next Question ➜</button>
+
     </div>
 
-    <!-- ===== FINISH SCREEN ===== -->
-    <div id="finish-screen" class="hidden">
-      <div class="text-center">
-        <div id="grade-badge" class="badge-grade bg-emerald-400">A</div>
-        <h3 id="grade-title" class="text-2xl font-bold text-white">Grade A – Professional Pass</h3>
-        <p id="grade-desc" class="text-slate-300 text-sm mt-2 max-w-sm mx-auto">Strong syntax, deep vocabulary, natural delivery.</p>
-      </div>
-      <div class="mt-6 grid grid-cols-3 gap-3 text-center">
-        <div class="bg-slate-800 p-3 rounded-2xl">
-          <div class="text-xs text-slate-400">Match Rate</div>
-          <div id="stat-vocab" class="text-white font-semibold text-sm">90%</div>
-        </div>
-        <div class="bg-slate-800 p-3 rounded-2xl">
-          <div class="text-xs text-slate-400">Result</div>
-          <div id="stat-grammar" class="text-white font-semibold text-sm">Pass</div>
-        </div>
-        <div class="bg-slate-800 p-3 rounded-2xl">
-          <div class="text-xs text-slate-400">Message</div>
-          <div id="stat-fluency" class="text-white font-semibold text-sm">Keep going!</div>
-        </div>
-      </div>
-      <button onclick="resetToDashboard()" class="w-full mt-6 bg-sky-600 hover:bg-sky-700 text-white font-bold py-4 rounded-2xl text-lg transition active:scale-95 shadow-lg shadow-sky-600/20">
-        🔁 Back to Sets
-      </button>
+    <!-- ===============================
+         PROCESSING SCREEN
+    ================================ -->
+
+    <div id="processingScreen" class="screen hidden">
+        <h2>⏳ Checking Your Answers...</h2>
+        <p>Please wait...</p>
+        <div class="loader"></div>
+        <p>
+            Converting voice to text...<br>
+            Checking answers...<br>
+            Calculating score...
+        </p>
     </div>
 
-  </div> <!-- end glass-card -->
+    <!-- ===============================
+         RESULT SCREEN
+    ================================ -->
 
-  <!-- FOOTER -->
-  <footer class="app-footer">
-    <p class="text-[11px] text-slate-500">
-      ⚓ Maritime English Proficiency Test (MEPT) · Marlins Speaking Simulator
-      <span class="hidden sm:inline">— Semantic keyword matching for authentic grading.</span>
-    </p>
-    <p class="text-[10px] text-slate-600 mt-0.5">
-      Designed for authentic Marlins‑style preparation.
-    </p>
-  </footer>
+    <div id="resultScreen" class="screen hidden">
+        <h1>🎉 Test Result</h1>
+        <div id="resultBox"></div>
+        <button onclick="location.reload()">Finish</button>
+    </div>
 
-</div> <!-- end app-wrapper -->
+    <script src="recorder.js"></script>
+    <script src="speech.js"></script>
+    <script src="score.js"></script>
+    <script src="speak.js"></script>
 
-<script src="speak.js"></script>
 </body>
 </html>
