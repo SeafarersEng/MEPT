@@ -1,9 +1,5 @@
 // ============================================================
-// speak.js - FINAL WORKING VERSION
-// - Fixed Activation Key (works with Y8V2M550 OR WThWMk01NTA=)
-// - 1 Key = 1 Device Lock
-// - Auto Voice to Text
-// - 10 Sets × 7 Questions
+// speak.js - Mobile Optimized
 // ============================================================
 
 // ===============================
@@ -32,7 +28,7 @@ const SECURE_ALLOWED_KEYS = [
     "VzhWMlE2NTQ=", "SzRCOVoxMDM=", "TDdNM0g1NDI=", "WDFEOVA4NjA=", "WjZGMkM3NDM="
 ];
 
-// Raw (Decoded) keys for easy login
+// Raw (Decoded) keys
 const RAW_ALLOWED_KEYS = SECURE_ALLOWED_KEYS.map(k => atob(k));
 
 // ===============================
@@ -156,7 +152,7 @@ function generateDeviceFingerprint() {
 }
 
 // ===============================
-// 5. LOGIN - WORKS WITH BOTH KEY TYPES
+// 5. LOGIN
 // ===============================
 function verifySecureActivation() {
     let input = document.getElementById("keyInput").value.trim().toUpperCase();
@@ -166,7 +162,6 @@ function verifySecureActivation() {
     error.classList.add("hidden");
     deviceError.classList.add("hidden");
 
-    // Check if key is valid (either encoded or raw)
     let isValid = SECURE_ALLOWED_KEYS.includes(input) || RAW_ALLOWED_KEYS.includes(input);
 
     if (!isValid) {
@@ -175,27 +170,23 @@ function verifySecureActivation() {
         return;
     }
 
-    // Get the raw key for storage
     let rawKey = input;
     if (SECURE_ALLOWED_KEYS.includes(input)) {
         rawKey = atob(input);
     }
 
-    // Check device lock (1 Key = 1 Device)
     let currentDevice = generateDeviceFingerprint();
     let savedDevice = localStorage.getItem("lock_" + rawKey);
 
     if (savedDevice && savedDevice !== currentDevice) {
-        deviceError.innerHTML = "🔒 ဒီ Activation Key ကို အခြားစက်တွင် သုံးထားပြီးဖြစ်ပါတယ်။<br><small style='color:#94a3b8;'>This key is already locked to another device.</small>";
+        deviceError.innerHTML = "🔒 ဒီ Activation Key ကို အခြားစက်တွင် သုံးထားပြီးဖြစ်ပါတယ်。<br><small style='color:#94a3b8;'>This key is already locked to another device.</small>";
         deviceError.classList.remove("hidden");
         return;
     }
 
-    // Save device lock and login session
     localStorage.setItem("lock_" + rawKey, currentDevice);
     localStorage.setItem("session_active", "true");
 
-    // Show start screen
     document.getElementById("authScreen").classList.add("hidden");
     document.getElementById("startScreen").classList.remove("hidden");
     showSetSelector();
@@ -269,44 +260,53 @@ function loadQuestion() {
     startTimer();
 
     setTimeout(function() {
-        readQuestionWithAutoRecognition();
+        readQuestion();
     }, 500);
 }
 
 // ===============================
-// 10. READ QUESTION + AUTO RECOGNITION
-// ===============================
-function readQuestionWithAutoRecognition() {
-    let text = document.getElementById("questionText").innerText;
-    if (!text) return;
-
-    speakText(text);
-
-    setTimeout(function() {
-        speakText(text);
-        setTimeout(function() {
-            if (!document.getElementById("examScreen").classList.contains("hidden")) {
-                if (typeof startSpeechRecognition === 'function') {
-                    startSpeechRecognition();
-                    console.log("🎤 Speech recognition started.");
-                    document.getElementById("recordStatus").innerHTML = "🎤 Listening...";
-                } else {
-                    console.error("❌ startSpeechRecognition function not found!");
-                }
-            }
-        }, 1500);
-    }, 3500);
-}
-
-// ===============================
-// 11. READ QUESTION (FOR BUTTON)
+// 10. READ QUESTION (FOR BUTTON)
 // ===============================
 function readQuestion() {
-    readQuestionWithAutoRecognition();
+    let text = document.getElementById("questionText").innerText;
+    if (!text) return;
+    
+    // Mobile: Voices ကိုကြိုပြင်ဆင်မယ်
+    if (window.speechSynthesis.getVoices().length === 0) {
+        let checkCount = 0;
+        let maxChecks = 20;
+        let interval = setInterval(function() {
+            checkCount++;
+            if (window.speechSynthesis.getVoices().length > 0 || checkCount >= maxChecks) {
+                clearInterval(interval);
+                speakText(text);
+                setTimeout(function() {
+                    speakText(text);
+                    setTimeout(function() {
+                        if (typeof startSpeechRecognition === 'function') {
+                            startSpeechRecognition();
+                            document.getElementById("recordStatus").innerHTML = "🎤 Listening...";
+                        }
+                    }, 1500);
+                }, 3500);
+            }
+        }, 200);
+    } else {
+        speakText(text);
+        setTimeout(function() {
+            speakText(text);
+            setTimeout(function() {
+                if (typeof startSpeechRecognition === 'function') {
+                    startSpeechRecognition();
+                    document.getElementById("recordStatus").innerHTML = "🎤 Listening...";
+                }
+            }, 1500);
+        }, 3500);
+    }
 }
 
 // ===============================
-// 12. SPEAK TEXT
+// 11. SPEAK TEXT
 // ===============================
 function speakText(text) {
     if (!("speechSynthesis" in window)) {
@@ -319,18 +319,40 @@ function speakText(text) {
     let speech = new SpeechSynthesisUtterance();
     speech.text = text;
     speech.lang = "en-US";
-    speech.rate = 0.9;
+    
+    let isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+    speech.rate = isMobile ? 0.8 : 0.9;
     speech.pitch = 1;
+    speech.volume = 1;
 
     let voices = window.speechSynthesis.getVoices();
     if (voices.length > 0) {
-        let maleVoice = voices.find(v => 
-            v.name.toLowerCase().includes("male") || 
-            v.name.includes("David") ||
-            v.name.includes("Alex")
-        );
-        if (maleVoice) {
-            speech.voice = maleVoice;
+        let preferredVoice = null;
+        let preferredNames = [
+            "Google UK English Male",
+            "Google US English Male",
+            "Microsoft David",
+            "Samantha",
+            "Alex"
+        ];
+        
+        for (let name of preferredNames) {
+            let found = voices.find(v => v.name.includes(name));
+            if (found) {
+                preferredVoice = found;
+                break;
+            }
+        }
+        
+        if (!preferredVoice) {
+            preferredVoice = voices.find(v => 
+                v.name.toLowerCase().includes("male") ||
+                v.name.includes("David")
+            );
+        }
+        
+        if (preferredVoice) {
+            speech.voice = preferredVoice;
         }
     }
 
@@ -338,7 +360,7 @@ function speakText(text) {
 }
 
 // ===============================
-// 13. TIMER
+// 12. TIMER
 // ===============================
 function startTimer() {
     clearInterval(timer);
@@ -366,7 +388,7 @@ function showTime() {
 }
 
 // ===============================
-// 14. SUBMIT ANSWER
+// 13. SUBMIT ANSWER
 // ===============================
 function submitAnswer() {
     clearInterval(timer);
@@ -388,7 +410,7 @@ function submitAnswer() {
 }
 
 // ===============================
-// 15. FINISH EXAM
+// 14. FINISH EXAM
 // ===============================
 function finishExam() {
     if (typeof stopSpeechRecognition === 'function') {
@@ -405,10 +427,10 @@ function finishExam() {
 }
 
 // ===============================
-// 16. AUTO LOGIN CHECK
+// 15. AUTO LOGIN CHECK
 // ===============================
 window.onload = function() {
-    // Pre-request microphone permission
+    // ဖုန်းအတွက် Microphone ခွင့်ပြုချက် ကြိုတောင်းမယ်
     if (navigator.mediaDevices) {
         navigator.mediaDevices.getUserMedia({ audio: true })
             .then(function(stream) {
@@ -418,6 +440,14 @@ window.onload = function() {
             .catch(function(err) {
                 console.warn("⚠️ Microphone permission not granted yet.");
             });
+    }
+
+    // ဖုန်းအတွက် Voices ကို ကြိုတင်ယူမယ်
+    if (window.speechSynthesis) {
+        window.speechSynthesis.getVoices();
+        window.speechSynthesis.onvoiceschanged = function() {
+            window.speechSynthesis.getVoices();
+        };
     }
 
     if (localStorage.getItem("session_active") === "true") {
