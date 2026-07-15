@@ -1,9 +1,13 @@
 // ============================================================
-// speak.js (UPDATED with automatic speech recognition)
+// speak.js - FINAL WORKING VERSION
+// - Fixed Activation Key (works with Y8V2M550 OR WThWMk01NTA=)
+// - 1 Key = 1 Device Lock
+// - Auto Voice to Text
+// - 10 Sets × 7 Questions
 // ============================================================
 
 // ===============================
-// ACTIVATION KEYS
+// 1. ACTIVATION KEYS
 // ===============================
 const SECURE_ALLOWED_KEYS = [
     "WThWMk01NTA=", "UjRCOVEzMTI=", "SzFXN1o4NDU=", "VDNENVg2MTk=", "TTZQMUg4NzI=",
@@ -28,8 +32,11 @@ const SECURE_ALLOWED_KEYS = [
     "VzhWMlE2NTQ=", "SzRCOVoxMDM=", "TDdNM0g1NDI=", "WDFEOVA4NjA=", "WjZGMkM3NDM="
 ];
 
+// Raw (Decoded) keys for easy login
+const RAW_ALLOWED_KEYS = SECURE_ALLOWED_KEYS.map(k => atob(k));
+
 // ===============================
-// EXAM DATA - 10 SETS × 7 QUESTIONS
+// 2. EXAM DATA - 10 SETS × 7 QUESTIONS
 // ===============================
 const examSets = {
     set1: [
@@ -125,7 +132,7 @@ const examSets = {
 };
 
 // ===============================
-// VARIABLES
+// 3. GLOBAL VARIABLES
 // ===============================
 let currentSet = [];
 let currentQuestion = 0;
@@ -136,7 +143,7 @@ let selectedSetName = "set1";
 let answerResults = [];
 
 // ===============================
-// DEVICE FINGERPRINT
+// 4. DEVICE FINGERPRINT
 // ===============================
 function generateDeviceFingerprint() {
     let data = navigator.userAgent + navigator.language + screen.width;
@@ -149,26 +156,53 @@ function generateDeviceFingerprint() {
 }
 
 // ===============================
-// LOGIN
+// 5. LOGIN - WORKS WITH BOTH KEY TYPES
 // ===============================
 function verifySecureActivation() {
     let input = document.getElementById("keyInput").value.trim().toUpperCase();
-    let encoded = btoa(input);
     let error = document.getElementById("authError");
+    let deviceError = document.getElementById("deviceLockError");
 
-    if (SECURE_ALLOWED_KEYS.includes(encoded)) {
-        localStorage.setItem("session_active", "true");
-        document.getElementById("authScreen").classList.add("hidden");
-        document.getElementById("startScreen").classList.remove("hidden");
-        showSetSelector();
-    } else {
-        error.innerHTML = "❌ Invalid Activation Key";
+    error.classList.add("hidden");
+    deviceError.classList.add("hidden");
+
+    // Check if key is valid (either encoded or raw)
+    let isValid = SECURE_ALLOWED_KEYS.includes(input) || RAW_ALLOWED_KEYS.includes(input);
+
+    if (!isValid) {
+        error.innerHTML = "❌ Invalid Activation Key. Please check and try again.";
         error.classList.remove("hidden");
+        return;
     }
+
+    // Get the raw key for storage
+    let rawKey = input;
+    if (SECURE_ALLOWED_KEYS.includes(input)) {
+        rawKey = atob(input);
+    }
+
+    // Check device lock (1 Key = 1 Device)
+    let currentDevice = generateDeviceFingerprint();
+    let savedDevice = localStorage.getItem("lock_" + rawKey);
+
+    if (savedDevice && savedDevice !== currentDevice) {
+        deviceError.innerHTML = "🔒 ဒီ Activation Key ကို အခြားစက်တွင် သုံးထားပြီးဖြစ်ပါတယ်။<br><small style='color:#94a3b8;'>This key is already locked to another device.</small>";
+        deviceError.classList.remove("hidden");
+        return;
+    }
+
+    // Save device lock and login session
+    localStorage.setItem("lock_" + rawKey, currentDevice);
+    localStorage.setItem("session_active", "true");
+
+    // Show start screen
+    document.getElementById("authScreen").classList.add("hidden");
+    document.getElementById("startScreen").classList.remove("hidden");
+    showSetSelector();
 }
 
 // ===============================
-// SHOW SET SELECTOR
+// 6. SHOW SET SELECTOR
 // ===============================
 function showSetSelector() {
     let container = document.getElementById("setSelector");
@@ -187,7 +221,7 @@ function showSetSelector() {
 }
 
 // ===============================
-// LOGOUT
+// 7. LOGOUT
 // ===============================
 function lockAppAccess() {
     localStorage.removeItem("session_active");
@@ -195,7 +229,7 @@ function lockAppAccess() {
 }
 
 // ===============================
-// START EXAM
+// 8. START EXAM
 // ===============================
 function startExam() {
     currentSet = examSets[selectedSetName];
@@ -211,7 +245,7 @@ function startExam() {
 }
 
 // ===============================
-// LOAD QUESTION (UPDATED - Auto start recognition)
+// 9. LOAD QUESTION
 // ===============================
 function loadQuestion() {
     selectedQuestion = currentSet[currentQuestion];
@@ -234,38 +268,45 @@ function loadQuestion() {
 
     startTimer();
 
-    // Read question and auto-start speech recognition
     setTimeout(function() {
         readQuestionWithAutoRecognition();
     }, 500);
 }
 
 // ===============================
-// READ QUESTION WITH AUTO RECOGNITION (NEW)
+// 10. READ QUESTION + AUTO RECOGNITION
 // ===============================
 function readQuestionWithAutoRecognition() {
     let text = document.getElementById("questionText").innerText;
     if (!text) return;
 
-    // Read first time
     speakText(text);
 
-    // Read second time after 3.5 seconds
     setTimeout(function() {
         speakText(text);
-        // Start speech recognition after second read
         setTimeout(function() {
             if (!document.getElementById("examScreen").classList.contains("hidden")) {
-                startSpeechRecognition();
-                console.log("🎤 Speech recognition started.");
-                document.getElementById("recordStatus").innerHTML = "🎤 Listening...";
+                if (typeof startSpeechRecognition === 'function') {
+                    startSpeechRecognition();
+                    console.log("🎤 Speech recognition started.");
+                    document.getElementById("recordStatus").innerHTML = "🎤 Listening...";
+                } else {
+                    console.error("❌ startSpeechRecognition function not found!");
+                }
             }
         }, 1500);
     }, 3500);
 }
 
 // ===============================
-// SPEAK TEXT (UPDATED)
+// 11. READ QUESTION (FOR BUTTON)
+// ===============================
+function readQuestion() {
+    readQuestionWithAutoRecognition();
+}
+
+// ===============================
+// 12. SPEAK TEXT
 // ===============================
 function speakText(text) {
     if (!("speechSynthesis" in window)) {
@@ -297,7 +338,7 @@ function speakText(text) {
 }
 
 // ===============================
-// TIMER
+// 13. TIMER
 // ===============================
 function startTimer() {
     clearInterval(timer);
@@ -325,11 +366,14 @@ function showTime() {
 }
 
 // ===============================
-// SUBMIT ANSWER (UPDATED)
+// 14. SUBMIT ANSWER
 // ===============================
 function submitAnswer() {
     clearInterval(timer);
-    stopSpeechRecognition();  // Stop listening
+    
+    if (typeof stopSpeechRecognition === 'function') {
+        stopSpeechRecognition();
+    }
 
     let text = getTranscript();
     saveAnswerResult(selectedQuestion, text);
@@ -344,10 +388,13 @@ function submitAnswer() {
 }
 
 // ===============================
-// FINISH EXAM
+// 15. FINISH EXAM
 // ===============================
 function finishExam() {
-    stopSpeechRecognition();
+    if (typeof stopSpeechRecognition === 'function') {
+        stopSpeechRecognition();
+    }
+    
     document.getElementById("examScreen").classList.add("hidden");
     document.getElementById("processingScreen").classList.remove("hidden");
 
@@ -358,9 +405,21 @@ function finishExam() {
 }
 
 // ===============================
-// AUTO LOGIN CHECK
+// 16. AUTO LOGIN CHECK
 // ===============================
 window.onload = function() {
+    // Pre-request microphone permission
+    if (navigator.mediaDevices) {
+        navigator.mediaDevices.getUserMedia({ audio: true })
+            .then(function(stream) {
+                console.log("✅ Microphone permission granted.");
+                stream.getTracks().forEach(track => track.stop());
+            })
+            .catch(function(err) {
+                console.warn("⚠️ Microphone permission not granted yet.");
+            });
+    }
+
     if (localStorage.getItem("session_active") === "true") {
         document.getElementById("authScreen").classList.add("hidden");
         document.getElementById("startScreen").classList.remove("hidden");
