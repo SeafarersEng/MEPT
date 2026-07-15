@@ -6,59 +6,36 @@
     <title>MEPT Speaking Test</title>
     <link rel="stylesheet" href="speak.css">
 </head>
-
 <body>
 
     <!-- ===============================
-     ACTIVATION SCREEN
-================================ -->
+         ACTIVATION SCREEN
+    ================================ -->
+    <div id="authScreen" class="screen">
+        <h1>⚓ MEPT Speaking Test</h1>
+        <p>Enter Activation Key</p>
+        <input type="text" id="keyInput" placeholder="Activation Key">
+        <button onclick="verifySecureActivation()">Activate</button>
+        <p id="authError" class="error hidden"></p>
+        <p id="deviceLockError" class="error hidden"></p>
+    </div>
 
-<div id="authScreen" class="screen">
-
-    <h1>⚓ MEPT Speaking Test</h1>
-
-    <p>Enter Activation Key</p>
-
-    <input 
-        type="text" 
-        id="keyInput"
-        placeholder="Activation Key"
-    >
-
-    <button onclick="verifySecureActivation()">
-        Activate
-    </button>
-
-    <p id="authError" class="error hidden"></p>
-
-    <!-- 👇 ဒီ Element ကို ထည့်ပါ -->
-    <p id="deviceLockError" class="error hidden"></p>
-
-</div>
     <!-- ===============================
          START SCREEN
     ================================ -->
-
     <div id="startScreen" class="screen hidden">
         <h1>Maritime English Speaking Test</h1>
         <p>Select your exam set below:</p>
-        
         <div id="setSelector" class="set-grid"></div>
-
         <button onclick="lockAppAccess()" class="logout-btn">Logout</button>
     </div>
 
     <!-- ===============================
          EXAM SCREEN
     ================================ -->
-
     <div id="examScreen" class="screen hidden">
-
         <div class="header">
-            <h2>
-                Question <span id="questionNumber">1</span>
-                / <span id="totalQuestion">7</span>
-            </h2>
+            <h2>Question <span id="questionNumber">1</span> / <span id="totalQuestion">7</span></h2>
             <div id="timer">00:50</div>
         </div>
 
@@ -73,12 +50,10 @@
         <div class="card">
             <h3>Voice Recording</h3>
             <div id="recordStatus">Ready</div>
-
             <button id="startRecordBtn" onclick="startRecording()">🎤 Start Record</button>
             <button id="stopRecordBtn" onclick="stopRecording()" disabled>⏹ Stop</button>
             <button onclick="deleteRecording()">🗑 Delete</button>
             <button onclick="recordAgain()">🔄 Record Again</button>
-
             <br><br>
             <audio id="audioPlayer" controls class="hidden"></audio>
         </div>
@@ -90,34 +65,28 @@
         </div>
 
         <button onclick="submitAnswer()">Next Question ➜</button>
-
     </div>
 
     <!-- ===============================
          PROCESSING SCREEN
     ================================ -->
-
     <div id="processingScreen" class="screen hidden">
         <h2>⏳ Checking Your Answers...</h2>
         <p>Please wait...</p>
         <div class="loader"></div>
-        <p>
-            Converting voice to text...<br>
-            Checking answers...<br>
-            Calculating score...
-        </p>
+        <p>Converting voice to text...<br>Checking answers...<br>Calculating score...</p>
     </div>
 
     <!-- ===============================
          RESULT SCREEN
     ================================ -->
-
     <div id="resultScreen" class="screen hidden">
         <h1>🎉 Test Result</h1>
         <div id="resultBox"></div>
         <button onclick="location.reload()">Finish</button>
     </div>
 
+    <!-- 🔥 Script အစဉ် - speak.js က နောက်ဆုံးမှာ Load ဖြစ်ရမယ် -->
     <script src="recorder.js"></script>
     <script src="speech.js"></script>
     <script src="score.js"></script>
