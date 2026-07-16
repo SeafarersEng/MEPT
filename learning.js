@@ -65,7 +65,6 @@ const GRAMMAR_QUESTIONS = [
         why: "အသက်ကယ်အကျီများ (Lifejackets) သည် အများကိန်းဖြစ်ပြီး ၎င်းတို့ကိုယ်တိုင် နေရာချထားခြင်းမဟုတ်ဘဲ အထားခံရခြင်းဖြစ်၍ Passive Voice ($are + V_3$) ကို သုံးရပါမည်။",
         strategy: "အသက်မဲ့ပစ္စည်းတစ်ခုခု တည်ရှိရာနေရာကို ပြောချင်ရင် ၎င်းပစ္စည်း အနည်း/အများအလိုက် Passive Voice ဖြစ်တဲ့ 'is located / are located' ကို သုံးပါ။"
     },
-    // ==================== EXERCISE 6 to 49 ====================
     {
         id: 6,
         question: "6. The captain is ________ the meeting right now.",
@@ -418,7 +417,6 @@ const GRAMMAR_QUESTIONS = [
         why: "'stop + Ving' သည် လက်ရှိလုပ်နေသော အလေ့အထကို ရပ်တန့်ခြင်းကို ဆိုလိုပြီး ကော်ဖီသောက်နေတာကို ရပ်သင့်ကြောင်း ဆိုလိုသည်။",
         strategy: "လုပ်ဆောင်ချက်တစ်ခုကို ရပ်တန့်ရန် 'stop + Ving'၊ တစ်ခုခုလုပ်ဖို့ ရပ်ရန် 'stop + to V' ကို ခွဲမှတ်ပါ။"
     },
-    // ==================== EXERCISE 50 ====================
     {
         id: 50,
         question: "50. The Second Officer told me that he ________ the engine room logbook already.",
@@ -485,7 +483,6 @@ The chief officer will check the attendance log.`,
             }
         ]
     },
-    // ==================== READING 2: GALLEY HYGIENE RULES ====================
     {
         readingId: 2,
         title: "GALLEY HYGIENE RULES",
@@ -590,7 +587,6 @@ The crew must check the engine and the steering system before lowering the lifeb
     ]
 },
 
-// ==================== READING 4: DECK WATCHKEEPING DUTIES ====================
 {
     readingId: 4,
     title: "DECK WATCHKEEPING DUTIES",
@@ -642,7 +638,6 @@ If he feels sleepy, he can ask the lookout to stay on the bridge while he takes 
     ]
 },
 
-// ==================== READING 5: USING PERSONAL PROTECTIVE EQUIPMENT (PPE) ====================
 {
     readingId: 5,
     title: "USING PERSONAL PROTECTIVE EQUIPMENT (PPE)",
@@ -695,7 +690,6 @@ If any equipment is missing, the crew member must report to the bosun immediatel
     ]
 },
 
-// ==================== READING 6: GARBAGE MANAGEMENT (MARPOL) ====================
 {
     readingId: 6,
     title: "GARBAGE MANAGEMENT ON BOARD",
@@ -747,7 +741,6 @@ All garbage disposal activities must be recorded in the garbage logbook.`,
     ]
 },
 
-// ==================== READING 7: MOORING OPERATIONS SAFETY ====================
 {
     readingId: 7,
     title: "MOORING OPERATIONS SAFETY",
@@ -863,7 +856,6 @@ const WRITING_TOPICS = [
         blueprint: "<b>[ရေးထုံးပုံစံ]:</b><br>• <i>Dear family, I hope you are all well.</i> (စတင်မေးမြန်းခြင်း)<br>• <i>Today was a busy day but everything is fine.</i> (နေ့စဉ်ဖြစ်ရပ်)<br>• <i>I miss you all very much and I will see you soon.</i> (လွမ်းကြောင်းပြောခြင်း)"
     },
 
-    // ==================== PART 2 (Long Writing - 80 to 100 words) ====================
     {
         part: "Part 2 – Long Writing (80–100 words)",
         title: "Topic 9: A Memorable Day at Sea",
@@ -1000,7 +992,6 @@ const SPEAKING_TOPICS = [
         vocabulary: "favorite food, chicken curry, rice, cook, reminds"
     },
 
-    // ===================== PART 2: DAILY DUTIES & ROUTINE (11-20) =====================
     {
         id: 11,
         category: "Daily Duties & Routine",
@@ -1082,7 +1073,6 @@ const SPEAKING_TOPICS = [
         vocabulary: "record, deck logbook, defects, issues, safety"
     },
 
-    // ===================== PART 3: SAFETY & EMERGENCY (21-30) =====================
     {
         id: 21,
         category: "Safety & Emergency",
@@ -1164,7 +1154,6 @@ const SPEAKING_TOPICS = [
         vocabulary: "injury, cut, burn, antiseptic, bandage, medic"
     },
 
-    // ===================== PART 4: SHIP, WEATHER & TRAVEL (31-40) =====================
     {
         id: 31,
         category: "Ship, Weather & Travel",
@@ -1241,7 +1230,6 @@ const SPEAKING_TOPICS = [
         vocabulary: "shore leave, shopping, groceries, personal items, walk around, take photos"
     },
 
-    // ===================== PART 5: PREFERENCES, FUTURE & MIXED (41-50) =====================
     {
         id: 41,
         category: "Preferences & Future",
@@ -1316,7 +1304,7 @@ const SPEAKING_TOPICS = [
 ];
 
 // ============================================================
-// 6. SPEAKING PICTURE DESCRIPTIONS (12 TOPICS) - WITH PNG IMAGES
+// 6. SPEAKING PICTURE DESCRIPTIONS (12 TOPICS) - PNG IMAGES IN ROOT FOLDER
 // ============================================================
 const SPEAKING_PICTURE_TOPICS = [
     {
@@ -1466,10 +1454,9 @@ const SPEAKING_PICTURE_TOPICS = [
 ];
 
 // ============================================================
-// 7. LISTENING DATA (5 EXERCISES)
+// 7. LISTENING DATA (10 EXERCISES) - AUDIO FILES IN ROOT FOLDER
 // ============================================================
 const LISTENING_DATA = [
-    // ===== ဆရာ့ရဲ့ Listening ၅ ပုဒ် အကုန်ထည့်ပါ =====
    {
         id: 1,
         type: "short",
@@ -1605,10 +1592,6 @@ const LISTENING_DATA = [
             }
         ]
     },
-
-    // ==========================================================
-    // PART 2: DIFFERENT SCRIPTS (Exercises 6-8 - Short)
-    // ==========================================================
     {
         id: 6,
         type: "short",
@@ -1690,10 +1673,6 @@ const LISTENING_DATA = [
             }
         ]
     },
-
-    // ==========================================================
-    // PART 3: LONG CONVERSATIONS (Exercises 9-10 - 5 Questions Each)
-    // ==========================================================
     {
         id: 9,
         type: "long",
@@ -1864,7 +1843,6 @@ document.addEventListener("DOMContentLoaded", () => {
         keyInput.value = "";
         keyError.textContent = "";
 
-        // Audio Play Count Data အကုန်ဖျက်မယ်
         const keysToRemove = [];
         for (let i = 0; i < localStorage.length; i++) {
             const key = localStorage.key(i);
@@ -1964,7 +1942,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
         // ============================================================
-        // SPEAKING - Combined (Regular + Picture Topics with PNG Images)
+        // SPEAKING - Combined (Regular + Picture Topics)
         // ============================================================
         const sList = document.getElementById("speakingList");
         if (sList && SPEAKING_TOPICS.length > 0 && SPEAKING_PICTURE_TOPICS.length > 0) {
@@ -1974,7 +1952,6 @@ document.addEventListener("DOMContentLoaded", () => {
                 const isPictureTopic = t.imageFile !== undefined;
                 
                 if (isPictureTopic) {
-                    // PICTURE TOPIC CARD with PNG Image
                     return `
                         <div class="speaking-card picture-topic" style="border-left: 4px solid #2563eb;">
                             <span class="speaking-tag" style="background: #2563eb20; color: #2563eb;">
@@ -1982,11 +1959,16 @@ document.addEventListener("DOMContentLoaded", () => {
                             </span>
                             <h3><i class="fas fa-image"></i> ${t.imageEmoji} ${t.title}</h3>
                             
-                            <!-- 📸 PNG Image Display -->
                             <div class="picture-container" style="margin: 12px 0; text-align: center;">
                                 <img src="${t.imageFile}" alt="${t.title}" 
-                                     style="max-width: 100%; max-height: 250px; border-radius: 8px; 
-                                            border: 2px solid #e2e8f0; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+                                     style="max-width: 100%; max-height: 280px; border-radius: 8px; 
+                                            border: 2px solid #e2e8f0; box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+                                            background: #f8fafc;"
+                                     onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+                                <div style="display: none; padding: 20px; background: #fef2f2; border-radius: 8px; color: #dc2626; font-weight: 500;">
+                                    ⚠️ Image not found: ${t.imageFile}<br>
+                                    <span style="font-size: 13px; font-weight: normal;">Please check if the file exists in the project folder.</span>
+                                </div>
                             </div>
                             
                             <div class="speaking-prompt" style="background: #eff6ff; padding: 12px; border-radius: 8px; margin: 10px 0;">
@@ -2022,7 +2004,6 @@ document.addEventListener("DOMContentLoaded", () => {
                         </div>
                     `;
                 } else {
-                    // REGULAR SPEAKING TOPIC CARD (existing format)
                     return `
                         <div class="speaking-card">
                             <span class="speaking-tag"><i class="fas fa-tag"></i> ${t.category}</span>
@@ -2091,7 +2072,6 @@ document.addEventListener("DOMContentLoaded", () => {
                 </div>
             `).join('');
             
-            // Audio Play Limit Logic
             LISTENING_DATA.forEach(item => {
                 const audio = document.getElementById(`audio_${item.id}`);
                 const badge = document.getElementById(`playBadge_${item.id}`);
@@ -2146,9 +2126,6 @@ window.toggleSpeakingAnswer = (btn) => {
     btn.textContent = isShown ? "Hide Sample Answer" : "Show Sample Answer";
 };
 
-// ============================================================
-// 10. TOGGLE PICTURE ANSWER (NEW)
-// ============================================================
 window.togglePictureAnswer = (btn, id) => {
     const box = document.getElementById(`picture_answer_${id}`);
     if (!box) return;
@@ -2159,7 +2136,7 @@ window.togglePictureAnswer = (btn, id) => {
 };
 
 // ============================================================
-// 11. LISTENING FUNCTIONS
+// 10. LISTENING FUNCTIONS
 // ============================================================
 function updateBadge(badge, count, limit) {
     if (badge) {
@@ -2231,7 +2208,7 @@ window.checkListeningAnswers = (itemId) => {
 };
 
 // ============================================================
-// 12. COPY PROTECTION
+// 11. COPY PROTECTION
 // ============================================================
 document.addEventListener('contextmenu', e => e.preventDefault());
 document.addEventListener('selectstart', e => e.preventDefault());
@@ -2246,3 +2223,4 @@ document.addEventListener('keydown', e => {
 console.log("✅ MEPT Core Preparation App loaded successfully!");
 console.log("🔑 Available keys:", Object.keys(SECURITY_KEYS).map(k => atob(k)));
 console.log("📸 Picture topics loaded:", SPEAKING_PICTURE_TOPICS.length);
+console.log("🎵 Listening exercises loaded:", LISTENING_DATA.length);
