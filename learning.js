@@ -1984,7 +1984,7 @@ document.addEventListener("DOMContentLoaded", () => {
                             
                             <!-- 📸 PNG Image Display -->
                             <div class="picture-container" style="margin: 12px 0; text-align: center;">
-                                <img src="img/${t.imageFile}" alt="${t.title}" 
+                                <img src="${t.imageFile}" alt="${t.title}" 
                                      style="max-width: 100%; max-height: 250px; border-radius: 8px; 
                                             border: 2px solid #e2e8f0; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
                             </div>
