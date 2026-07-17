@@ -127,7 +127,6 @@ const examSets = {
     ]
 };
 
-// ===============================
 // 3. GLOBAL VARIABLES
 // ===============================
 let currentSet = [];
@@ -236,7 +235,7 @@ function startExam() {
 }
 
 // ===============================
-// 9. LOAD QUESTION (FIXED)
+// 9. LOAD QUESTION
 // ===============================
 function loadQuestion() {
     selectedQuestion = currentSet[currentQuestion];
@@ -254,84 +253,20 @@ function loadQuestion() {
         img.classList.add("hidden");
     }
 
-    // 🔥 ဒီမှာ သေချာရှင်းပါ
     clearTranscript();
     deleteRecording();
-
     startTimer();
 
+    // Auto-read question after 500ms
     setTimeout(function() {
-        readQuestion();
+        if (typeof readQuestion === 'function') {
+            readQuestion();
+        }
     }, 500);
 }
 
 // ===============================
-// 10. READ QUESTION (FOR BUTTON TOO)
-// ===============================
-function readQuestion() {
-    let text = document.getElementById("questionText").innerText;
-    if (!text) return;
-
-    // ပထမအကြိမ် ဖတ်မယ်
-    speakText(text);
-
-    // ဒုတိယအကြိမ် ဖတ်ပြီး မိုက်ကိုစမယ်
-    setTimeout(function() {
-        speakText(text);
-        setTimeout(function() {
-            if (!document.getElementById("examScreen").classList.contains("hidden")) {
-                startSpeechRecognition();
-                document.getElementById("recordStatus").innerHTML = "🎤 Listening... Speak now!";
-            }
-        }, 1500);
-    }, 3500);
-}
-
-// ===============================
-// 11. SPEAK TEXT
-// ===============================
-function speakText(text) {
-    if (!("speechSynthesis" in window)) {
-        console.warn("Text To Speech is not supported");
-        return;
-    }
-
-    window.speechSynthesis.cancel();
-
-    let speech = new SpeechSynthesisUtterance();
-    speech.text = text;
-    speech.lang = "en-US";
-    speech.rate = 0.85;
-    speech.pitch = 1;
-    speech.volume = 1;
-
-    let voices = window.speechSynthesis.getVoices();
-    if (voices.length > 0) {
-        let preferred = ["Google UK English Male", "Google US English Male", "Microsoft David", "Samantha", "Alex"];
-        let selected = null;
-        
-        for (let p of preferred) {
-            let found = voices.find(v => v.name.includes(p));
-            if (found) {
-                selected = found;
-                break;
-            }
-        }
-        
-        if (!selected) {
-            selected = voices.find(v => v.name.toLowerCase().includes("male")) || voices[0];
-        }
-        
-        if (selected) {
-            speech.voice = selected;
-        }
-    }
-
-    window.speechSynthesis.speak(speech);
-}
-
-// ===============================
-// 12. TIMER
+// 10. TIMER
 // ===============================
 function startTimer() {
     clearInterval(timer);
@@ -359,7 +294,7 @@ function showTime() {
 }
 
 // ===============================
-// 13. SUBMIT ANSWER
+// 11. SUBMIT ANSWER
 // ===============================
 function submitAnswer() {
     clearInterval(timer);
@@ -381,7 +316,7 @@ function submitAnswer() {
 }
 
 // ===============================
-// 14. FINISH EXAM
+// 12. FINISH EXAM
 // ===============================
 function finishExam() {
     if (typeof stopSpeechRecognition === 'function') {
@@ -398,24 +333,14 @@ function finishExam() {
 }
 
 // ===============================
-// 15. AUTO LOGIN CHECK
+// 13. AUTO LOGIN CHECK
 // ===============================
 window.onload = function() {
-    // မိုက်ခွင့်ပြုချက်ကို ကြိုတောင်းမယ်
-    if (navigator.mediaDevices) {
-        navigator.mediaDevices.getUserMedia({ audio: true })
-            .then(function(stream) {
-                console.log("✅ Microphone permission granted.");
-                stream.getTracks().forEach(track => track.stop());
-            })
-            .catch(function(err) {
-                console.warn("⚠️ Microphone permission not granted yet. User will be prompted when recording starts.");
-            });
-    }
-
     if (localStorage.getItem("session_active") === "true") {
         document.getElementById("authScreen").classList.add("hidden");
         document.getElementById("startScreen").classList.remove("hidden");
         showSetSelector();
     }
 };
+
+
