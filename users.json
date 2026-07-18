@@ -73,8 +73,7 @@
   },
    {"username": "Aung Min Khant", "password": "aung@2026","startDate": "2026-07-08","expireDate": "2026-07-15", "name": "Aung Min Khant"
   },
-   {"username": "Khant Min Ko Ko", "password": "khant@2026","startDate": "2026-07-08","expireDate": "2026-07-15", "name": "Khant Min Ko Ko"
-  },
+   
   { "username": "Aung Pyae Phyo","password": "aung@2026","startDate": "2026-07-08","expireDate": "2026-07-15","name": "Aung Pyae Phyo"
   },
   {   "username": "Dipaaunglin",  "password": "myat@2026","startDate": "2026-07-08","expireDate": "2026-08-08","name": "Dipaaunglin"
