@@ -1,0 +1,411 @@
+/* ====== RESET & BASE ====== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background: #f1f5f9;
+    color: #0b1e33;
+    padding: 20px;
+    line-height: 1.6;
+}
+
+.container {
+    max-width: 1100px;
+    margin: 0 auto;
+    background: #ffffff;
+    border-radius: 28px;
+    padding: 30px 32px;
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.06);
+}
+
+h1 {
+    font-size: 2.2rem;
+    font-weight: 700;
+    color: #0f4c75;
+    border-left: 6px solid #f0b429;
+    padding-left: 18px;
+    margin-bottom: 28px;
+    letter-spacing: -0.02em;
+}
+
+h2, h3, h4 {
+    font-weight: 600;
+    letter-spacing: -0.02em;
+}
+
+/* ====== CARDS ====== */
+.card {
+    background: #ffffff;
+    border: 1px solid #e9edf2;
+    border-radius: 18px;
+    padding: 20px 24px;
+    margin-bottom: 28px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02);
+    transition: border 0.2s;
+}
+
+.card:hover {
+    border-color: #cbd5e1;
+}
+
+.question {
+    margin-bottom: 22px;
+    padding-bottom: 18px;
+    border-bottom: 1px solid #f1f5f9;
+}
+
+.question:last-child {
+    border-bottom: 0;
+}
+
+.options {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px 32px;
+    margin-top: 8px;
+}
+
+.options label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.98rem;
+    cursor: pointer;
+}
+
+/* ====== FORM ELEMENTS ====== */
+select, textarea, input[type="text"], input[type="password"] {
+    width: 100%;
+    padding: 12px 16px;
+    border: 1px solid #d1d9e6;
+    border-radius: 12px;
+    font-family: inherit;
+    font-size: 0.95rem;
+    background: #fafcff;
+    transition: 0.2s;
+    margin-top: 6px;
+}
+
+select:focus, textarea:focus, input:focus {
+    outline: none;
+    border-color: #0f4c75;
+    box-shadow: 0 0 0 3px rgba(15, 76, 117, 0.15);
+}
+
+textarea {
+    resize: vertical;
+    min-height: 70px;
+}
+
+/* ====== BUTTONS ====== */
+.btn-primary, .btn-secondary, .download-btn {
+    background: #0f4c75;
+    color: white;
+    border: none;
+    padding: 12px 30px;
+    border-radius: 40px;
+    font-weight: 600;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: 0.2s;
+    display: inline-block;
+    box-shadow: 0 4px 12px rgba(15, 76, 117, 0.2);
+}
+
+.btn-primary:hover {
+    background: #1a5f8a;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(15, 76, 117, 0.25);
+}
+
+.btn-secondary {
+    background: #e9edf2;
+    color: #1e293b;
+    box-shadow: none;
+}
+
+.btn-secondary:hover {
+    background: #d1d9e6;
+}
+
+.download-btn {
+    background: linear-gradient(135deg, #0f4c75, #3282b8);
+    margin: 6px 4px;
+}
+
+.download-btn:hover {
+    transform: scale(1.02);
+}
+
+/* ====== EXAM SECTIONS ====== */
+.exam-section {
+    margin-bottom: 40px;
+}
+
+.exam-section h3 {
+    font-size: 1.6rem;
+    border-bottom: 2px solid #f0b429;
+    padding-bottom: 8px;
+    margin-bottom: 20px;
+}
+
+.reading-passage {
+    background: #f8fafc;
+    padding: 18px 22px;
+    border-radius: 16px;
+    margin-bottom: 25px;
+    border-left: 4px solid #0f4c75;
+}
+
+.option-card {
+    background: #f9fbfd;
+    padding: 18px;
+    border-radius: 14px;
+    margin-bottom: 20px;
+    border: 1px solid #eef2f6;
+}
+
+/* ====== SPEAKING VOICE BUTTON ====== */
+.speak-btn {
+    background: #f0b429;
+    color: #0b1e33;
+    border: none;
+    padding: 6px 16px;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.2s;
+    margin-left: 10px;
+}
+
+.speak-btn:hover {
+    background: #e6a820;
+    transform: scale(1.05);
+}
+
+.speak-btn:active {
+    transform: scale(0.95);
+}
+
+.speak-btn.playing {
+    background: #e53e3e;
+    color: white;
+}
+
+/* ====== EXAM HEADER ====== */
+.exam-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    margin-bottom: 20px;
+}
+
+.user-label {
+    font-weight: 600;
+}
+
+.timer-box {
+    font-size: 1.8rem;
+    font-weight: 700;
+    background: #0f4c75;
+    color: white;
+    padding: 6px 22px;
+    border-radius: 50px;
+    display: inline-block;
+}
+
+/* ====== LOGIN CARD ====== */
+.login-card {
+    max-width: 460px;
+    margin: 20px auto;
+    padding: 30px 28px;
+    background: white;
+    border-radius: 24px;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.05);
+    border: 1px solid #e9edf2;
+}
+
+.login-card h3 {
+    font-size: 1.8rem;
+    margin-bottom: 6px;
+}
+
+.login-card .sub {
+    color: #64748b;
+    margin-bottom: 20px;
+}
+
+.login-card input {
+    margin-bottom: 14px;
+}
+
+#loginStatus {
+    margin-top: 14px;
+}
+
+/* ====== RESULT CARD ====== */
+.result-card {
+    background: white;
+    border-radius: 24px;
+    padding: 30px;
+    border: 1px solid #e2e8f0;
+    margin-top: 20px;
+}
+
+.result-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.result-score-circle {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 15px 0;
+}
+
+.big-score {
+    font-size: 4rem;
+    font-weight: 800;
+    color: #0f4c75;
+}
+
+.total-score {
+    font-size: 1.2rem;
+    color: #64748b;
+}
+
+.result-grade {
+    font-size: 1.8rem;
+    font-weight: 700;
+    padding: 8px 20px;
+    border-radius: 40px;
+    display: inline-block;
+    margin: 8px 0;
+}
+
+.grade-excellent {
+    background: #dcfce7;
+    color: #166534;
+}
+
+.grade-good {
+    background: #dbeafe;
+    color: #1e40af;
+}
+
+.grade-fair {
+    background: #fef3c7;
+    color: #92400e;
+}
+
+.grade-poor {
+    background: #fee2e2;
+    color: #991b1b;
+}
+
+.result-details {
+    margin-top: 20px;
+}
+
+.result-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 10px;
+}
+
+.section-name {
+    width: 140px;
+    font-weight: 500;
+}
+
+.section-score {
+    width: 70px;
+    font-weight: 600;
+    text-align: right;
+}
+
+.section-bar {
+    flex: 1;
+    height: 8px;
+    background: #e9edf2;
+    border-radius: 20px;
+    overflow: hidden;
+}
+
+.section-bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #0f4c75, #f0b429);
+    border-radius: 20px;
+}
+
+/* ====== AUDIO ====== */
+.audio-container {
+    background: #f1f5f9;
+    padding: 18px;
+    border-radius: 16px;
+    margin-bottom: 20px;
+}
+
+.audio-remaining {
+    font-weight: 500;
+    margin-top: 8px;
+}
+
+/* ====== ACTION BUTTONS ====== */
+.action-buttons {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+    margin: 30px 0 20px;
+}
+
+/* ====== HIDDEN ====== */
+.hidden {
+    display: none;
+}
+
+/* ====== PRINT ====== */
+@media print {
+    body {
+        background: white;
+        padding: 0;
+    }
+    .container {
+        box-shadow: none;
+        padding: 10px;
+    }
+    .btn-primary, .btn-secondary, .download-btn, 
+    #examAuth, #examContent .btn-primary, 
+    .action-buttons, .no-print {
+        display: none !important;
+    }
+    .result-card {
+        border: 1px solid #ccc;
+    }
+}
+
+/* ====== RESPONSIVE ====== */
+@media (max-width: 700px) {
+    .container {
+        padding: 16px;
+    }
+    .result-item {
+        flex-wrap: wrap;
+    }
+    .section-name {
+        width: 100%;
+    }
+    .options {
+        gap: 10px;
+    }
+}

@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="my">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>MEPT Mock Test 5</title>
+    <link rel="stylesheet" href="101.css" />
+    <!-- QRCode & html2canvas libraries -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+</head>
+<body>
+<div class="container" id="app">
+
+    <h1>⚓ MEPT Mock Test 101</h1>
+
+    <!-- ============ LOGIN (only one‑time key) ============ -->
+    <div id="examAuth">
+        <div class="login-card">
+            <h3>🔐 One‑Time Key</h3>
+            <p class="sub">Enter your 8‑digit key (each key can be used only once).</p>
+            <input type="password" id="loginKey" placeholder="8‑digit key (e.g. 11111111)" maxlength="8" />
+            <button class="btn-primary" onclick="startExam()">🚀 Start Exam</button>
+            <div id="loginStatus"></div>
+        </div>
+    </div>
+
+    <!-- ============ EXAM CONTENT ============ -->
+    <div id="examContent" style="display: none;">
+        <div class="exam-header">
+            <span class="user-label">👤 <span id="displayUsername">Candidate</span></span>
+            <span class="timer-box" id="timer">⏱️ 120:00</span>
+        </div>
+
+        <!-- GRAMMAR (40 questions - doubled) -->
+        <div class="exam-section">
+            <h3>📖 Grammar (40 questions)</h3>
+            <div id="grammarQuestions"></div>
+        </div>
+
+        <!-- READING (4 passages - doubled) -->
+        <div class="exam-section">
+            <h3>📰 Reading (4 passages - 20 questions)</h3>
+            <div id="readingQuestions"></div>
+        </div>
+
+        <!-- LISTENING (20 questions - doubled) -->
+        <div class="exam-section">
+            <h3>🎧 Listening (20 questions)</h3>
+            <div id="listeningQuestions"></div>
+        </div>
+
+        <!-- WRITING (doubled: 2 tasks in Part1, 2 tasks in Part2) -->
+        <div class="exam-section">
+            <h3>✍️ Writing</h3>
+            <div id="writingQuestions"></div>
+        </div>
+
+        <!-- SPEAKING (Voice + Text Answer) -->
+        <div class="exam-section">
+            <h3>🗣️ Speaking (AI Voice reads questions – type your answers)</h3>
+            <div id="speakingQuestions"></div>
+        </div>
+
+        <div class="action-buttons">
+            <button class="btn-primary" onclick="submitExam()">✅ Submit Exam</button>
+            <button class="btn-secondary" onclick="window.location.reload();">🔄 Reset</button>
+        </div>
+
+        <!-- RESULT AREA -->
+        <div id="examResult" style="display: none;"></div>
+    </div>
+</div>
+
+<!-- ====== JAVASCRIPT ====== -->
+<script src="101.js"></script>
+</body>
+</html>
