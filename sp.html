@@ -844,6 +844,27 @@ window.onload = function() {
     }
     speechSynth.getVoices();
 };
+    // ဖုန်းအတွက် - နှိပ်မှသာ အသံဖတ်ပေးမယ်
+let userInteracted = false;
+
+document.addEventListener('touchstart', function() {
+    userInteracted = true;
+    // အသံထွက်အောင်လုပ်ပေးတယ်
+    if (speechSynth.speaking) return;
+    if (selectedQuestion) {
+        readQuestionTwice(selectedQuestion.prompt);
+    }
+}, { once: true });
+
+// ဒါမှမဟုတ် "Show answer" ကိုနှိပ်တာနဲ့ အသံဖွင့်ပေးမယ်
+document.getElementById('showAnswerBtn').addEventListener('click', function() {
+    if (!userInteracted) {
+        userInteracted = true;
+        if (selectedQuestion) {
+            readQuestionTwice(selectedQuestion.prompt);
+        }
+    }
+});
 </script>
 </body>
 </html>
