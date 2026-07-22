@@ -1,0 +1,849 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+    <title>MARLINS SPEAK · AI Voice 2x</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+            background: #0b1120;
+            color: #e2e8f0;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 16px;
+        }
+        .app-container {
+            max-width: 820px;
+            width: 100%;
+            background: #1e293b;
+            border-radius: 40px;
+            padding: 24px 20px 32px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.6);
+            border: 1px solid #334155;
+        }
+        .hidden { display: none !important; }
+        .flex-col { display: flex; flex-direction: column; gap: 18px; }
+        .text-center { text-align: center; }
+        .mt-1 { margin-top: 8px; }
+        .mt-2 { margin-top: 16px; }
+        .mb-1 { margin-bottom: 8px; }
+
+        h1 {
+            font-size: 1.9rem;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            background: linear-gradient(135deg, #facc15, #38bdf8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        h2 {
+            font-size: 1.4rem;
+            font-weight: 600;
+            color: #f1f5f9;
+        }
+        .subhead {
+            color: #94a3b8;
+            font-size: 0.95rem;
+        }
+
+        .auth-box {
+            background: #0f172a;
+            border-radius: 28px;
+            padding: 28px 20px;
+            border: 1px solid #334155;
+        }
+        .key-input {
+            width: 100%;
+            padding: 16px 18px;
+            background: #0b1120;
+            border: 2px solid #334155;
+            border-radius: 40px;
+            color: #f1f5f9;
+            font-size: 1.1rem;
+            text-align: center;
+            letter-spacing: 2px;
+            font-weight: 600;
+        }
+        .key-input:focus {
+            outline: none;
+            border-color: #facc15;
+            box-shadow: 0 0 0 3px rgba(250, 204, 21, 0.2);
+        }
+        .btn {
+            background: #3b82f6;
+            border: none;
+            padding: 14px 24px;
+            border-radius: 60px;
+            font-weight: 700;
+            font-size: 1.1rem;
+            color: white;
+            cursor: pointer;
+            transition: 0.15s;
+            box-shadow: 0 6px 0 #1e3a8a;
+            width: fit-content;
+            min-width: 140px;
+            margin: 0 auto;
+        }
+        .btn:active {
+            transform: translateY(4px);
+            box-shadow: 0 2px 0 #1e3a8a;
+        }
+        .btn-gold {
+            background: #facc15;
+            color: #0b1120;
+            box-shadow: 0 6px 0 #b68b1c;
+        }
+        .btn-gold:active {
+            box-shadow: 0 2px 0 #b68b1c;
+        }
+        .btn-outline {
+            background: transparent;
+            border: 2px solid #475569;
+            box-shadow: none;
+            color: #e2e8f0;
+        }
+        .btn-outline:active {
+            transform: none;
+            box-shadow: none;
+        }
+        .error {
+            color: #f87171;
+            background: #451a1a;
+            padding: 12px 16px;
+            border-radius: 30px;
+            font-size: 0.95rem;
+            border-left: 4px solid #f87171;
+        }
+
+        .set-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+            gap: 12px;
+            margin: 12px 0 6px;
+        }
+        .set-btn {
+            background: #2d3a52;
+            border: none;
+            border-radius: 60px;
+            padding: 12px 6px;
+            font-weight: 600;
+            color: #f1f5f9;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: 0.1s;
+            box-shadow: 0 4px 0 #0f172a;
+            border: 1px solid #475569;
+        }
+        .set-btn:active {
+            transform: translateY(3px);
+            box-shadow: 0 1px 0 #0f172a;
+        }
+
+        .question-panel {
+            background: #0f172a;
+            border-radius: 32px;
+            padding: 20px 18px;
+            border: 1px solid #334155;
+        }
+        .q-badge {
+            display: inline-block;
+            background: #334155;
+            border-radius: 30px;
+            padding: 4px 16px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: #cbd5e1;
+        }
+        .q-type {
+            background: #2d3a52;
+            color: #facc15;
+            border-radius: 30px;
+            padding: 4px 16px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+        .q-text {
+            font-size: 1.25rem;
+            line-height: 1.6;
+            font-weight: 500;
+            background: #1a2538;
+            padding: 18px 16px;
+            border-radius: 24px;
+            border-left: 6px solid #facc15;
+            margin: 12px 0 10px;
+            min-height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #facc15;
+            font-weight: 600;
+            letter-spacing: 0.3px;
+            text-shadow: 0 0 8px rgba(250,204,21,0.15);
+        }
+        .voice-indicator {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            justify-content: center;
+            margin: 6px 0 12px;
+            color: #94a3b8;
+            font-size: 0.9rem;
+            flex-wrap: wrap;
+        }
+        .voice-dot {
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: #22c55e;
+            animation: pulse-dot 1.2s infinite;
+        }
+        @keyframes pulse-dot {
+            0% { opacity: 0.3; transform: scale(0.8); }
+            50% { opacity: 1; transform: scale(1.2); }
+            100% { opacity: 0.3; transform: scale(0.8); }
+        }
+        .timer-box {
+            font-size: 2rem;
+            font-weight: 700;
+            background: #0b1120;
+            padding: 6px 20px;
+            border-radius: 60px;
+            display: inline-block;
+            font-variant-numeric: tabular-nums;
+            color: #facc15;
+            border: 1px solid #334155;
+        }
+        .answer-section {
+            background: #1a2538;
+            border-radius: 28px;
+            padding: 20px 16px;
+            margin-top: 14px;
+        }
+        .answer-toggle {
+            background: #2d3a52;
+            border: none;
+            border-radius: 40px;
+            padding: 12px 18px;
+            font-weight: 600;
+            color: white;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: 0.1s;
+            box-shadow: 0 4px 0 #0f172a;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .answer-toggle:active {
+            transform: translateY(3px);
+            box-shadow: 0 1px 0 #0f172a;
+        }
+        .answer-box {
+            background: #0b1120;
+            border-radius: 20px;
+            padding: 18px 16px;
+            margin-top: 14px;
+            border-left: 4px solid #facc15;
+            color: #e2e8f0;
+        }
+        .answer-box p {
+            margin: 8px 0;
+            line-height: 1.6;
+        }
+        .answer-box .eng {
+            color: #93c5fd;
+        }
+        .answer-box .mm {
+            color: #a7f3d0;
+        }
+        .sub-btn {
+            background: #facc15;
+            border: none;
+            border-radius: 60px;
+            padding: 14px 28px;
+            font-weight: 700;
+            font-size: 1.1rem;
+            color: #0b1120;
+            cursor: pointer;
+            transition: 0.1s;
+            box-shadow: 0 6px 0 #b68b1c;
+            width: 100%;
+            max-width: 220px;
+            margin: 12px auto 0;
+        }
+        .sub-btn:active {
+            transform: translateY(4px);
+            box-shadow: 0 2px 0 #b68b1c;
+        }
+
+        .finish-card {
+            background: #0f172a;
+            border-radius: 40px;
+            padding: 32px 20px;
+            border: 1px solid #334155;
+        }
+        .finish-card h2 {
+            color: #facc15;
+        }
+        .result-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin: 16px 0;
+        }
+        .result-item {
+            background: #1e293b;
+            border-radius: 16px;
+            padding: 12px;
+            border-left: 4px solid #3b82f6;
+        }
+        @media (max-width: 540px) {
+            .app-container { padding: 16px 12px; }
+            h1 { font-size: 1.6rem; }
+            .q-text { font-size: 1rem; padding: 14px; }
+            .set-grid { grid-template-columns: repeat(3, 1fr); }
+            .result-grid { grid-template-columns: 1fr; }
+        }
+        .scroll-y {
+            max-height: 340px;
+            overflow-y: auto;
+            padding-right: 4px;
+        }
+        .scroll-y::-webkit-scrollbar { width: 4px; }
+        .scroll-y::-webkit-scrollbar-track { background: #1e293b; border-radius: 20px; }
+        .scroll-y::-webkit-scrollbar-thumb { background: #facc15; border-radius: 20px; }
+    </style>
+</head>
+<body>
+<div class="app-container" id="app">
+
+    <!-- AUTH -->
+    <div id="authScreen" class="flex-col text-center">
+        <h1>⚓ MARLINS SPEAK</h1>
+        <p class="subhead">AI Voice 2x · Show answer · B1 Level</p>
+        <div class="auth-box">
+            <label for="keyInput" style="display:block; font-weight:500; margin-bottom:10px;">Activation Key</label>
+            <input type="text" id="keyInput" class="key-input" placeholder="Enter your key" autocomplete="off">
+            <div id="authError" class="error hidden mt-1"></div>
+            <div id="deviceLockError" class="error hidden mt-1"></div>
+            <button class="btn btn-gold mt-2" onclick="verifySecureActivation()">🔓 Unlock</button>
+        </div>
+        <p style="font-size:0.8rem; color:#64748b;">Key is locked to your device after first use.</p>
+    </div>
+
+    <!-- START -->
+    <div id="startScreen" class="hidden flex-col text-center">
+        <h2>📚 Choose a Set</h2>
+        <p class="subhead">Each set has 7 speaking exercises · AI reads each question twice</p>
+        <div id="setSelector" class="set-grid"></div>
+        <button class="btn btn-outline" onclick="lockAppAccess()" style="margin-top:20px;">🔒 Lock & exit</button>
+    </div>
+
+    <!-- EXAM -->
+    <div id="examScreen" class="hidden flex-col">
+        <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px;">
+            <span class="q-badge" id="questionNumber">1</span>
+            <span class="q-badge">/ <span id="totalQuestion">7</span></span>
+            <span class="q-type" id="questionType">Short Answer</span>
+            <span class="timer-box" id="timer">0:00</span>
+        </div>
+
+        <div class="question-panel">
+            <div class="voice-indicator">
+                <span class="voice-dot" id="voiceDot"></span>
+                <span id="voiceStatus">🔊 AI is reading (1/2) ...</span>
+            </div>
+            <div class="q-text" id="questionTextDisplay">🎧 Listen twice</div>
+            <img id="questionImage" class="hidden" style="width:100%; max-height:200px; object-fit:contain; border-radius:20px; margin:6px 0 10px; background:#0b1120;" alt="question image">
+            
+            <div class="answer-section">
+                <button class="answer-toggle" id="showAnswerBtn" onclick="toggleAnswer()">💡 Show answer</button>
+                <div id="answerDisplay" class="answer-box hidden">
+                    <p class="eng" id="answerEnglish">English answer here</p>
+                    <p class="mm" id="answerBurmese">မြန်မာ အဖြေ ဒီမှာ</p>
+                </div>
+            </div>
+        </div>
+
+        <button class="sub-btn" onclick="submitAnswer()">⏩ Next / Submit</button>
+        <button class="btn btn-outline" onclick="lockAppAccess()" style="margin:4px auto 0; font-size:0.8rem; padding:8px 18px;">Exit</button>
+    </div>
+
+    <!-- FINISH -->
+    <div id="processingScreen" class="hidden text-center finish-card">
+        <h2>✅ Practice complete!</h2>
+        <p style="color:#94a3b8; margin:12px 0;">You finished all 7 questions.</p>
+        <div id="resultContainer" class="scroll-y" style="text-align:left; margin:16px 0;"></div>
+        <button class="btn btn-gold" onclick="backToSets()">📋 Back to sets</button>
+        <button class="btn btn-outline" onclick="lockAppAccess()" style="margin:10px auto 0;">Lock</button>
+    </div>
+
+</div>
+<script>
+// ============================================
+// 1. SECURE KEYS (Base64 + New Keys)
+// ============================================
+const SECURE_ALLOWED_KEYS = [
+    // ===== Base64 Keys (Original) =====
+    "WThWMk01NTA=", "UjRCOVEzMTI=", "SzFXN1o4NDU=", "VDNENVg2MTk=", "TTZQMUg4NzI=",
+    "RjlZM1cyMTA=", "QjJWOEs1NDM=", "SDRNMVo3NjA=", "QzhGNVAyMTk=", "WDNUOVE2NTQ=",
+    "UzdSMlc4MTA=", "TjFLNUQ0MzI=", "UDlGM0c3NjU=", "VzJCOEMxMDQ=", "SjZWME41NDI=",
+    "TDRUOVoyMTM=", "RzNIN1k2NTQ=", "RDlDMU04NzA=", "VjVLMlIxNDM=", "UThQNFQzMTk=",
+    "UDZBMks3NDM=", "VzdDMU41OTA=", "RzRGOFMyMTA=", "WjlNM1I1NDA=", "VjJYNks4OTE=",
+    "TDFRNEI3NjU=", "SjdSMlQ5MDE=", "SzNONVc4MTI=", "RDZWMFM0Mzk=", "QjlIM0YyNTE=",
+    "WTRQOFo2MTU=", "TTJUNlI4OTA=", "UTFENVY0MzI=", "RzhYM0I3NjU=", "SzlQMk00MTA=",
+    "WjRXMUY4OTA=", "RjZWM1MyMTk=", "TjhENUs0MzE=", "RjJNN1E2NTQ=", "QzFKOVQ4NTI=",
+    "TDNQOVk4MTI=", "WDdSMkI2NTQ=", "UTRXMUg1NzY=", "VDJCOFg5MDE=", "SzdWMU40MzI=",
+    "UDhEMko1NjA=", "UzRZOUUwMw==", "TTNXN1I1NDI=", "RzhQMlQ2MTA=", "WjFNOUs4NDM=",
+    "WDRCN1YyMTk=", "TjNXMUo1NjQ=", "QzhHNFMyMTA=", "RjZUMk44OTU=", "TDNGOVk1MTI=",
+    "SDFNN0Q2MzQ=", "UDRLMlc4MTU=", "VDlSMUI1NDI=", "VjNaOEMxOTA=", "SjZONEYzMjE=",
+    "RzFTNlU0ODk=", "MThDNUszMTA=", "VjNIOUIyMTU=", "TDZZMVo4NDM=", "UjlQNFc1MjE=",
+    "RjJCOE02MTQ=", "WDFLN1A5NTA=", "TjhGM1YyMTk=", "WzRDMVo3ODY=", "TDlENUgyMTA=",
+    "SzNUOEY1NDA=", "UDZNMlA4MTc=", "SjFWOVg1NDM=", "RDhCNFcyMTk=", "SDJZN1o2MTQ=",
+    "RzlTM1I0NTA=", "QzFYN004OTI=", "RjhQMlQ2MTA=", "QjRON1c1MjM=", "UzlNMlY0MTU=",
+    "TjJUMVc2NDU=", "WjdRNEY4OTA=", "SzJQOFY0NTY=", "SjlGMlM2MTA=", "RzNNNUM3MTk=",
+    "RDhWMVg0MjM=", "VDRRMk44MTU=", "RjNIOVo1NDA=", "QjdLMk00MzE=", "UDFXNlM4NzI=",
+    "WThHMU4zNTQ=", "RjRSOUI2MTA=", "TTJYN0s4OTE=", "UzZQM0M1NDI=", "NjlUMUY4MzA=",
+    "VzhWMlE2NTQ=", "SzRCOVoxMDM=", "TDdNM0g1NDI=", "WDFEOVA4NjA=", "WjZGMkM3NDM=",
+    
+    // ===== New Keys (MN23OP1D style) =====
+    "MN23OP1D", "PQ45QR2E", "RS67ST3F", "TU89UV4G", "VW01WX5H",
+    "XY12YZ6I", "ZA34AB7J", "BC56CD8K", "DE78EF9L", "FG90GH0M",
+    "HI12IJ1N", "JK34KL2O", "LM56MN3P", "NO78OP4Q", "PQ90QR5R",
+    "RS12ST6S", "TU34UV7T", "VW56WX8U", "XY78YZ9V", "ZA90AB0W",
+    "BC12CD1X", "DE34EF2Y", "FG56GH3Z", "HI78IJ4A", "JK90KL5B",
+    "LM12MN6C", "NO34OP7D", "PQ56QR8E", "RS78ST9F", "TU90UV0G",
+    "VW12WX1H", "XY34YZ2I", "ZA56AB3J", "BC78CD4K", "DE90EF5L",
+    "FG12GH6M", "HI34IJ7N", "JK56KL8O", "LM78MN9P", "NO90OP0Q",
+    "PQ12QR1R", "RS34ST2S", "TU56UV3T", "VW78WX4U", "XY90YZ5V",
+    "ZA12AB6W", "BC34CD7X", "DE56EF8Y", "FG78GH9Z", "HI90IJ0A",
+    "JK12KL1B", "LM34MN2C", "NO56OP3D", "PQ78QR4E", "RS90ST5F",
+    "TU12UV6G", "VW34WX7H", "XY56YZ8I", "ZA78AB9J", "BC90CD0K",
+    "DE12EF1L", "FG34GH2M", "HI56IJ3N", "JK78KL4O", "LM90MN5P",
+    "NO12OP6Q", "PQ34QR7R", "RS56ST8S", "TU78UV9T", "VW90WX0U",
+    "XY12YZ1V", "ZA34AB2W", "BC56CD3X", "DE78EF4Y", "FG90GH5Z",
+    "HI12IJ6A", "JK34KL7B", "LM56MN8C", "NO78OP9D", "PQ90QR0E",
+    "RS12ST1F", "TU34UV2G", "VW56WX3H", "XY78YZ4I", "ZA90AB5J",
+    "BC12CD6K", "DE34EF7L", "FG56GH8M", "HI78IJ9N", "JK90KL0O",
+    "LM12MN1P", "NO34OP2Q", "PQ56QR3R", "RS78ST4S", "TU90UV5T",
+    "VW12WX6U", "XY34YZ7V", "ZA56AB8W", "BC78CD9X", "DE90EF0Y"
+];
+
+// ============================================
+// 2. EXAM DATA — Sets 1 to 15 (B1 Level)
+//    Set 1-10: with images (picture filenames)
+//    Set 11-15: no images, more debates
+// ============================================
+const examSets = {
+    // ========== SET 1 to 10 (with images, B1 Level) ==========
+    set1: [
+        { type: "Short Answer", timeLimit: 50, prompt: "Introduce yourself and tell me where you live.", image: "", answerEng: "Hello, my name is Aung Ko. I am from Yangon, which is the largest city in Myanmar. I live in a peaceful neighborhood near the river with my family. I am 24 years old and I enjoy learning new things every day.", answerMm: "မင်္ဂလာပါ။ ကျွန်တော် အောင်ကိုပါ။ ကျွန်တော် မြန်မာနိုင်ငံရဲ့ အကြီးဆုံးမြို့ဖြစ်တဲ့ ရန်ကုန်ကပါ။ မြစ်အနီးက ငြိမ်းချမ်းတဲ့ရပ်ကွက်လေးမှာ မိသားစုနဲ့ အတူနေပါတယ်။ အသက် ၂၄ နှစ်ရှိပြီး နေ့တိုင်း အသစ်အဆန်းတွေ သင်ယူရတာ နှစ်သက်ပါတယ်။" },
+        { type: "Short Answer", timeLimit: 50, prompt: "Why do you want to become a seafarer?", image: "", answerEng: "I want to become a seafarer because I have always been fascinated by the ocean and ships. I also want to explore different countries, experience various cultures, and earn a good income to support my family. I believe this career offers both adventure and stability.", answerMm: "ကျွန်တော် သင်္ဘောသားဖြစ်ချင်တာက ပင်လယ်နဲ့ သင်္ဘောတွေကို ငယ်ငယ်ကတည်းက စိတ်ဝင်စားခဲ့လို့ပါ။ နိုင်ငံအမျိုးမျိုးကို စူးစမ်းလေ့လာချင်တယ်၊ ယဉ်ကျေးမှုအမျိုးမျိုးကို တွေ့ကြုံချင်တယ်၊ မိသားစုကို ထောက်ပံ့ဖို့ ဝင်ငွေကောင်းကောင်းရချင်တယ်။ ဒီအလုပ်က စွန့်စားမှုရော တည်ငြိမ်မှုပါ ပေးတယ်လို့ ယုံကြည်ပါတယ်။" },
+        { type: "Short Answer", timeLimit: 50, prompt: "What is your target rank on board, and what are the main duties?", image: "", answerEng: "My target rank is Third Officer. In this position, my main responsibilities include standing navigational watches, maintaining safety equipment like lifeboats and fire extinguishers, and assisting the Chief Officer with various tasks. I also need to keep accurate records and ensure all safety procedures are followed.", answerMm: "ကျွန်တော် ရည်မှန်းထားတဲ့ရာထူးက တတိယအရာရှိပါ။ ဒီရာထူးမှာ ကျွန်တော့ရဲ့ အဓိကတာဝန်တွေက လမ်းကြောင်းစောင့်ကြည့်ခြင်း၊ အသက်ကယ်လှေနဲ့ မီးသတ်ဆေးဘူးလိုမျိုး ဘေးကင်းရေးပစ္စည်းတွေကို ထိန်းသိမ်းခြင်းနဲ့ ပထမအရာရှိကို အလုပ်အမျိုးမျိုးမှာ ကူညီခြင်းတွေပါ။ မှတ်တမ်းတွေကို အတိအကျထားရှိပြီး ဘေးကင်းရေးလုပ်ထုံးတွေကို လိုက်နာကြောင်း သေချာစေရပါမယ်။" },
+        { type: "Short Answer", timeLimit: 50, prompt: "What are your hobbies or interests in your free time?", image: "", answerEng: "In my free time, I enjoy reading books, especially adventure and maritime stories. I also like fishing, swimming, and listening to music. These activities help me relax and clear my mind after a long day. I believe having hobbies is important to maintain a healthy work-life balance.", answerMm: "အားလပ်ချိန်မှာ ကျွန်တော် စာအုပ်ဖတ်ရတာ ကြိုက်တယ်၊ အထူးသဖြင့် စွန့်စားခန်းနဲ့ ရေကြောင်းဇာတ်လမ်းတွေပါ။ ငါးဖမ်းတာ၊ ရေကူးတာနဲ့ ဂီတနားထောင်တာလည်း ကြိုက်တယ်။ ဒီလုပ်ဆောင်မှုတွေက ကျွန်တော့ကို အနားပေးပြီး စိတ်ကို ကြည်လင်စေတယ်။ အလုပ်နဲ့ဘဝ ဟန်ချက်ညီဖို့ ဝါသနာရှိဖို့ အရေးကြီးတယ်လို့ ယုံကြည်ပါတယ်။" },
+        { type: "Short Answer", timeLimit: 50, prompt: "How do you feel about working with a multicultural crew?", image: "", answerEng: "I think working with a multicultural crew is a wonderful opportunity. It allows me to learn about different traditions, customs, and perspectives. I respect all cultures and believe that teamwork and mutual respect are essential for a safe and efficient ship operation. I am excited to make friends from all over the world.", answerMm: "မတူညီတဲ့ ယဉ်ကျေးမှုတွေရဲ့ သင်္ဘောသားတွေနဲ့ အလုပ်လုပ်ရတာက ကျွန်တော်အတွက် အခွင့်အလမ်းကောင်းတစ်ခုလို့ ထင်ပါတယ်။ ဒါက ကျွန်တော့ကို ဓလေ့ထုံးတမ်း၊ စရိုက်လက္ခဏာနဲ့ ရှုထောင့်အမျိုးမျိုးကို သင်ယူနိုင်စေတယ်။ ယဉ်ကျေးမှုအားလုံးကို လေးစားပြီး ဘေးကင်းပြီး ထိရောက်တဲ့ သင်္ဘောလည်ပတ်မှုအတွက် အဖွဲ့လိုက်လုပ်ဆောင်မှုနဲ့ အပြန်အလှန်လေးစားမှုက မရှိမဖြစ်လိုအပ်တယ်လို့ ယုံကြည်ပါတယ်။ ကမ္ဘာအနှံ့က သူငယ်ချင်းတွေ ဖွဲ့ဖို့ စိတ်လှုပ်ရှားနေပါတယ်။" },
+        { type: "Picture Description", timeLimit: 120, prompt: "Look at the picture. Describe the fire-fighting drill being performed on deck, including the equipment and PPE used.", image: "set1_firefight.png", answerEng: "In the picture, the crew are wearing fire suits and helmets. They are using a fire extinguisher and a hose to put out a small fire on deck. Everyone is working together safely.", answerMm: "ဒီပုံမှာ သင်္ဘောသားတွေ မီးသတ်ဝတ်စုံနဲ့ ဦးထုပ်ဆောင်းထားတယ်။ မီးသတ်ဆေးဘူးနဲ့ ရေပိုက်သုံးပြီး ကုန်းပတ်ပေါ်က မီးငယ်ကို ငြှိမ်းသတ်နေတယ်။ အားလုံး ဘေးကင်းစွာ အတူတူ အလုပ်လုပ်နေကြတယ်။" },
+        { type: "Debate", timeLimit: 120, prompt: "Marlins Debate: 'In very hot weather, seafarers should be allowed to not wear heavy boilersuits or safety shoes to prevent heatstroke.' What is your position?", image: "", answerEng: "I respectfully disagree with this statement. While I understand the concern about heatstroke, safety must always come first. Boilersuits and safety shoes are designed to protect us from serious injuries like burns, cuts, and falling objects. Instead of removing safety gear, I believe we should implement other measures such as regular breaks, providing plenty of drinking water, and improving ventilation in work areas. We can also rotate tasks to reduce exposure to extreme heat. Safety rules are there for a reason, and we must follow them to protect ourselves and our colleagues.", answerMm: "ကျွန်တော် ဒီအဆိုကို လေးလေးစားစား သဘောမတူပါဘူး။ အပူဒဏ်နဲ့ပတ်သက်တဲ့ စိုးရိမ်မှုကို နားလည်ပေမယ့် ဘေးကင်းရေးက အမြဲတမ်း အရေးကြီးဆုံးပါ။ ဘွိုင်လာဝတ်စုံနဲ့ ဘေးကင်းရေးဖိနပ်တွေက လောင်ကျွမ်းခြင်း၊ ဒဏ်ရာနဲ့ ပြုတ်ကျတဲ့ပစ္စည်းတွေလိုမျိုး ပြင်းထန်တဲ့ထိခိုက်မှုတွေကနေ ကာကွယ်ဖို့ ဒီဇိုင်းလုပ်ထားတာပါ။ ဘေးကင်းရေးပစ္စည်းတွေကို ဖယ်ရှားမယ့်အစား ပုံမှန်အနားယူခြင်း၊ ရေသောက်ရန် လုံလောက်စွာထောက်ပံ့ခြင်းနဲ့ အလုပ်ဧရိယာတွေမှာ လေဝင်လေထွက်ကောင်းမွန်အောင် လုပ်ခြင်းလိုမျိုး အခြားအစီအမံတွေကို အကောင်အထည်ဖော်သင့်တယ်လို့ ယုံကြည်ပါတယ်။ လုပ်ငန်းတာဝန်တွေကို လှည့်ပတ်ပြီး အပူဒဏ်ကို လျှော့ချနိုင်ပါတယ်။ ဘေးကင်းရေးစည်းမျဉ်းတွေမှာ အကြောင်းပြချက်ရှိပြီး ကိုယ့်ကိုယ်ကိုယ်ရော လုပ်ဖော်ကိုင်ဖက်တွေကိုပါ ကာကွယ်ဖို့ လိုက်နာရပါမယ်။" }
+    ],
+    set2: [
+        { type: "Short Answer", timeLimit: 50, prompt: "Please state your full name and Passport number.", image: "", answerEng: "My full name is Aung Ko Min. My passport number is MB9876543. I always keep my passport in a safe place and make sure it is valid for at least six months before any voyage.", answerMm: "ကျွန်တော့ အမည်အပြည့်အစုံက အောင်ကိုမင်းပါ။ ပတ်စ်ပို့နံပါတ်က MB9876543 ပါ။ ကျွန်တော် ပတ်စ်ပို့ကို လုံခြုံတဲ့နေရာမှာ အမြဲသိမ်းဆည်းပြီး ခရီးမစခင် အနည်းဆုံး ခြောက်လအထိ တရားဝင်ကြောင်း သေချာပါတယ်။" },
+        { type: "Short Answer", timeLimit: 50, prompt: "Who encouraged or inspired you to join the maritime industry?", image: "", answerEng: "My uncle, who has been working as a Chief Officer for over 15 years, inspired me to join this industry. He often shared fascinating stories about his travels to different countries and the amazing experiences he had at sea. His passion for the job motivated me to pursue a career in maritime.", answerMm: "ကျွန်တော့ဦးလေးက ဒီလုပ်ငန်းကို ဝင်ဖို့ ကျွန်တော့ကို အားပေးခဲ့တယ်။ သူက ပထမအရာရှိအဖြစ် ၁၅ နှစ်ကျော် အလုပ်လုပ်နေတယ်။ သူ့ရဲ့ နိုင်ငံအမျိုးမျိုးက ခရီးစဉ်တွေနဲ့ ပင်လယ်ပေါ်က အံ့ဩစရာ အတွေ့အကြုံတွေအကြောင်း စိတ်ဝင်စားဖို့ကောင်းတဲ့ ပုံပြင်တွေကို မကြာခဏ ပြောပြလေ့ရှိတယ်။ အလုပ်အပေါ် သူ့ရဲ့စိတ်အားထက်သန်မှုက ကျွန်တော့ကို ရေကြောင်းအသက်မွေးဝမ်းကြောင်းကို လုပ်ကိုင်ဖို့ လှုံ့ဆော်ပေးခဲ့တယ်။" },
+        { type: "Short Answer", timeLimit: 50, prompt: "How will you handle being away from your family for many months?", image: "", answerEng: "I understand that being away from family is one of the biggest challenges of this job. To cope with this, I plan to video call my family at least once a week. I will also stay busy with my duties and build strong friendships with other crew members. I believe that staying connected and maintaining a positive attitude will help me manage the time away from home.", answerMm: "မိသားစုနဲ့ ဝေးကွာနေရတာက ဒီအလုပ်ရဲ့ အကြီးမားဆုံး စိန်ခေါ်မှုတွေထဲက တစ်ခုဆိုတာ ကျွန်တော် နားလည်ပါတယ်။ ဒီကိစ္စကို ရင်ဆိုင်ဖြေရှင်းဖို့ မိသားစုကို တစ်ပတ်ကို အနည်းဆုံး တစ်ကြိမ် ဗီဒီယိုခေါ်ဆိုဖို့ စီစဉ်ထားပါတယ်။ ကျွန်တော့တာဝန်တွေနဲ့လည်း အလုပ်ရှုပ်နေမယ်၊ တခြားသင်္ဘောသားတွေနဲ့လည်း ခိုင်မာတဲ့ မိတ်ဆွေဖွဲ့မယ်။ အဆက်အသွယ်ရှိနေခြင်းနဲ့ အပြုသဘောဆောင်တဲ့စိတ်ထားကို ထိန်းသိမ်းခြင်းက အိမ်နဲ့ဝေးတဲ့အချိန်ကို စီမံခန့်ခွဲဖို့ ကူညီလိမ့်မယ်လို့ ယုံကြည်ပါတယ်။" },
+        { type: "Short Answer", timeLimit: 50, prompt: "What is the most important quality of a good seafarer, in your opinion?", image: "", answerEng: "In my opinion, the most important quality of a good seafarer is a strong sense of responsibility and discipline. A seafarer must be reliable, follow safety protocols strictly, and remain calm under pressure. Additionally, good communication skills and teamwork are also essential because we work in a confined environment where cooperation is key to success.", answerMm: "ကျွန်တော့အမြင်မှာ သင်္ဘောသားကောင်းတစ်ယောက်ရဲ့ အရေးအကြီးဆုံးအရည်အသွေးက ခိုင်မာတဲ့ တာဝန်သိစိတ်နဲ့ စည်းကမ်းပါ။ သင်္ဘောသားတစ်ယောက်ဟာ စိတ်ချရတယ်၊ ဘေးကင်းရေးလုပ်ထုံးတွေကို တင်းကျပ်စွာလိုက်နာတယ်၊ ဖိအားအောက်မှာ အေးအေးဆေးဆေးနေတတ်ရမယ်။ ထို့အပြင် ကောင်းမွန်တဲ့ ဆက်သွယ်ရေးစွမ်းရည်နဲ့ အဖွဲ့လိုက်လုပ်ဆောင်မှုလည်း မရှိမဖြစ်လိုအပ်တယ်၊ ဘာကြောင့်လဲဆိုတော့ ကျွန်တော်တို့က ပူးပေါင်းဆောင်ရွက်မှုက အောင်မြင်မှုအတွက် အဓိကကျတဲ့ ကန့်သတ်ထားတဲ့ ပတ်ဝန်းကျင်မှာ အလုပ်လုပ်လို့ပါ။" },
+        { type: "Short Answer", timeLimit: 50, prompt: "What is your long-term goal in this career?", image: "", answerEng: "My long-term goal is to become a Captain one day. I want to master all aspects of ship navigation, safety management, and leadership. Ultimately, I aim to command my own vessel and ensure the safety of my crew and cargo. I also hope to share my knowledge and experience with younger seafarers and contribute to the maritime industry's growth.", answerMm: "ကျွန်တော့ရေရှည်ရည်မှန်းချက်က တစ်နေ့ ကပ္ပတိန်ဖြစ်ဖို့ပါ။ သင်္ဘောလမ်းကြောင်းပြခြင်း၊ ဘေးကင်းရေးစီမံခန့်ခွဲခြင်းနဲ့ ခေါင်းဆောင်မှုရဲ့ ကဏ္ဍအားလုံးကို ကျွမ်းကျင်ချင်ပါတယ်။ နောက်ဆုံးမှာ ကိုယ်ပိုင်သင်္ဘောကို ကွပ်ကဲပြီး သင်္ဘောသားတွေနဲ့ ကုန်ပစ္စည်းတွေရဲ့ ဘေးကင်းရေးကို သေချာစေချင်ပါတယ်။ ငယ်ရွယ်တဲ့ သင်္ဘောသားတွေနဲ့လည်း ကျွန်တော့အသိပညာနဲ့ အတွေ့အကြုံတွေကို မျှဝေပြီး ရေကြောင်းလုပ်ငန်းရဲ့ တိုးတက်မှုကို အထောက်အကူပြုချင်ပါတယ်။" },
+        { type: "Picture Description", timeLimit: 120, prompt: "Look at the picture. Describe the mooring operation at the forward station, including the PPE and safety precautions.", image: "set2_mooring.png", answerEng: "The crew are wearing hard hats, gloves, and safety vests. They handle ropes carefully and stay away from the snap-back zone.", answerMm: "သင်္ဘောသားတွေ ဦးထုပ်၊ လက်အိတ်နဲ့ အန္တရာယ်ကင်း အင်္ကျီတွေ ဝတ်ထားတယ်။ ကြိုးတွေကို ဂရုစိုက်ပြီး snap-back ဇုန်ကနေ ရှောင်နေကြတယ်။" },
+        { type: "Debate", timeLimit: 120, prompt: "Marlins Debate: 'If a crewmember falls overboard, you should jump into the water immediately to save him before you lose sight of him.' Do you agree?", image: "", answerEng: "I disagree with this approach. While it is natural to want to help immediately, jumping into the water without proper preparation can create more problems. The correct procedure is to throw a lifebuoy with a light and smoke signal to mark the person's location. Then, alert the bridge immediately and follow the man overboard recovery plan. Jumping into the water without support can put both lives at risk. The ship should be stopped and turned around, and a rescue boat should be launched if conditions allow. It is important to act quickly but also calmly and according to the established procedures.", answerMm: "ကျွန်တော် ဒီနည်းလမ်းကို သဘောမတူပါဘူး။ ချက်ချင်းကူညီချင်တာက သဘာဝကျပေမယ့် သင့်လျော်တဲ့ပြင်ဆင်မှုမရှိဘဲ ရေထဲခုန်ချတာက ပြဿနာတွေ ပိုဖန်တီးနိုင်ပါတယ်။ မှန်ကန်တဲ့လုပ်ထုံးက လူရဲ့တည်နေရာကို အမှတ်အသားပြုဖို့ မီးနဲ့ မီးခိုးအချက်ပြတွေပါတဲ့ အသက်ကယ်စက်ဝိုင်းကို ပစ်ချခြင်းပါ။ ပြီးရင် တံတားကို ချက်ချင်းအကြောင်းကြားပြီး လူပျောက်ကယ်ဆယ်ရေးအစီအစဉ်ကို လိုက်နာပါ။ အထောက်အပံ့မပါဘဲ ရေထဲခုန်ချတာက ဘဝနှစ်ခုလုံးကို စွန့်စားနိုင်ပါတယ်။ သင်္ဘောကို ရပ်တန့်ပြီး လှည့်ကာ အခြေအနေခွင့်ပြုရင် ကယ်ဆယ်ရေးလှေကို လွှတ်တင်သင့်ပါတယ်။ မြန်မြန်ဆောင်ရွက်ဖို့ အရေးကြီးပေမယ့် အေးအေးဆေးဆေးနဲ့ သတ်မှတ်ထားတဲ့ လုပ်ထုံးတွေအတိုင်း ဆောင်ရွက်ဖို့လည်း အရေးကြီးပါတယ်။" }
+    ],
+    set3: [
+        { type: "Short Answer", timeLimit: 50, prompt: "Please introduce yourself and state your date of birth.", image: "", answerEng: "My name is Aung Ko. I was born on 1st January 2000.", answerMm: "ကျွန်တော် အောင်ကိုပါ။ ၂၀၀၀ ခုနှစ် ဇန်နဝါရီလ ၁ ရက်နေ့မှာ မွေးဖွားခဲ့ပါတယ်။" },
+        { type: "Short Answer", timeLimit: 50, prompt: "Seafaring is a hard and stressful job. Why do you still want to do it?", image: "", answerEng: "Yes, it is hard, but I like challenges. I am young and I want to gain experience and help my family financially.", answerMm: "ဟုတ်တယ်၊ ခက်ခဲတယ်။ ဒါပေမယ့် ကျွန်တော် စိန်ခေါ်မှုတွေကို နှစ်သက်တယ်။ ငယ်သေးပြီး အတွေ့အကြုံရချင်သလို မိသားစုကို ငွေကြေးအရ ကူညီချင်တယ်။" },
+        { type: "Short Answer", timeLimit: 50, prompt: "Where did you complete your pre-sea and BST training?", image: "", answerEng: "I completed my pre-sea training at Myanmar Maritime Academy. I also did BST training there.", answerMm: "ကျွန်တော် သင်္ဘောမတက်မီ လေ့ကျင့်ရေးကို မြန်မာရေကြောင်းအကယ်ဒမီမှာ ပြီးခဲ့တယ်။ BST လေ့ကျင့်ရေးကိုလည်း အဲဒီမှာပဲ လုပ်ခဲ့တယ်။" },
+        { type: "Short Answer", timeLimit: 50, prompt: "If a company offers you a contract that is longer than usual, will you accept it?", image: "", answerEng: "If the salary and conditions are good, I will consider it. I need to discuss with my family first.", answerMm: "လစာနဲ့ အခြေအနေတွေ ကောင်းရင် စဉ်းစားမယ်။ မိသားစုနဲ့ အရင်တိုင်ပင်ရမယ်။" },
+        { type: "Short Answer", timeLimit: 50, prompt: "What department will you work in, and what is your current knowledge about it?", image: "", answerEng: "I will work in the deck department. I know basic navigation, knot tying, and safety procedures.", answerMm: "ကျွန်တော် ကုန်းပတ်ဌာနမှာ အလုပ်လုပ်မယ်။ အခြေခံ လမ်းကြောင်းပြခြင်း၊ ကြိုးဆက်ခြင်းနဲ့ ဘေးကင်းရေး လုပ်ထုံးတွေကို သိပါတယ်။" },
+        { type: "Picture Description", timeLimit: 120, prompt: "Look at the picture. Explain the meaning of the 'Snap-Back Zone' markings and why seafarers must avoid this area during mooring.", image: "set3_snapback.png", answerEng: "The snap-back zone is a dangerous area where mooring ropes can suddenly break and hit people. So we must never stand there.", answerMm: "Snap-back ဇုန်ဆိုတာ ကျောက်ဆွဲကြိုးတွေ ရုတ်တရက် ကျိုးပြီး လူတွေကို ထိခိုက်နိုင်တဲ့ အန္တရာယ်ရှိတဲ့နေရာပါ။ ဒါကြောင့် အဲဒီမှာ ဘယ်တော့မှ မရပ်သင့်ဘူး။" },
+        { type: "Debate", timeLimit: 120, prompt: "Marlins Debate: 'You are busy, and you just need to enter a pump room for 2 minutes to check a gauge. It is okay to enter without a permit as long as you are quick.' Do you agree?", image: "", answerEng: "I strongly disagree. Pump rooms can have dangerous gas. You must always get a permit and follow the safety rules, even for a short time.", answerMm: "ကျွန်တော် ပြင်းထန်စွာ သဘောမတူပါဘူး။ ပန့်ခန်းတွေမှာ အန္တရာယ်ရှိတဲ့ဓာတ်ငွေ့ရှိနိုင်တယ်။ ခွင့်ပြုချက်ရပြီး ဘေးကင်းရေးစည်းမျဉ်းတွေကို အချိန်တိုတောင်ပေမယ့် လိုက်နာရမယ်။" }
+    ],
+    set4: [
+        { type: "Short Answer", timeLimit: 50, prompt: "Introduce yourself and mention the type of ship you prefer to work on.", image: "", answerEng: "I am Aung Ko. I prefer to work on container ships because they travel to many countries.", answerMm: "ကျွန်တော် အောင်ကိုပါ။ ကွန်တိန်နာသင်္ဘောတွေပေါ် အလုပ်လုပ်ချင်တယ်၊ ဘာကြောင့်လဲဆိုတော့ နိုင်ငံအများကြီးကို သွားလို့ပါ။" },
+        { type: "Short Answer", timeLimit: 50, prompt: "What is your strongest quality that will make you a good seafarer?", image: "", answerEng: "My strongest quality is that I am hard-working and I learn quickly. I am also very careful.", answerMm: "ကျွန်တော့ အားသာချက်က ကြိုးစားပြီး မြန်မြန်သင်ယူတတ်တယ်။ သတိလည်းကြီးတယ်။" },
+        { type: "Short Answer", timeLimit: 50, prompt: "Seafaring involves a lot of teamwork. Can you give an example of how you work in a team?", image: "", answerEng: "During drills, I always listen to the leader and do my part. We talk to each other and help if someone needs support.", answerMm: "လေ့ကျင့်ခန်းတွေအတွင်းမှာ ကျွန်တော် ခေါင်းဆောင်ကို နားထောင်ပြီး ကိုယ့်တာဝန်ကို လုပ်တယ်။ တစ်ယောက်နဲ့တစ်ယောက် ပြောဆိုပြီး လိုအပ်ရင် ကူညီတယ်။" },
+        { type: "Short Answer", timeLimit: 50, prompt: "What is your current English proficiency level for maritime work?", image: "", answerEng: "I can understand and speak basic maritime English. I can read safety instructions and communicate with the crew.", answerMm: "ကျွန်တော် အခြေခံရေကြောင်းအင်္ဂလိပ်ကို နားလည်ပြီး ပြောနိုင်တယ်။ ဘေးကင်းရေး ညွှန်ကြားချက်တွေကို ဖတ်နိုင်ပြီး သင်္ဘောသားတွေနဲ့ ဆက်သွယ်နိုင်တယ်။" },
+        { type: "Short Answer", timeLimit: 50, prompt: "If your superior asks you to do something that is not safe, what will you do?", image: "", answerEng: "I will politely say no and explain why it is unsafe. Then I will report it to the safety officer.", answerMm: "ကျွန်တော် ယဉ်ယဉ်ကျေးကျေးငြင်းဆန်ပြီး ဘာကြောင့်အန္တရာယ်ရှိလဲ ရှင်းပြမယ်။ ပြီးရင် ဘေးကင်းရေးအရာရှိထံ အကြောင်းကြားမယ်။" },
+        { type: "Picture Description", timeLimit: 120, prompt: "Look at the picture. Describe the watchkeeping duties in the Engine Control Room and the importance of monitoring machinery parameters.", image: "set4_ecr.png", answerEng: "In the control room, watchkeepers check the engine temperature, pressure, and RPM. Monitoring these is important to prevent breakdowns.", answerMm: "ထိန်းချုပ်ခန်းမှာ အချိန်မှန်စောင့်ကြည့်သူတွေက အင်ဂျင်အပူချိန်၊ ဖိအားနဲ့ RPM ကို စစ်ဆေးတယ်။ ဒါတွေကို စောင့်ကြည့်ခြင်းက ချို့ယွင်းမှုတွေကို ကာကွယ်ဖို့ အရေးကြီးတယ်။" },
+        { type: "Debate", timeLimit: 120, prompt: "Marlins Debate: 'Port State Control (PSC) is just trouble. Seafarers should hide any problems from the inspectors to avoid ship detention.' What is your view?", image: "", answerEng: "I disagree. PSC inspections help keep ships safe. Hiding problems is dishonest and dangerous for everyone on board.", answerMm: "ကျွန်တော် သဘောမတူပါဘူး။ PSC စစ်ဆေးမှုတွေက သင်္ဘောတွေကို ဘေးကင်းစေတယ်။ ပြဿနာတွေကို ဖုံးကွယ်ခြင်းက ရိုးသားမှုမရှိဘူး၊ သင်္ဘောပေါ်က လူတိုင်းအတွက်လည်း အန္တရာယ်ရှိတယ်။" }
+    ],
+    set5: [
+        { type: "Short Answer", timeLimit: 50, prompt: "Introduce yourself and state your father's name.", image: "", answerEng: "My name is Aung Ko. My father's name is U Mya.", answerMm: "ကျွန်တော် အောင်ကိုပါ။ အဖေ့နာမည်က ဦးမြပါ။" },
+        { type: "Short Answer", timeLimit: 50, prompt: "What are your career aspirations for the next 5 years?", image: "", answerEng: "In the next 5 years, I want to become a Second Officer and gain more experience on different types of ships.", answerMm: "လာမယ့် ၅ နှစ်အတွင်းမှာ ဒုတိယအရာရှိဖြစ်ပြီး သင်္ဘောအမျိုးမျိုးပေါ်မှာ အတွေ့အကြုံပိုရချင်တယ်။" },
+        { type: "Short Answer", timeLimit: 50, prompt: "Seafarers face rough sea conditions. Are you physically and mentally ready?", image: "", answerEng: "Yes, I am ready. I exercise every day and I try to stay calm in difficult situations.", answerMm: "ဟုတ်တယ်၊ ကျွန်တော် အဆင်သင့်ပါ။ နေ့တိုင်း လေ့ကျင့်ခန်းလုပ်ပြီး ခက်ခဲတဲ့အခြေအနေတွေမှာ အေးအေးဆေးဆေးနေဖို့ ကြိုးစားတယ်။" },
+        { type: "Short Answer", timeLimit: 50, prompt: "How do you spend your free time while you are waiting for a ship contract?", image: "", answerEng: "I study maritime books and improve my English. I also spend time with my family and friends.", answerMm: "ကျွန်တော် ရေကြောင်းစာအုပ်တွေဖတ်ပြီး အင်္ဂလိပ်စာတိုးတက်အောင် လုပ်တယ်။ မိသားစုနဲ့ သူငယ်ချင်းတွေနဲ့လည်း အချိန်ကုန်ဆုံးတယ်။" },
+        { type: "Short Answer", timeLimit: 50, prompt: "If a crewmember from another country disrespects your culture, how will you respond?", image: "", answerEng: "I will speak to them politely and explain our customs. I believe that respect is important for everyone.", answerMm: "ကျွန်တော် သူတို့ကို ယဉ်ယဉ်ကျေးကျေးပြောပြီး ကျွန်တော်တို့ ဓလေ့ထုံးတမ်းတွေကို ရှင်းပြမယ်။ လူတိုင်းအတွက် လေးစားမှုက အရေးကြီးတယ်လို့ ယုံကြည်တယ်။" },
+        { type: "Picture Description", timeLimit: 120, prompt: "Look at the picture. Describe the CPR (Cardiopulmonary Resuscitation) procedure being performed and explain why first aid training is essential at sea.", image: "set5_cpr.png", answerEng: "The picture shows someone giving chest compressions and rescue breaths. First aid training is very important at sea because help is far away.", answerMm: "ဒီပုံမှာ ရင်ဘတ်ဖိခြင်းနဲ့ အသက်ရှူကယ်ဆယ်ခြင်းကို လုပ်ဆောင်နေတာပြထားတယ်။ ပင်လယ်ပေါ်မှာ ကယ်ဆယ်ရေးအကူအညီက ဝေးတဲ့အတွက် ရှေးဦးသူနာပြုသင်တန်းက အလွန်အရေးကြီးတယ်။" },
+        { type: "Debate", timeLimit: 120, prompt: "Marlins Debate: 'Safety Management System (SMS) paperwork is a waste of time. It is better to just focus on the physical job and skip the forms.' Argue your position.", image: "", answerEng: "I disagree. SMS paperwork records safety checks and helps prevent accidents. It is not a waste of time; it saves lives.", answerMm: "ကျွန်တော် သဘောမတူပါဘူး။ SMS စာရွက်စာတမ်းတွေက ဘေးကင်းရေးစစ်ဆေးမှုတွေကို မှတ်တမ်းတင်ပြီး မတော်တဆမှုတွေကို ကာကွယ်ပေးတယ်။ အချိန်ဖြုန်းတာမဟုတ်ဘူး၊ အသက်တွေကို ကယ်တယ်။" }
+    ],
+    set6: [
+        { type: "Short Answer", timeLimit: 50, prompt: "Introduce yourself and tell me about your hometown.", image: "", answerEng: "I am Aung Ko. My hometown is Yangon. It is a big city with many people and busy streets.", answerMm: "ကျွန်တော် အောင်ကိုပါ။ ဇာတိမြို့က ရန်ကုန်ပါ။ လူများတဲ့မြို့ကြီးဖြစ်ပြီး လမ်းတွေ စည်ကားတယ်။" },
+        { type: "Short Answer", timeLimit: 50, prompt: "If this is your first ship, what are you most looking forward to? (or describe your previous ship experience).", image: "", answerEng: "This is my first ship. I am looking forward to learning navigation and making new friends.", answerMm: "ဒါက ကျွန်တော့ ပထမဆုံးသင်္ဘောပါ။ လမ်းကြောင်းပြခြင်းကို သင်ယူပြီး သူငယ်ချင်းအသစ်တွေ ဖွဲ့ဖို့ မျှော်လင့်တယ်။" },
+        { type: "Short Answer", timeLimit: 50, prompt: "What are your salary expectations, and how do you plan to utilize your income?", image: "", answerEng: "I expect a fair salary. I will save some money and send some to my family for daily needs.", answerMm: "ကျွန်တော် မျှတတဲ့လစာကို မျှော်လင့်တယ်။ ငွေအချို့စုပြီး မိသားစုကို နေ့စဉ်သုံးအတွက် ပေးမယ်။" },
+        { type: "Short Answer", timeLimit: 50, prompt: "How do you usually cope with sea sickness, bad weather, or high stress on board?", image: "", answerEng: "For seasickness, I take medicine. For stress, I take deep breaths and talk to my friends.", answerMm: "ပင်လယ်ဖျားနာမှုအတွက် ဆေးသောက်တယ်။ စိတ်ဖိစီးမှုအတွက် လေနက်ရှူပြီး သူငယ်ချင်းတွေနဲ့ စကားပြောတယ်။" },
+        { type: "Short Answer", timeLimit: 50, prompt: "How important is it to maintain a good professional relationship with the Chief Officer or Chief Engineer?", image: "", answerEng: "It is very important because they are our leaders. Good relationship helps us work smoothly and safely.", answerMm: "အလွန်အရေးကြီးတယ်၊ ဘာကြောင့်လဲဆိုတော့ သူတို့က ကျွန်တော်တို့ရဲ့ ခေါင်းဆောင်တွေပါ။ ကောင်းမွန်တဲ့ဆက်ဆံရေးက ချောမွေ့ပြီး ဘေးကင်းစွာ အလုပ်လုပ်နိုင်စေတယ်။" },
+        { type: "Picture Description", timeLimit: 120, prompt: "Look at the picture. Describe the abandon ship drill, specifically the launching of the lifeboat and the correct use of the life jacket.", image: "set6_lifeboat.png", answerEng: "In the drill, the crew are launching the lifeboat. They are wearing life jackets correctly. Everyone checks the ropes and releases the boat safely.", answerMm: "လေ့ကျင့်ခန်းမှာ သင်္ဘောသားတွေ အသက်ကယ်လှေကို လွှတ်တင်နေတယ်။ အသက်ကယ်အင်္ကျီကို မှန်မှန်ကန်ကန်ဝတ်ထားတယ်။ လူတိုင်း ကြိုးတွေစစ်ဆေးပြီး လှေကို ဘေးကင်းစွာ လွှတ်တယ်။" },
+        { type: "Debate", timeLimit: 120, prompt: "Marlins Debate: 'Social media and mobile phones should be completely banned on board to keep the crew focused on safety.' Do you agree or disagree?", image: "", answerEng: "I disagree. Phones help us contact our families. It is good for mental health. But we must use them only during free time.", answerMm: "ကျွန်တော် သဘောမတူပါဘူး။ ဖုန်းတွေက မိသားစုနဲ့ ဆက်သွယ်ဖို့ ကူညီတယ်။ စိတ်ကျန်းမာရေးအတွက် ကောင်းတယ်။ ဒါပေမယ့် အားလပ်ချိန်မှသာ သုံးရမယ်။" }
+    ],
+    set7: [
+        { type: "Short Answer", timeLimit: 50, prompt: "Please state your full name and current residential address.", image: "", answerEng: "My full name is Aung Ko. I live at No. 12, Main Street, Yangon.", answerMm: "ကျွန်တော် အမည်အပြည့်အစုံက အောင်ကိုပါ။ ရန်ကုန်မြို့၊ ပင်မလမ်း၊ အမှတ် ၁၂ မှာ နေပါတယ်။" },
+        { type: "Short Answer", timeLimit: 50, prompt: "Can you describe any shore-based job or previous sea experience you have had?", image: "", answerEng: "I worked as a trainee at a shipyard for three months. I learned about maintenance and safety.", answerMm: "ကျွန်တော် သင်္ဘောကျင်းမှာ သုံးလကြာ သင်တန်းသားအဖြစ် အလုပ်လုပ်ခဲ့တယ်။ ပြုပြင်ထိန်းသိမ်းခြင်းနဲ့ ဘေးကင်းရေးအကြောင်း သင်ယူခဲ့တယ်။" },
+        { type: "Short Answer", timeLimit: 50, prompt: "In your opinion, who has the ultimate responsibility for safety on board a ship?", image: "", answerEng: "The Captain is responsible for safety, but every crew member must also follow safety rules.", answerMm: "ကပ္ပတိန်က ဘေးကင်းရေးအတွက် တာဝန်ရှိပေမယ့် သင်္ဘောသားတိုင်းလည်း ဘေးကင်းရေးစည်းမျဉ်းတွေကို လိုက်နာရမယ်။" },
+        { type: "Short Answer", timeLimit: 50, prompt: "What do you do to keep yourself physically fit during a long sea voyage?", image: "", answerEng: "I do simple exercises like push-ups and walking on deck. I also eat healthy food.", answerMm: "ကျွန်တော် ထိုးထိုင်ခုန်ခြင်းနဲ့ ကုန်းပတ်ပေါ်လမ်းလျှောက်ခြင်းလို ရိုးရိုးလေ့ကျင့်ခန်းတွေ လုပ်တယ်။ ကျန်းမာရေးနဲ့ညီတဲ့ အစားအစာတွေလည်း စားတယ်။" },
+        { type: "Short Answer", timeLimit: 50, prompt: "What do you know about garbage segregation and waste management according to MARPOL?", image: "", answerEng: "MARPOL says we must separate plastic, food, and other waste. We cannot throw plastic into the sea.", answerMm: "MARPOL အရ ပလတ်စတစ်၊ အစားအစာနဲ့ အခြားအမှိုက်တွေကို ခွဲခြားရမယ်။ ပလတ်စတစ်ကို ပင်လယ်ထဲ မစွန့်ရဘူး။" },
+        { type: "Picture Description", timeLimit: 120, prompt: "Look at the picture. Explain how to correctly use a portable fire extinguisher (PASS method) on a small fire in the galley.", image: "set7_extinguisher.png", answerEng: "Use the PASS method: Pull the pin, Aim at the base of the fire, Squeeze the handle, and Sweep side to side. This is how we put out a small fire.", answerMm: "PASS နည်းလမ်းကို သုံးပါ - ပင်ကိုဆွဲထုတ်၊ မီးအခြေကို ပစ်မှတ်ထား၊ လက်ကိုင်ကိုဖိ၊ ဘယ်ညာလှည့်။ ဒါက မီးငယ်ကို ငြှိမ်းသတ်တဲ့ နည်းလမ်းပါ။" },
+        { type: "Debate", timeLimit: 120, prompt: "Marlins Debate: 'On a busy turnaround day, it is acceptable to skip the daily safety inspection rounds to save time.' What is your argument?", image: "", answerEng: "I strongly disagree. Safety inspections are never a waste of time. They find problems before accidents happen.", answerMm: "ကျွန်တော် ပြင်းထန်စွာ သဘောမတူပါဘူး။ ဘေးကင်းရေးစစ်ဆေးမှုတွေက အချိန်ဖြုန်းတာမဟုတ်ဘူး။ မတော်တဆမှုမဖြစ်ခင် ပြဿနာတွေကို ရှာဖွေပေးတယ်။" }
+    ],
+    set8: [
+        { type: "Short Answer", timeLimit: 50, prompt: "Introduce yourself including your age and nationality.", image: "", answerEng: "My name is Aung Ko. I am 22 years old. I am Myanmar nationality.", answerMm: "ကျွန်တော် အောင်ကိုပါ။ အသက် ၂၂ နှစ်။ မြန်မာနိုင်ငံသားပါ။" },
+        { type: "Short Answer", timeLimit: 50, prompt: "Why did you choose this specific rank (e.g., OS, AB, Oiler, 3rd Officer) to apply for?", image: "", answerEng: "I chose Third Officer because I have the certificate and I want to start my career at this level.", answerMm: "ကျွန်တော် တတိယအရာရှိကို ရွေးချယ်တာက လက်မှတ်ရှိပြီး ဒီအဆင့်ကနေ အသက်မွေးဝမ်းကြောင်းကို စတင်ချင်လို့ပါ။" },
+        { type: "Short Answer", timeLimit: 50, prompt: "Can you briefly explain the 'Chain of Command' on a merchant vessel?", image: "", answerEng: "The chain of command is: Captain, Chief Officer, Second Officer, Third Officer, and then the ratings. Everyone has a specific role.", answerMm: "ကွပ်ကဲမှုကွင်းဆက်က ကပ္ပတိန်၊ ပထမအရာရှိ၊ ဒုတိယအရာရှိ၊ တတိယအရာရှိ၊ ပြီးရင် အဆင့်သတ်မှတ်ခံရသူတွေပါ။ လူတိုင်းမှာ သီးခြားအခန်းကဏ္ဍရှိတယ်။" },
+        { type: "Short Answer", timeLimit: 50, prompt: "Tell me about a 'near-miss' accident you have witnessed or heard about. How could it have been prevented?", image: "", answerEng: "I saw a rope almost hit someone. It could have been prevented by checking the rope's condition and keeping people away.", answerMm: "ကြိုးတစ်ချောင်း လူတစ်ယောက်ကို ထိလုနီးပါးဖြစ်တာ ကျွန်တော်မြင်ခဲ့တယ်။ ကြိုးရဲ့အခြေအနေကို စစ်ဆေးပြီး လူတွေကို ဝေးဝေးရပ်ခိုင်းခြင်းအားဖြင့် ကာကွယ်နိုင်ပါတယ်။" },
+        { type: "Short Answer", timeLimit: 50, prompt: "What does 'STCW' stand for, and why is this convention critical for your career?", image: "", answerEng: "STCW stands for Standards of Training, Certification and Watchkeeping. It sets global standards for seafarers, so it is very important.", answerMm: "STCW ဆိုတာ လေ့ကျင့်ရေး၊ အသိအမှတ်ပြုလက်မှတ်နဲ့ အချိန်မှန်စောင့်ကြည့်ခြင်းဆိုင်ရာ စံနှုန်းများပါ။ သင်္ဘောသားတွေအတွက် ကမ္ဘာလုံးဆိုင်ရာ စံနှုန်းတွေကို သတ်မှတ်ပေးတဲ့အတွက် အရမ်းအရေးကြီးတယ်။" },
+        { type: "Picture Description", timeLimit: 120, prompt: "Look at the picture. Describe the potential safety hazards in the galley and the importance of wearing correct PPE while cooking.", image: "set8_galley.png", answerEng: "In the galley, there are hot surfaces, sharp knives, and oil fires. Wearing gloves and aprons keeps us safe from burns and cuts.", answerMm: "ထမင်းခန်းမှာ ပူတဲ့မျက်နှာပြင်၊ ဓားထက်တွေနဲ့ ဆီမီးတွေ ရှိတယ်။ လက်အိတ်နဲ့ အင်္ကျီခံတွေဝတ်ခြင်းက လောင်ကျွမ်းမှုနဲ့ ဒဏ်ရာတွေကနေ ကာကွယ်ပေးတယ်။" },
+        { type: "Debate", timeLimit: 120, prompt: "Marlins Debate: 'Crew members should be allowed to keep a small amount of alcohol in their cabins to relax after long working hours.' Do you support this?", image: "", answerEng: "No, I don't support this. Alcohol can make us less careful. It is better to relax in another way, like reading or talking to friends.", answerMm: "မထောက်ခံပါ။ အရက်က သတိလျှော့စေနိုင်တယ်။ စာအုပ်ဖတ်ခြင်း ဒါမှမဟုတ် သူငယ်ချင်းတွေနဲ့ စကားပြောခြင်းလို တခြားနည်းနဲ့ အနားယူတာ ပိုကောင်းတယ်။" }
+    ],
+    set9: [
+        { type: "Short Answer", timeLimit: 50, prompt: "Introduce yourself and describe your educational background.", image: "", answerEng: "My name is Aung Ko. I graduated from high school and then I studied maritime navigation for two years.", answerMm: "ကျွန်တော် အောင်ကိုပါ။ အထက်တန်းအောင်ပြီး ရေကြောင်းပညာကို နှစ်နှစ်ကြာ သင်ခဲ့တယ်။" },
+        { type: "Short Answer", timeLimit: 50, prompt: "What specifically attracts you to deep-sea shipping or offshore work?", image: "", answerEng: "I like the idea of traveling to many countries and earning good money. It is also a respected profession.", answerMm: "နိုင်ငံအများကြီးကို သွားရတာနဲ့ ဝင်ငွေကောင်းရတာကို သဘောကျတယ်။ ဒါ့အပြင် လေးစားခံရတဲ့ အလုပ်အကိုင်တစ်ခုလည်းဖြစ်တယ်။" },
+        { type: "Short Answer", timeLimit: 50, prompt: "When the ship is berthing, how do you communicate with the Pilot effectively?", image: "", answerEng: "We use VHF radio and repeat instructions. We also use clear, simple English to avoid misunderstandings.", answerMm: "VHF ရေဒီယိုသုံးပြီး ညွှန်ကြားချက်တွေကို ပြန်လုပ်တယ်။ နားလည်မှုလွဲမှားမှုရှောင်ဖို့ ရှင်းရှင်းလင်းလင်း အင်္ဂလိပ်လို ပြောတယ်။" },
+        { type: "Short Answer", timeLimit: 50, prompt: "Describe an emergency drill (fire, man overboard, or abandon ship) that you have actively participated in.", image: "", answerEng: "I joined a fire drill where we practiced using the extinguisher and hose. It was very educational.", answerMm: "မီးသတ်လေ့ကျင့်ခန်းတစ်ခုမှာ ကျွန်တော်ပါဝင်ခဲ့တယ်။ မီးသတ်ဆေးဘူးနဲ့ ရေပိုက်သုံးတာကို လေ့ကျင့်ခဲ့တယ်။ အရမ်းအသိပညာရှိစေတယ်။" },
+        { type: "Short Answer", timeLimit: 50, prompt: "How do you ensure that a proper lookout is maintained while you are on navigational watch?", image: "", answerEng: "I look at the radar and also look outside with my eyes. I report any ship or object I see to the officer.", answerMm: "ရေဒါကိုကြည့်ပြီး အပြင်ကိုလည်း မျက်စိနဲ့ ကြည့်တယ်။ မြင်ရတဲ့ သင်္ဘော ဒါမှမဟုတ် အရာဝတ္ထုတွေကို အရာရှိကို အကြောင်းကြားတယ်။" },
+        { type: "Picture Description", timeLimit: 120, prompt: "Look at the picture. Describe the bridge navigation equipment, including ECDIS and Radar, and how they assist in collision avoidance.", image: "set9_bridge.png", answerEng: "On the bridge, we have ECDIS for electronic charts and Radar to see other ships. These help us avoid crashing into other vessels.", answerMm: "တံတားမှာ အီလက်ထရွန်နစ်ဇယားအတွက် ECDIS နဲ့ အခြားသင်္ဘောတွေကိုမြင်ရဖို့ Radar ရှိတယ်။ ဒါတွေက အခြားသင်္ဘောတွေနဲ့ တိုက်မိခြင်းကို ရှောင်ရှားဖို့ ကူညီတယ်။" },
+        { type: "Debate", timeLimit: 120, prompt: "Marlins Debate: 'When a Pilot is on board, the Master is completely relieved of all navigational responsibility.' Do you agree with this statement?", image: "", answerEng: "I disagree. The Master is still responsible for the ship. The Pilot gives advice, but the Captain makes the final decision.", answerMm: "ကျွန်တော် သဘောမတူပါဘူး။ ကပ္ပတိန်မှာ သင်္ဘောအတွက် တာဝန်ရှိဆဲပါ။ လမ်းပြက အကြံပေးပေမယ့် နောက်ဆုံးဆုံးဖြတ်ချက်က ကပ္ပတိန်ရဲ့ပါ။" }
+    ],
+    set10: [
+        { type: "Short Answer", timeLimit: 50, prompt: "Introduce yourself and tell me about your family background.", image: "", answerEng: "I am Aung Ko. My family has four people: my parents, my sister, and me. We live together in Yangon.", answerMm: "ကျွန်တော် အောင်ကိုပါ။ ကျွန်တော့မိသားစုမှာ လူ ၄ ယောက်ရှိတယ် - အဖေ၊ အမေ၊ အစ်မ နဲ့ ကျွန်တော်။ ရန်ကုန်မှာ အတူနေတယ်။" },
+        { type: "Short Answer", timeLimit: 50, prompt: "What do you understand about MARPOL Annex V regarding the discharge of garbage at sea?", image: "", answerEng: "MARPOL Annex V says we cannot throw plastic into the sea. We must keep garbage on board until we reach a port.", answerMm: "MARPOL Annex V အရ ပလတ်စတစ်ကို ပင်လယ်ထဲ မစွန့်ရဘူး။ ဆိပ်ကမ်းရောက်တဲ့အထိ အမှိုက်ကို သင်္ဘောပေါ်မှာ သိမ်းထားရမယ်။" },
+        { type: "Short Answer", timeLimit: 50, prompt: "Seafaring can be lonely. How do you handle boredom and isolation during long voyages?", image: "", answerEng: "I read books, listen to music, and exercise. I also talk to my crewmates to feel less lonely.", answerMm: "စာအုပ်ဖတ်တယ်၊ ဂီတနားထောင်တယ်၊ လေ့ကျင့်ခန်းလုပ်တယ်။ ပြီးတော့ သင်္ဘောသားတွေနဲ့ စကားပြောပြီး အထီးကျန်မှုကို လျှော့ချတယ်။" },
+        { type: "Short Answer", timeLimit: 50, prompt: "Why is it vital to complete a 'pre-arrival checklist' before entering a foreign port?", image: "", answerEng: "A pre-arrival checklist helps us prepare documents, check safety equipment, and follow port rules. It avoids problems.", answerMm: "ဆိုက်ရောက်မတိုင်ခင် စစ်ဆေးမှုစာရင်းက စာရွက်စာတမ်းတွေ ပြင်ဆင်ဖို့၊ ဘေးကင်းရေးပစ္စည်းတွေ စစ်ဆေးဖို့နဲ့ ဆိပ်ကမ်းစည်းမျဉ်းတွေကို လိုက်နာဖို့ ကူညီတယ်။ ပြဿနာတွေကို ရှောင်တယ်။" },
+        { type: "Short Answer", timeLimit: 50, prompt: "If you receive multiple conflicting orders from senior officers, how would you prioritize your tasks?", image: "", answerEng: "I will ask for clarification first. Then I will do the task that is most important for safety.", answerMm: "အရင်ဆုံး ရှင်းလင်းချက်တောင်းမယ်။ ပြီးရင် ဘေးကင်းရေးအတွက် အရေးအကြီးဆုံးတာဝန်ကို ဦးစားပေးလုပ်မယ်။" },
+        { type: "Picture Description", timeLimit: 120, prompt: "Look at the picture. Describe the correct procedure for discharging ballast water and the environmental risks of oil spills during bunkering.", image: "set10_environment.png", answerEng: "Ballast water must be treated before discharging. Oil spills during bunkering are very harmful to marine life, so we must monitor carefully.", answerMm: "ဘားလက်စ်ရေကို စွန့်ပစ်မတိုင်ခင် သန့်စင်ရမယ်။ ဆီဖြည့်တင်းစဉ်အတွင်း ဆီယိုဖိတ်မှုက ရေနေသတ္တဝါတွေကို အလွန်ထိခိုက်စေတဲ့အတွက် ဂရုတစိုက် စောင့်ကြည့်ရမယ်။" },
+        { type: "Debate", timeLimit: 120, prompt: "Marlins Debate: 'Regular crew safety drills are simply for passing inspections and do not actually prepare us for real emergencies.' Argue your position.", image: "", answerEng: "I disagree. Drills make us practice emergency actions so we can react quickly in a real situation. They save lives.", answerMm: "ကျွန်တော် သဘောမတူပါဘူး။ လေ့ကျင့်ခန်းတွေက အရေးပေါ်လုပ်ဆောင်မှုတွေကို လေ့ကျင့်စေပြီး တကယ့်အခြေအနေမှာ မြန်မြန်တုံ့ပြန်နိုင်စေတယ်။ အသက်တွေကို ကယ်တယ်။" }
+    ],
+
+    // ========== SET 11 to 15 (NO images, more debates, B1 Level) ==========
+    set11: [
+        { type: "Debate", timeLimit: 120, prompt: "Marlins Debate: 'Crew members should be allowed to keep a small amount of alcohol in their cabins to relax after long working hours.' Do you support this?", image: "", answerEng: "I do not support this idea. Alcohol consumption on board can impair judgment and reaction time, which is extremely dangerous in a maritime environment where quick decisions are often required. Even a small amount of alcohol can affect a person's ability to respond to emergencies. Instead of alcohol, I believe we should encourage healthier ways to relax, such as reading, exercise, or socializing with colleagues in designated areas. Many shipping companies already have strict no-alcohol policies, and these rules are in place to ensure the safety of everyone on board. It is better to maintain professionalism at all times and find alternative ways to unwind after work.", answerMm: "ကျွန်တော် ဒီအဆိုကို မထောက်ခံပါဘူး။ သင်္ဘောပေါ်မှာ အရက်သောက်ခြင်းက ဆုံးဖြတ်ချက်ချနိုင်စွမ်းနဲ့ တုံ့ပြန်ချိန်ကို ထိခိုက်စေနိုင်ပါတယ်၊ ဒါက မကြာခဏ လျင်မြန်တဲ့ ဆုံးဖြတ်ချက်တွေ လိုအပ်တဲ့ ရေကြောင်းပတ်ဝန်းကျင်မှာ အလွန်အန္တရာယ်များပါတယ်။ အရက်အနည်းငယ်တောင်မှ လူတစ်ယောက်ရဲ့ အရေးပေါ်အခြေအနေတွေကို တုံ့ပြန်နိုင်စွမ်းကို ထိခိုက်စေနိုင်ပါတယ်။ အရက်အစား စာဖတ်ခြင်း၊ လေ့ကျင့်ခန်းလုပ်ခြင်း ဒါမှမဟုတ် သတ်မှတ်ထားတဲ့နေရာတွေမှာ လုပ်ဖော်ကိုင်ဖက်တွေနဲ့ ပေါင်းသင်းခြင်းလိုမျိုး ကျန်းမာရေးနဲ့ညီညွတ်တဲ့ အနားယူနည်းတွေကို အားပေးသင့်တယ်လို့ ယုံကြည်ပါတယ်။ သင်္ဘောကုမ္ပဏီအများအပြားမှာ အရက်လုံးဝမသောက်ရဆိုတဲ့ မူဝါဒတွေရှိပြီးသားဖြစ်ပြီး ဒီစည်းမျဉ်းတွေက သင်္ဘောပေါ်က လူတိုင်းရဲ့ ဘေးကင်းရေးကို သေချာစေဖို့အတွက် ချမှတ်ထားတာပါ။ အချိန်တိုင်း ကျွမ်းကျင်မှုကို ထိန်းသိမ်းပြီး အလုပ်ပြီးရင် အနားယူဖို့ အခြားနည်းလမ်းတွေ ရှာဖွေတာ ပိုကောင်းပါတယ်။" },
+        { type: "Debate", timeLimit: 120, prompt: "Marlins Debate: 'When a Pilot is on board, the Master is completely relieved of all navigational responsibility.' Do you agree with this statement?", image: "", answerEng: "I disagree with this statement. While the Pilot provides valuable local knowledge and advice when entering ports or navigating in confined waters, the Master still holds the ultimate responsibility for the safety of the ship, crew, and cargo. The Master must supervise the Pilot's actions and ensure that the vessel is being handled safely. If the Master has any concerns about the Pilot's instructions, they have the authority to intervene. The responsibility cannot be transferred; it is shared, but the Master remains accountable. This is clearly stated in maritime regulations and is a fundamental principle of ship management.", answerMm: "ကျွန်တော် ဒီအဆိုကို သဘောမတူပါဘူး။ လမ်းပြက ဆိပ်ကမ်းဝင်တဲ့အခါ ဒါမှမဟုတ် ကန့်သတ်ရေပြင်တွေမှာ သွားလာတဲ့အခါ အဖိုးတန်တဲ့ ဒေသန္တရအသိပညာနဲ့ အကြံဉာဏ်တွေကို ပေးစွမ်းပေမယ့် သင်္ဘော၊ သင်္ဘောသားတွေနဲ့ ကုန်ပစ္စည်းတွေရဲ့ ဘေးကင်းရေးအတွက် နောက်ဆုံးတာဝန်က ကပ္ပတိန်မှာပဲ ရှိပါတယ်။ ကပ္ပတိန်က လမ်းပြရဲ့ ဆောင်ရွက်ချက်တွေကို ကြီးကြပ်ပြီး သင်္ဘောကို ဘေးကင်းစွာ ကိုင်တွယ်ကြောင်း သေချာစေရပါမယ်။ ကပ္ပတိန်က လမ်းပြရဲ့ ညွှန်ကြားချက်တွေနဲ့ပတ်သက်ပြီး စိုးရိမ်မှုရှိရင် ဝင်ရောက်စွက်ဖက်ပိုင်ခွင့်ရှိပါတယ်။ တာဝန်ကို လွှဲပြောင်းလို့မရပါဘူး၊ မျှဝေထားပေမယ့် ကပ္ပတိန်က တာဝန်ခံနေဆဲပါ။ ဒါက ရေကြောင်းစည်းမျဉ်းတွေမှာ ရှင်းရှင်းလင်းလင်း ဖော်ပြထားပြီး သင်္ဘောစီမံခန့်ခွဲမှုရဲ့ အခြေခံမူတစ်ခုပါ။" },
+        { type: "Debate", timeLimit: 120, prompt: "Marlins Debate: 'Regular crew safety drills are simply for passing inspections and do not actually prepare us for real emergencies.' Argue your position.", image: "", answerEng: "I strongly disagree with this view. Safety drills are not just for inspections; they are essential training that builds muscle memory and helps crew members respond automatically in real emergencies. When we practice fire drills, abandon ship drills, and man overboard drills regularly, we become familiar with our roles and responsibilities. This familiarity reduces panic and confusion during actual incidents. Drills also help identify weaknesses in our emergency procedures and allow us to improve them. While inspections may require us to conduct drills, the real value is in the preparedness they provide. Every drill is an opportunity to learn and become better at protecting ourselves and our colleagues.", answerMm: "ကျွန်တော် ဒီအမြင်ကို ပြင်းထန်စွာ သဘောမတူပါဘူး။ ဘေးကင်းရေးလေ့ကျင့်ခန်းတွေက စစ်ဆေးမှုအတွက်သာမဟုတ်ဘူး၊ ကြွက်သားမှတ်ဉာဏ်ကို တည်ဆောက်ပေးပြီး တကယ့်အရေးပေါ်အခြေအနေတွေမှာ သင်္ဘောသားတွေကို အလိုအလျောက် တုံ့ပြန်နိုင်စေတဲ့ မရှိမဖြစ်လေ့ကျင့်မှုပါ။ မီးသတ်လေ့ကျင့်ခန်း၊ သင်္ဘောစွန့်ခွာလေ့ကျင့်ခန်းနဲ့ လူပျောက်ကယ်ဆယ်ရေးလေ့ကျင့်ခန်းတွေကို ပုံမှန်လေ့ကျင့်တဲ့အခါ ကျွန်တော်တို့ရဲ့ အခန်းကဏ္ဍနဲ့ တာဝန်တွေကို ရင်းနှီးလာပါတယ်။ ဒီရင်းနှီးမှုက တကယ့်ဖြစ်ရပ်တွေအတွင်းမှာ ထိတ်လန့်မှုနဲ့ ရှုပ်ထွေးမှုကို လျှော့ချပေးပါတယ်။ လေ့ကျင့်ခန်းတွေက ကျွန်တော်တို့ရဲ့ အရေးပေါ်လုပ်ထုံးတွေမှာ အားနည်းချက်တွေကို ဖော်ထုတ်ဖို့နဲ့ တိုးတက်အောင်လုပ်ဖို့လည်း ကူညီပေးပါတယ်။ စစ်ဆေးမှုတွေက လေ့ကျင့်ခန်းတွေ လုပ်ဖို့ လိုအပ်စေနိုင်ပေမယ့် တကယ့်တန်ဖိုးက သူတို့ပေးတဲ့ အဆင်သင့်ဖြစ်မှုမှာပါ။ လေ့ကျင့်ခန်းတိုင်းက သင်ယူဖို့နဲ့ ကိုယ့်ကိုယ်ကိုယ်ရော လုပ်ဖော်ကိုင်ဖက်တွေကိုပါ ကာကွယ်ဖို့ ပိုကောင်းလာဖို့ အခွင့်အလမ်းတစ်ခုပါ။" },
+        { type: "Debate", timeLimit: 120, prompt: "Marlins Debate: 'On a busy turnaround day, it is acceptable to skip the daily safety inspection rounds to save time.' What is your argument?", image: "", answerEng: "I strongly disagree with this idea. Safety inspection rounds are critical for identifying potential hazards before they cause accidents. Even on a busy day, skipping inspections can lead to unnoticed issues like faulty equipment, leaks, or unsafe conditions that could result in serious incidents. Time saved by skipping inspections is not worth the risk. Instead, we should plan our work more efficiently and ensure that inspections are always completed. The safety of the crew and the vessel must never be compromised for the sake of convenience or speed. A few minutes of inspection can prevent hours of trouble and potentially save lives.", answerMm: "ကျွန်တော် ဒီအဆိုကို ပြင်းထန်စွာ သဘောမတူပါဘူး။ ဘေးကင်းရေးစစ်ဆေးမှုအလှည့်တွေက မတော်တဆမှုတွေမဖြစ်ခင် အန္တရာယ်ဖြစ်နိုင်ခြေတွေကို ဖော်ထုတ်ဖို့ အရေးကြီးပါတယ်။ အလုပ်များတဲ့နေ့မှာတောင် စစ်ဆေးမှုတွေကို ကျော်သွားရင် ချို့ယွင်းနေတဲ့စက်ကိရိယာ၊ ယိုစိမ့်မှု ဒါမှမဟုတ် မလုံခြုံတဲ့အခြေအနေတွေလိုမျိုး သတိမထားမိတဲ့ ပြဿနာတွေ ဖြစ်ပေါ်စေနိုင်ပြီး ဆိုးရွားတဲ့ဖြစ်ရပ်တွေ ဖြစ်စေနိုင်ပါတယ်။ စစ်ဆေးမှုတွေကို ကျော်သွားခြင်းအားဖြင့် သက်သာတဲ့အချိန်က စွန့်စားမှုနဲ့ မတန်ပါဘူး။ ဒါထက် ကျွန်တော်တို့ရဲ့ အလုပ်ကို ပိုမိုထိရောက်စွာ စီစဉ်ပြီး စစ်ဆေးမှုတွေကို အမြဲပြီးမြောက်ကြောင်း သေချာစေသင့်ပါတယ်။ သင်္ဘောသားတွေနဲ့ သင်္ဘောရဲ့ ဘေးကင်းရေးကို အဆင်ပြေခြင်း ဒါမှမဟုတ် အမြန်နှုန်းအတွက် ဘယ်တော့မှ အပေးအယူမလုပ်သင့်ပါဘူး။ စစ်ဆေးမှုမိနစ်အနည်းငယ်က နာရီပေါင်းများစွာ ပြဿနာတွေကို ကာကွယ်နိုင်ပြီး အသက်တွေကိုပါ ကယ်ဆယ်နိုင်ပါတယ်။" }
+    ],
+    set12: [
+        { type: "Debate", timeLimit: 120, prompt: "Marlins Debate: 'Ship owners should prioritize profit over crew welfare to stay competitive.' What is your position?", image: "", answerEng: "I strongly disagree with this statement. While profitability is important for any business, it should never come at the expense of crew welfare. A well-rested, well-fed, and mentally healthy crew is more productive and safer. When crew members are treated well, they are more likely to stay with the company, reducing turnover costs. Additionally, poor welfare conditions can lead to accidents, which cost far more than any savings from cutting corners. Investing in crew welfare is not just ethical; it is also good business practice. Happy and motivated crew members contribute to a positive working environment and better performance overall.", answerMm: "ကျွန်တော် ဒီအဆိုကို ပြင်းထန်စွာ သဘောမတူပါဘူး။ အမြတ်အစွန်းရဖို့က စီးပွားရေးအတွက် အရေးကြီးပေမယ့် သင်္ဘောသားတွေရဲ့ သက်သာချောင်ချိရေးကို စတေးလို့မရပါဘူး။ ကောင်းစွာအနားယူပြီး ကောင်းစွာစားသုံးကာ စိတ်ကျန်းမာရေးကောင်းတဲ့ သင်္ဘောသားတစ်ယောက်ဟာ ပိုပြီး ထုတ်လုပ်နိုင်စွမ်းရှိပြီး ပိုလုံခြုံပါတယ်။ သင်္ဘောသားတွေကို ကောင်းကောင်းဆက်ဆံတဲ့အခါ ကုမ္ပဏီမှာ ဆက်နေဖို့ ပိုများပါတယ်၊ ဒါက ဝန်ထမ်းလဲလှယ်မှုစရိတ်တွေကို လျှော့ချပေးတယ်။ ထို့အပြင် ညံ့ဖျင်းတဲ့ သက်သာချောင်ချိရေးအခြေအနေတွေက မတော်တဆမှုတွေ ဖြစ်စေနိုင်ပြီး ဒါက ဖြတ်တောက်ခြင်းကနေ သက်သာတာထက် အများကြီး ပိုကုန်ကျပါတယ်။ သင်္ဘောသားတွေရဲ့ သက်သာချောင်ချိရေးအတွက် ရင်းနှီးမြှုပ်နှံခြင်းက ကျင့်ဝတ်အရသာမဟုတ်ဘူး၊ စီးပွားရေးအလေ့အကျင့်ကောင်းလည်းဖြစ်တယ်။ ပျော်ရွှင်ပြီး စိတ်အားထက်သန်တဲ့ သင်္ဘောသားတွေက အပြုသဘောဆောင်တဲ့ အလုပ်ပတ်ဝန်းကျင်နဲ့ အလုံးစုံစွမ်းဆောင်ရည်ကို ပိုကောင်းစေပါတယ်။" },
+        { type: "Debate", timeLimit: 120, prompt: "Marlins Debate: 'Environmental regulations like MARPOL are too strict and cost shipping companies too much money.' Do you agree?", image: "", answerEng: "I disagree. While environmental regulations do require investment, they are essential for protecting our oceans and marine life. The shipping industry has a significant impact on the environment, and we have a responsibility to minimize that impact. MARPOL regulations help reduce pollution from oil, garbage, and sewage, and they also address air emissions. The cost of compliance is an investment in a sustainable future. In the long run, cleaner shipping practices can also lead to operational efficiencies and cost savings. Protecting the environment is not just a legal requirement; it is a moral obligation for all seafarers and shipping companies.", answerMm: "ကျွန်တော် သဘောမတူပါဘူး။ သဘာဝပတ်ဝန်းကျင်ဆိုင်ရာ စည်းမျဉ်းတွေက ရင်းနှီးမြှုပ်နှံမှု လိုအပ်ပေမယ့် ကျွန်တော်တို့ရဲ့ သမုဒ္ဒရာတွေနဲ့ ရေနေသတ္တဝါတွေကို ကာကွယ်ဖို့ မရှိမဖြစ်လိုအပ်ပါတယ်။ ရေကြောင်းလုပ်ငန်းက ပတ်ဝန်းကျင်အပေါ် သိသိသာသာ သက်ရောက်မှုရှိတယ်၊ ဒီသက်ရောက်မှုကို လျှော့ချဖို့ ကျွန်တော်တို့မှာ တာဝန်ရှိပါတယ်။ MARPOL စည်းမျဉ်းတွေက ရေ၊ အမှိုက်နဲ့ မိလ္လာကနေ လေထုညစ်ညမ်းမှုကို လျှော့ချဖို့ ကူညီတယ်၊ လေထုထုတ်လွှတ်မှုတွေကိုလည်း ဖြေရှင်းပေးတယ်။ လိုက်နာမှုစရိတ်က ရေရှည်တည်တံ့တဲ့အနာဂတ်အတွက် ရင်းနှီးမြှုပ်နှံမှုတစ်ခုပါ။ ရေရှည်မှာ ပိုသန့်ရှင်းတဲ့ ရေကြောင်းအလေ့အကျင့်တွေက လုပ်ငန်းလည်ပတ်မှုထိရောက်မှုနဲ့ ကုန်ကျစရိတ်သက်သာမှုကိုလည်း ဖြစ်စေနိုင်ပါတယ်။ ပတ်ဝန်းကျင်ကို ကာကွယ်ခြင်းက တရားဝင်လိုအပ်ချက်တစ်ခုသာမဟုတ်ဘူး၊ သင်္ဘောသားတွေနဲ့ သင်္ဘောကုမ္ပဏီအားလုံးရဲ့ ကျင့်ဝတ်ဆိုင်ရာ တာဝန်တစ်ခုလည်းဖြစ်ပါတယ်။" },
+        { type: "Debate", timeLimit: 120, prompt: "Marlins Debate: 'Digital navigation systems have made traditional navigation skills obsolete.' Do you agree?", image: "", answerEng: "I disagree with this statement. While digital navigation systems like ECDIS and GPS are extremely useful and have improved safety and efficiency, traditional navigation skills are still important. Electronic systems can fail due to power outages, cyber-attacks, or technical malfunctions. In such situations, seafarers must be able to use paper charts, compasses, and other traditional methods to navigate safely. Additionally, understanding traditional navigation helps us appreciate the principles behind digital systems and enables us to verify their accuracy. Technology is a tool, but it should not replace fundamental knowledge and skills.", answerMm: "ကျွန်တော် ဒီအဆိုကို သဘောမတူပါဘူး။ ECDIS နဲ့ GPS လိုမျိုး ဒစ်ဂျစ်တယ်လမ်းကြောင်းပြစနစ်တွေက အလွန်အသုံးဝင်ပြီး ဘေးကင်းရေးနဲ့ ထိရောက်မှုကို တိုးတက်စေပေမယ့် ရိုးရာလမ်းကြောင်းပြကျွမ်းကျင်မှုတွေက နေဆဲအရေးကြီးပါတယ်။ အီလက်ထရွန်နစ်စနစ်တွေက လျှပ်စစ်ပြတ်တောက်မှု၊ ဆိုက်ဘာတိုက်ခိုက်မှု ဒါမှမဟုတ် နည်းပညာချို့ယွင်းမှုတွေကြောင့် ပျက်စီးနိုင်ပါတယ်။ ဒီလိုအခြေအနေမျိုးမှာ သင်္ဘောသားတွေဟာ စက္ကူဇယား၊ သံလိုက်အိမ်မြှောင်နဲ့ တခြားရိုးရာနည်းလမ်းတွေကို ဘေးကင်းစွာ လမ်းကြောင်းပြဖို့ သုံးနိုင်ရပါမယ်။ ထို့အပြင် ရိုးရာလမ်းကြောင်းပြခြင်းကို နားလည်ခြင်းက ဒစ်ဂျစ်တယ်စနစ်တွေရဲ့ နောက်ကွယ်က မူတွေကို တန်ဖိုးထားနိုင်စေပြီး သူတို့ရဲ့ တိကျမှုကို အတည်ပြုနိုင်စေတယ်။ နည်းပညာက ကိရိယာတစ်ခုပါ၊ ဒါပေမယ့် အခြေခံအသိပညာနဲ့ ကျွမ်းကျင်မှုတွေကို အစားထိုးလို့မရပါဘူး။" }
+    ],
+    set13: [
+        { type: "Debate", timeLimit: 120, prompt: "Marlins Debate: 'Women should be encouraged to pursue careers at sea.' Do you agree?", image: "", answerEng: "I completely agree with this statement. The maritime industry has traditionally been male-dominated, but times are changing. Women are equally capable of performing the duties required on board and bring diverse perspectives and skills to the workplace. Encouraging women to join the industry will help address the current shortage of seafarers and promote equality. Many shipping companies have already started hiring women, and they have proven to be valuable members of the crew. We should continue to break down barriers and provide equal opportunities for everyone, regardless of gender. A more inclusive industry is a stronger and more innovative industry.", answerMm: "ကျွန်တော် ဒီအဆိုကို လုံးဝသဘောတူပါတယ်။ ရေကြောင်းလုပ်ငန်းက ရိုးရာအရ အမျိုးသားတွေ လွှမ်းမိုးထားပေမယ့် အချိန်တွေ ပြောင်းလဲနေပါတယ်။ အမျိုးသမီးတွေဟာ သင်္ဘောပေါ်မှာ လိုအပ်တဲ့တာဝန်တွေကို လုပ်ဆောင်နိုင်စွမ်း တန်းတူရှိပြီး အလုပ်ခွင်ကို မတူညီတဲ့ရှုထောင့်တွေနဲ့ ကျွမ်းကျင်မှုတွေ ယူဆောင်လာကြတယ်။ သင်္ဘောသားတွေ လက်ရှိပြတ်လပ်မှုကို ဖြေရှင်းဖို့နဲ့ တန်းတူညီမျှမှုကို မြှင့်တင်ဖို့ အမျိုးသမီးတွေကို လုပ်ငန်းထဲဝင်ဖို့ အားပေးခြင်းက ကူညီပါလိမ့်မယ်။ သင်္ဘောကုမ္ပဏီအများအပြားက အမျိုးသမီးတွေကို စတင်ခေါ်ယူနေပြီး သူတို့ဟာ သင်္ဘောသားတွေရဲ့ တန်ဖိုးရှိတဲ့အဖွဲ့ဝင်တွေဖြစ်ကြောင်း သက်သေပြခဲ့ပါပြီ။ ကျွန်တော်တို့ အတားအဆီးတွေကို ဆက်လက်ဖြိုဖျက်ပြီး လူတိုင်းအတွက် တန်းတူအခွင့်အလမ်းတွေ ပေးသင့်ပါတယ်၊ လိင်မခွဲခြားဘဲပါ။ ပိုပါဝင်နိုင်တဲ့လုပ်ငန်းက ပိုမိုအားကောင်းပြီး ပိုမိုဆန်းသစ်တဲ့လုပ်ငန်းတစ်ခုပါ။" },
+        { type: "Debate", timeLimit: 120, prompt: "Marlins Debate: 'Cargo ships should travel at slower speeds to reduce fuel consumption and emissions.' Do you agree?", image: "", answerEng: "I agree with this idea to some extent. Slower speeds, often called 'slow steaming,' can significantly reduce fuel consumption and greenhouse gas emissions, which is beneficial for the environment. It also reduces operational costs for shipping companies. However, slower speeds can mean longer voyage times, which might affect delivery schedules and supply chains. It is important to find the right balance between environmental benefits and economic efficiency. I believe that slow steaming should be adopted where practical, and that we should also explore other solutions like alternative fuels and improved ship designs to further reduce the industry's environmental footprint.", answerMm: "ကျွန်တော် ဒီအဆိုကို အတိုင်းအတာတစ်ခုအထိ သဘောတူပါတယ်။ 'slow steaming' လို့မကြာခဏခေါ်တဲ့ နှေးကွေးတဲ့အမြန်နှုန်းတွေက လောင်စာဆီသုံးစွဲမှုနဲ့ ဖန်လုံအိမ်ဓာတ်ငွေ့ထုတ်လွှတ်မှုကို သိသိသာသာ လျှော့ချနိုင်တယ်၊ ဒါက ပတ်ဝန်းကျင်အတွက် အကျိုးရှိတယ်။ သင်္ဘောကုမ္ပဏီတွေအတွက်လည်း လည်ပတ်မှုကုန်ကျစရိတ်ကို လျှော့ချပေးတယ်။ ဒါပေမယ့် နှေးကွေးတဲ့အမြန်နှုန်းက ပိုရှည်တဲ့ခရီးစဉ်အချိန်တွေကို ဆိုလိုနိုင်ပြီး ပို့ဆောင်မှုအချိန်ဇယားတွေနဲ့ ထောက်ပံ့ရေးကွင်းဆက်တွေကို ထိခိုက်စေနိုင်ပါတယ်။ ပတ်ဝန်းကျင်ဆိုင်ရာအကျိုးကျေးဇူးတွေနဲ့ စီးပွားရေးထိရောက်မှုကြား ဟန်ချက်ညီဖို့ အရေးကြီးပါတယ်။ လက်တွေ့ကျတဲ့နေရာမှာ slow steaming ကို ကျင့်သုံးသင့်ပြီး လုပ်ငန်းရဲ့ သဘာဝပတ်ဝန်းကျင်ဆိုင်ရာ ခြေရာကို ပိုမိုလျှော့ချဖို့ အစားထိုးလောင်စာတွေနဲ့ တိုးတက်တဲ့သင်္ဘောဒီဇိုင်းတွေလိုမျိုး တခြားဖြေရှင်းနည်းတွေကိုလည်း စူးစမ်းသင့်တယ်လို့ ယုံကြည်ပါတယ်။" }
+    ],
+    set14: [
+        { type: "Debate", timeLimit: 120, prompt: "Marlins Debate: 'Lifeboat drills are a waste of time because lifeboats are rarely used.' Do you agree?", image: "", answerEng: "I strongly disagree with this statement. Lifeboat drills are crucial because, although lifeboats are rarely used, when they are needed, it is often in life-threatening situations. Regular drills ensure that every crew member knows how to launch the lifeboat, how to board it safely, and how to operate its equipment. This knowledge can save lives in an emergency. Drills also help identify problems with the lifeboat and its launching mechanisms, allowing them to be fixed before a real emergency. It is better to practice and never need it than to need it and not be prepared. Safety preparations are not a waste of time; they are an investment in survival.", answerMm: "ကျွန်တော် ဒီအဆိုကို ပြင်းထန်စွာ သဘောမတူပါဘူး။ အသက်ကယ်လှေလေ့ကျင့်ခန်းတွေက အရေးကြီးပါတယ်၊ ဘာကြောင့်လဲဆိုတော့ အသက်ကယ်လှေတွေက ရှားရှားပါးပါးသုံးပေမယ့် လိုအပ်တဲ့အခါမှာ အသက်အန္တရာယ်ရှိတဲ့အခြေအနေတွေမှာ ဖြစ်လေ့ရှိလို့ပါ။ ပုံမှန်လေ့ကျင့်ခန်းတွေက သင်္ဘောသားတိုင်း အသက်ကယ်လှေကို ဘယ်လိုလွှတ်တင်ရမယ်၊ ဘယ်လိုဘေးကင်းစွာတက်ရမယ်နဲ့ သူ့ရဲ့ပစ္စည်းတွေကို ဘယ်လိုလည်ပတ်ရမယ်ဆိုတာ သိကြောင်း သေချာစေတယ်။ ဒီအသိပညာက အရေးပေါ်အခြေအနေမှာ အသက်တွေကို ကယ်ဆယ်နိုင်ပါတယ်။ လေ့ကျင့်ခန်းတွေက အသက်ကယ်လှေနဲ့ သူ့ရဲ့လွှတ်တင်ယန္တရားတွေနဲ့ ပြဿနာတွေကို ဖော်ထုတ်ဖို့လည်း ကူညီပေးတယ်၊ ဒါက တကယ့်အရေးပေါ်အခြေအနေမတိုင်ခင် ပြင်ဆင်နိုင်စေတယ်။ လေ့ကျင့်ပြီး ဘယ်တော့မှ မလိုအပ်တာ က လိုအပ်ပြီး အဆင်သင့်မဖြစ်တာထက် ပိုကောင်းပါတယ်။ ဘေးကင်းရေးပြင်ဆင်မှုတွေက အချိန်ဖြုန်းတာမဟုတ်ဘူး၊ ရှင်သန်မှုအတွက် ရင်းနှီးမြှုပ်နှံမှုတစ်ခုပါ။" },
+        { type: "Debate", timeLimit: 120, prompt: "Marlins Debate: 'It is acceptable to dump small amounts of oil waste into the sea if no one is watching.' Do you agree?", image: "", answerEng: "I absolutely disagree with this idea. Dumping oil waste into the sea is illegal and harmful to marine life, regardless of the amount. Even small amounts of oil can accumulate and cause significant damage to the ecosystem over time. It pollutes the water, harms fish and other marine animals, and damages the reputation of the shipping industry. We have a responsibility to protect the oceans, and this means following all environmental regulations, even when no one is watching. Proper waste management systems, such as oily water separators and waste reception facilities, should be used at all times. There is no excuse for pollution, and we must all act as responsible stewards of the environment.", answerMm: "ကျွန်တော် ဒီအဆိုကို လုံးဝသဘောမတူပါဘူး။ ဆီစွန့်ပစ်ပစ္စည်းတွေကို ပင်လယ်ထဲစွန့်ပစ်ခြင်းက ပမာဏမခွဲခြားဘဲ တရားမဝင်ပြီး ရေနေသတ္တဝါတွေကို အန္တရာယ်ဖြစ်စေပါတယ်။ ဆီအနည်းငယ်တောင်မှ အချိန်ကြာလာတာနဲ့အမျှ စုပုံလာပြီး ဂေဟစနစ်ကို သိသိသာသာ ပျက်စီးစေနိုင်ပါတယ်။ ရေကို ညစ်ညမ်းစေတယ်၊ ငါးနဲ့ တခြားရေနေသတ္တဝါတွေကို ထိခိုက်စေတယ်၊ ရေကြောင်းလုပ်ငန်းရဲ့ ဂုဏ်သတင်းကိုလည်း ပျက်စီးစေတယ်။ သမုဒ္ဒရာတွေကို ကာကွယ်ဖို့ ကျွန်တော်တို့မှာ တာဝန်ရှိပါတယ်၊ ဒါက ဘယ်သူမှမကြည့်တဲ့အခါမှာတောင် သဘာဝပတ်ဝန်းကျင်ဆိုင်ရာ စည်းမျဉ်းအားလုံးကို လိုက်နာခြင်းကို ဆိုလိုပါတယ်။ ဆီ-ရေခွဲထုတ်စက်တွေနဲ့ အမှိုက်လက်ခံရေး အဆောက်အအုံတွေလိုမျိုး သင့်လျော်တဲ့စွန့်ပစ်ပစ္စည်းစီမံခန့်ခွဲမှုစနစ်တွေကို အချိန်တိုင်း သုံးသင့်ပါတယ်။ ညစ်ညမ်းမှုအတွက် အဆင်ပြေချက်မရှိပါဘူး၊ ကျွန်တော်တို့အားလုံး ပတ်ဝန်းကျင်ရဲ့ တာဝန်ယူမှုရှိတဲ့ အုပ်ထိန်းသူတွေအဖြစ် ဆောင်ရွက်ရမယ်။" }
+    ],
+    set15: [
+        { type: "Debate", timeLimit: 120, prompt: "Marlins Debate: 'Ships should have female crew members to improve diversity.' Do you agree?", image: "", answerEng: "I completely agree with this. Diversity brings different perspectives and skills to the workplace, which can improve problem-solving and decision-making. The maritime industry has been traditionally male-dominated, but women have proven their competence in all roles on board. Encouraging female seafarers not only promotes equality but also helps address the shortage of qualified personnel in the industry. Many shipping companies have already started employing women and have seen positive results. I believe that we should continue to break down gender barriers and create a more inclusive environment. A diverse crew is often a more effective and harmonious crew.", answerMm: "ကျွန်တော် ဒါကို လုံးဝသဘောတူပါတယ်။ မတူကွဲပြားမှုက အလုပ်ခွင်ကို မတူညီတဲ့ရှုထောင့်တွေနဲ့ ကျွမ်းကျင်မှုတွေ ယူဆောင်လာတယ်၊ ဒါက ပြဿနာဖြေရှင်းခြင်းနဲ့ ဆုံးဖြတ်ချက်ချခြင်းကို တိုးတက်စေနိုင်ပါတယ်။ ရေကြောင်းလုပ်ငန်းက အစဉ်အလာအရ အမျိုးသားတွေ လွှမ်းမိုးထားပေမယ့် အမျိုးသမီးတွေက သင်္ဘောပေါ်မှာ ရာထူးအားလုံးမှာ သူတို့ရဲ့ အရည်အချင်းကို သက်သေပြထားပါပြီ။ အမျိုးသမီးသင်္ဘောသားတွေကို အားပေးခြင်းက တန်းတူညီမျှမှုကို မြှင့်တင်ရုံသာမက လုပ်ငန်းမှာ အရည်အချင်းပြည့်မီတဲ့ ဝန်ထမ်းတွေရဲ့ ပြတ်လပ်မှုကိုလည်း ဖြေရှင်းပေးပါတယ်။ သင်္ဘောကုမ္ပဏီအများအပြားက အမျိုးသမီးတွေကို စတင်ခေါ်ယူပြီး အပြုသဘောဆောင်တဲ့ရလဒ်တွေ မြင်တွေ့ခဲ့ရပါပြီ။ ကျွန်တော်တို့ လိင်ပိုင်းဆိုင်ရာ အတားအဆီးတွေကို ဆက်လက်ဖြိုဖျက်ပြီး ပိုမိုပါဝင်နိုင်တဲ့ပတ်ဝန်းကျင်ကို ဖန်တီးသင့်တယ်လို့ ယုံကြည်ပါတယ်။ မတူကွဲပြားတဲ့သင်္ဘောသားအဖွဲ့က မကြာခဏ ပိုထိရောက်ပြီး သဟဇာတဖြစ်တဲ့အဖွဲ့ဖြစ်ပါတယ်။" },
+        { type: "Debate", timeLimit: 120, prompt: "Marlins Debate: 'The use of autonomous ships should be accelerated to reduce human error.' Do you agree?", image: "", answerEng: "I think autonomous ships have potential, but I believe we should proceed carefully. While automation can reduce human error in certain tasks, it also introduces new risks related to technology failures and cyber-security. Moreover, autonomous ships would require significant changes to maritime regulations, port infrastructure, and training. I believe that a gradual approach is better—using autonomous systems to support human decision-making rather than replacing it entirely. This allows us to learn from experience and address any issues before they become widespread. The focus should be on creating systems that combine the strengths of technology with the experience and judgment of human seafarers.", answerMm: "ကိုယ်ပိုင်အုပ်ချုပ်နိုင်တဲ့သင်္ဘောတွေမှာ အလားအလာရှိတယ်လို့ ထင်ပေမယ့် သေချာစွာ ဆက်လက်ဆောင်ရွက်သင့်တယ်လို့ ယုံကြည်ပါတယ်။ အလိုအလျောက်စနစ်က အချို့သောလုပ်ဆောင်မှုတွေမှာ လူ့အမှားကို လျှော့ချနိုင်ပေမယ့် နည်းပညာချို့ယွင်းမှုနဲ့ ဆိုက်ဘာလုံခြုံရေးနဲ့ဆက်စပ်တဲ့ စွန့်စားမှုအသစ်တွေလည်း မိတ်ဆက်ပေးပါတယ်။ ထို့အပြင် ကိုယ်ပိုင်အုပ်ချုပ်နိုင်တဲ့သင်္ဘောတွေက ရေကြောင်းစည်းမျဉ်းတွေ၊ ဆိပ်ကမ်းအခြေခံအဆောက်အအုံတွေနဲ့ လေ့ကျင့်မှုတွေမှာ သိသိသာသာ ပြောင်းလဲမှုတွေ လိုအပ်ပါလိမ့်မယ်။ တဖြည်းဖြည်းချင်းတဲ့နည်းလမ်းက ပိုကောင်းတယ်လို့ ယုံကြည်ပါတယ်—လူ့ဆုံးဖြတ်ချက်ချခြင်းကို လုံးဝအစားထိုးမယ့်အစား ထောက်ပံ့ဖို့ ကိုယ်ပိုင်အုပ်ချုပ်စနစ်တွေကို သုံးခြင်းပါ။ ဒါက ကျွန်တော်တို့ကို အတွေ့အကြုံကနေ သင်ယူပြီး ပြဿနာတွေ ကျယ်ကျယ်ပြန့်ပြန့်မဖြစ်ခင် ဖြေရှင်းနိုင်စေတယ်။ နည်းပညာရဲ့ အားသာချက်တွေကို လူသားသင်္ဘောသားတွေရဲ့ အတွေ့အကြုံနဲ့ ဆုံးဖြတ်ချက်ချနိုင်စွမ်းနဲ့ ပေါင်းစပ်တဲ့စနစ်တွေကို ဖန်တီးဖို့ အာရုံစိုက်သင့်ပါတယ်။" }
+    ]
+};
+
+// ============================================
+// 3. GLOBALS
+// ============================================
+let currentSet = [];
+let currentQuestion = 0;
+let timer;
+let timeLeft;
+let selectedQuestion;
+let selectedSetName = "set1";
+let speechSynth = window.speechSynthesis;
+let utterance = null;
+let isSpeaking = false;
+let readCount = 0;
+let readInterval = null;
+
+// ============================================
+// 4. DEVICE FINGERPRINT & AUTH
+// ============================================
+function generateDeviceFingerprint() {
+    let data = navigator.userAgent + navigator.language + screen.width;
+    let hash = 0;
+    for (let i = 0; i < data.length; i++) {
+        hash = ((hash << 5) - hash) + data.charCodeAt(i);
+        hash |= 0;
+    }
+    return Math.abs(hash).toString(16);
+}
+
+function verifySecureActivation() {
+    let input = document.getElementById("keyInput").value.trim().toUpperCase();
+    let error = document.getElementById("authError");
+    let deviceError = document.getElementById("deviceLockError");
+    error.classList.add("hidden");
+    deviceError.classList.add("hidden");
+
+    let isValid = SECURE_ALLOWED_KEYS.includes(input);
+    if (!isValid) {
+        error.innerHTML = "❌ Invalid Activation Key. Please check and try again.";
+        error.classList.remove("hidden");
+        return;
+    }
+
+    let rawKey = input;
+    try {
+        let decoded = atob(input);
+        rawKey = decoded;
+    } catch(e) {
+        rawKey = input;
+    }
+
+    let currentDevice = generateDeviceFingerprint();
+    let savedDevice = localStorage.getItem("lock_" + rawKey);
+
+    if (savedDevice && savedDevice !== currentDevice) {
+        deviceError.innerHTML = "🔒 ဒီ Activation Key ကို အခြားစက်တွင် သုံးထားပြီးဖြစ်ပါတယ်。<br><small style='color:#94a3b8;'>This key is already locked to another device.</small>";
+        deviceError.classList.remove("hidden");
+        return;
+    }
+
+    localStorage.setItem("lock_" + rawKey, currentDevice);
+    localStorage.setItem("session_active", "true");
+
+    document.getElementById("authScreen").classList.add("hidden");
+    document.getElementById("startScreen").classList.remove("hidden");
+    showSetSelector();
+}
+
+function showSetSelector() {
+    let container = document.getElementById("setSelector");
+    container.innerHTML = "";
+    for (let i = 1; i <= 15; i++) {
+        let btn = document.createElement("button");
+        btn.innerHTML = `⚓ Set ${i}`;
+        btn.className = "set-btn";
+        btn.onclick = function() {
+            selectedSetName = "set" + i;
+            startExam();
+        };
+        container.appendChild(btn);
+    }
+}
+
+function lockAppAccess() {
+    localStorage.removeItem("session_active");
+    location.reload();
+}
+
+// ============================================
+// 5. EXAM — VOICE READS TWICE
+// ============================================
+function startExam() {
+    currentSet = examSets[selectedSetName];
+    currentQuestion = 0;
+    document.getElementById("startScreen").classList.add("hidden");
+    document.getElementById("examScreen").classList.remove("hidden");
+    document.getElementById("processingScreen").classList.add("hidden");
+    loadQuestion();
+}
+
+function loadQuestion() {
+    selectedQuestion = currentSet[currentQuestion];
+
+    document.getElementById("questionNumber").innerHTML = currentQuestion + 1;
+    document.getElementById("totalQuestion").innerHTML = currentSet.length;
+    document.getElementById("questionType").innerHTML = selectedQuestion.type;
+
+    document.getElementById("questionTextDisplay").innerHTML = "🎧 Listen twice ...";
+
+    // Show image ONLY if Set 1-10 (set1 to set10)
+    let setNum = parseInt(selectedSetName.replace('set', ''));
+    let img = document.getElementById("questionImage");
+    if (setNum <= 10 && selectedQuestion.image && selectedQuestion.image.length > 0) {
+        img.src = selectedQuestion.image;
+        img.classList.remove("hidden");
+    } else {
+        img.classList.add("hidden");
+    }
+
+    document.getElementById("answerDisplay").classList.add("hidden");
+    document.getElementById("showAnswerBtn").innerHTML = "💡 Show answer";
+
+    startTimer();
+    readCount = 0;
+    readQuestionTwice(selectedQuestion.prompt);
+}
+
+function readQuestionTwice(text) {
+    if (speechSynth.speaking) speechSynth.cancel();
+    if (readInterval) {
+        clearInterval(readInterval);
+        readInterval = null;
+    }
+
+    readCount = 0;
+    let voices = speechSynth.getVoices();
+    if (voices.length === 0) {
+        speechSynth.onvoiceschanged = function() {
+            voices = speechSynth.getVoices();
+            startReading(text, voices);
+        };
+    } else {
+        startReading(text, voices);
+    }
+}
+
+function startReading(text, voices) {
+    let voice1 = null, voice2 = null;
+    let engVoices = voices.filter(v => v.lang.startsWith('en'));
+    if (engVoices.length >= 2) {
+        voice1 = engVoices[0];
+        voice2 = engVoices[1];
+    } else if (engVoices.length === 1) {
+        voice1 = engVoices[0];
+        voice2 = engVoices[0];
+    } else {
+        if (voices.length >= 2) {
+            voice1 = voices[0];
+            voice2 = voices[1];
+        } else if (voices.length === 1) {
+            voice1 = voices[0];
+            voice2 = voices[0];
+        }
+    }
+
+    function speakOnce(voice, callback) {
+        let utter = new SpeechSynthesisUtterance(text);
+        utter.lang = 'en-US';
+        utter.rate = 0.85;
+        utter.pitch = 1;
+        utter.volume = 1;
+        if (voice) utter.voice = voice;
+
+        utter.onstart = function() { isSpeaking = true; };
+        utter.onend = function() { isSpeaking = false; if (callback) callback(); };
+        utter.onerror = function() { isSpeaking = false; if (callback) callback(); };
+        speechSynth.speak(utter);
+    }
+
+    document.getElementById("voiceStatus").innerHTML = "🔊 AI reading (1/2) ...";
+    document.getElementById("voiceDot").style.background = "#facc15";
+
+    speakOnce(voice1, function() {
+        readCount = 1;
+        document.getElementById("voiceStatus").innerHTML = "🔊 AI reading (2/2) ...";
+        document.getElementById("voiceDot").style.background = "#facc15";
+
+        setTimeout(function() {
+            speakOnce(voice2, function() {
+                readCount = 2;
+                document.getElementById("voiceStatus").innerHTML = "✅ Question read twice. Start speaking.";
+                document.getElementById("voiceDot").style.background = "#22c55e";
+            });
+        }, 800);
+    });
+}
+
+function startTimer() {
+    clearInterval(timer);
+    timeLeft = selectedQuestion.timeLimit;
+    showTime();
+
+    timer = setInterval(function() {
+        timeLeft--;
+        showTime();
+        if (timeLeft <= 0) {
+            clearInterval(timer);
+            submitAnswer();
+        }
+    }, 1000);
+}
+
+function showTime() {
+    let min = Math.floor(timeLeft / 60);
+    let sec = timeLeft % 60;
+    document.getElementById("timer").innerHTML = 
+        `${min}:${sec.toString().padStart(2, "0")}`;
+}
+
+function toggleAnswer() {
+    let display = document.getElementById("answerDisplay");
+    let btn = document.getElementById("showAnswerBtn");
+    if (display.classList.contains("hidden")) {
+        document.getElementById("answerEnglish").innerHTML = "📘 " + selectedQuestion.answerEng;
+        document.getElementById("answerBurmese").innerHTML = "📗 " + selectedQuestion.answerMm;
+        display.classList.remove("hidden");
+        btn.innerHTML = "🙈 Hide answer";
+    } else {
+        display.classList.add("hidden");
+        btn.innerHTML = "💡 Show answer";
+    }
+}
+
+function submitAnswer() {
+    clearInterval(timer);
+    if (speechSynth.speaking) speechSynth.cancel();
+    if (readInterval) {
+        clearInterval(readInterval);
+        readInterval = null;
+    }
+
+    document.getElementById("answerDisplay").classList.add("hidden");
+    document.getElementById("showAnswerBtn").innerHTML = "💡 Show answer";
+
+    currentQuestion++;
+    if (currentQuestion < currentSet.length) {
+        loadQuestion();
+    } else {
+        finishExam();
+    }
+}
+
+function finishExam() {
+    document.getElementById("examScreen").classList.add("hidden");
+    document.getElementById("processingScreen").classList.remove("hidden");
+
+    let container = document.getElementById("resultContainer");
+    container.innerHTML = "";
+    currentSet.forEach((q, idx) => {
+        let div = document.createElement("div");
+        div.className = "result-item";
+        div.innerHTML = `<strong>Q${idx+1}:</strong> (voice question ×2)<br>
+                         <span style="color:#93c5fd;">Eng: ${q.answerEng}</span><br>
+                         <span style="color:#a7f3d0;">Mm: ${q.answerMm}</span>`;
+        container.appendChild(div);
+    });
+}
+
+function backToSets() {
+    document.getElementById("processingScreen").classList.add("hidden");
+    document.getElementById("startScreen").classList.remove("hidden");
+    showSetSelector();
+}
+
+window.onload = function() {
+    if (localStorage.getItem("session_active") === "true") {
+        document.getElementById("authScreen").classList.add("hidden");
+        document.getElementById("startScreen").classList.remove("hidden");
+        showSetSelector();
+    }
+    speechSynth.getVoices();
+};
+</script>
+</body>
+</html>
