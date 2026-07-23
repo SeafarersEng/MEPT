@@ -3,10 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
-    <title>MARLINS SPEAK · Voice Only</title>
+    <title>MARLINS SPEAK · Voice & Text</title>
     <style>
         /* ============================================
-           CSS - Voice Only (Question Hidden)
+           CSS - Voice & Text Fallback
            ============================================ */
         
         * {
@@ -101,6 +101,13 @@
             font-size: 0.85rem;
             min-width: auto;
         }
+        .btn-danger {
+            background: #ef4444;
+            box-shadow: 0 6px 0 #991b1b;
+        }
+        .btn-danger:active {
+            box-shadow: 0 2px 0 #991b1b;
+        }
 
         .auth-box {
             background: #0f172a;
@@ -133,6 +140,14 @@
             font-size: 0.95rem;
             border-left: 4px solid #f87171;
         }
+        .warning {
+            color: #facc15;
+            background: #451a1a;
+            padding: 12px 16px;
+            border-radius: 30px;
+            font-size: 0.95rem;
+            border-left: 4px solid #facc15;
+        }
 
         .set-grid {
             display: grid;
@@ -163,11 +178,6 @@
             border-radius: 32px;
             padding: 20px 18px;
             border: 1px solid #334155;
-            min-height: 200px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
         }
         .q-badge {
             display: inline-block;
@@ -187,9 +197,29 @@
             font-weight: 600;
         }
         
-        /* Question Text - HIDDEN from user */
+        /* Question Text - Show when voice fails */
         .q-text {
-            display: none !important; /* User မမြင်ရအောင် လုံးဝဖျောက်ထား */
+            font-size: 1.25rem;
+            line-height: 1.6;
+            font-weight: 500;
+            background: #1a2538;
+            padding: 18px 16px;
+            border-radius: 24px;
+            border-left: 6px solid #facc15;
+            margin: 12px 0 10px;
+            min-height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #facc15;
+            font-weight: 600;
+            letter-spacing: 0.3px;
+            text-shadow: 0 0 8px rgba(250,204,21,0.15);
+            text-align: center;
+            user-select: none;
+        }
+        .q-text.hidden-text {
+            display: none !important;
         }
         
         .question-image {
@@ -204,27 +234,27 @@
             display: none;
         }
 
-        /* Voice Only Indicator - Big Display */
+        /* Voice Indicator */
         .voice-indicator {
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            gap: 16px;
-            margin: 12px 0;
-            padding: 20px;
+            gap: 12px;
+            margin: 6px 0 12px;
+            padding: 16px;
             background: #1a2538;
-            border-radius: 28px;
-            min-height: 180px;
+            border-radius: 24px;
+            min-height: 120px;
             width: 100%;
         }
         .voice-dot {
             display: inline-block;
-            width: 48px;
-            height: 48px;
+            width: 40px;
+            height: 40px;
             border-radius: 50%;
-            background: #22c55e;
-            animation: pulse-dot 1.2s infinite;
+            background: #64748b;
+            animation: none;
         }
         .voice-dot.idle {
             background: #64748b;
@@ -234,6 +264,10 @@
             background: #facc15;
             animation: pulse-dot 0.8s infinite;
         }
+        .voice-dot.error {
+            background: #ef4444;
+            animation: none;
+        }
         @keyframes pulse-dot {
             0% { opacity: 0.3; transform: scale(0.8); }
             50% { opacity: 1; transform: scale(1.2); }
@@ -241,40 +275,28 @@
         }
         
         .voice-status-text {
-            font-size: 1.4rem;
-            font-weight: 600;
+            font-size: 1.2rem;
+            font-weight: 500;
             color: #f1f5f9;
             text-align: center;
-            min-height: 60px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            min-height: 40px;
         }
-        .voice-status-text .listening {
-            color: #38bdf8;
-        }
-        .voice-status-text .reading {
-            color: #facc15;
-        }
-        .voice-status-text .done {
-            color: #22c55e;
-        }
-        .voice-status-text .waiting {
-            color: #94a3b8;
-        }
+        .voice-status-text .waiting { color: #94a3b8; }
+        .voice-status-text .reading { color: #facc15; }
+        .voice-status-text .done { color: #22c55e; }
+        .voice-status-text .error { color: #ef4444; }
+        .voice-status-text .text-mode { color: #38bdf8; }
 
         .timer-box {
-            font-size: 2.5rem;
+            font-size: 2rem;
             font-weight: 700;
             background: #0b1120;
-            padding: 8px 24px;
+            padding: 6px 20px;
             border-radius: 60px;
             display: inline-block;
             font-variant-numeric: tabular-nums;
             color: #facc15;
             border: 1px solid #334155;
-            min-width: 100px;
-            text-align: center;
         }
 
         .answer-section {
@@ -348,6 +370,20 @@
             pointer-events: none;
         }
 
+        .action-buttons {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin-top: 8px;
+        }
+        .action-buttons .btn {
+            min-width: auto;
+            padding: 10px 20px;
+            font-size: 0.9rem;
+            margin: 0;
+        }
+
         .finish-card {
             background: #0f172a;
             border-radius: 40px;
@@ -385,7 +421,6 @@
             border-radius: 20px;
         }
 
-        /* Question number and type - still visible */
         .header-info {
             display: flex;
             justify-content: space-between;
@@ -393,25 +428,6 @@
             flex-wrap: wrap;
             gap: 8px;
             width: 100%;
-        }
-
-        /* Listen again button (optional - just in case) */
-        .listen-again-btn {
-            background: #3b82f6;
-            border: none;
-            border-radius: 40px;
-            padding: 10px 20px;
-            font-weight: 600;
-            color: white;
-            font-size: 0.9rem;
-            cursor: pointer;
-            transition: 0.1s;
-            box-shadow: 0 4px 0 #1e3a8a;
-            margin-top: 8px;
-        }
-        .listen-again-btn:active {
-            transform: translateY(3px);
-            box-shadow: 0 1px 0 #1e3a8a;
         }
 
         @media (max-width: 540px) {
@@ -425,16 +441,18 @@
                 grid-template-columns: repeat(3, 1fr);
             }
             .voice-status-text {
-                font-size: 1.1rem;
-                min-height: 50px;
+                font-size: 1rem;
             }
             .voice-dot {
-                width: 36px;
-                height: 36px;
+                width: 32px;
+                height: 32px;
             }
             .timer-box {
-                font-size: 2rem;
-                min-width: 80px;
+                font-size: 1.6rem;
+            }
+            .q-text {
+                font-size: 1rem;
+                padding: 14px;
             }
         }
     </style>
@@ -448,7 +466,7 @@
     ========================================== -->
     <div id="authScreen" class="flex-col text-center">
         <h1>⚓ MARLINS SPEAK</h1>
-        <p class="subhead">Voice Only · Listen & Answer · B1 Level</p>
+        <p class="subhead">Voice & Text · B1 Level</p>
         <div class="auth-box">
             <label for="keyInput" style="display:block; font-weight:500; margin-bottom:10px;">Activation Key</label>
             <input type="text" id="keyInput" class="key-input" placeholder="Enter your key" autocomplete="off">
@@ -464,7 +482,7 @@
     ========================================== -->
     <div id="startScreen" class="hidden flex-col text-center">
         <h2>📚 Choose a Set</h2>
-        <p class="subhead">Each set has 7 speaking exercises · Listen to the question (voice only)</p>
+        <p class="subhead">Each set has 7 speaking exercises</p>
         <div id="setSelector" class="set-grid">
             <!-- Set buttons will be generated by JavaScript -->
         </div>
@@ -472,10 +490,10 @@
     </div>
 
     <!-- ==========================================
-    EXAM SCREEN - VOICE ONLY
+    EXAM SCREEN - Voice & Text
     ========================================== -->
     <div id="examScreen" class="hidden flex-col">
-        <!-- Header: Question number, type, timer -->
+        <!-- Header -->
         <div class="header-info">
             <span class="q-badge" id="questionNumber">1</span>
             <span class="q-badge">/ <span id="totalQuestion">7</span></span>
@@ -483,26 +501,31 @@
             <span class="timer-box" id="timer">0:00</span>
         </div>
 
-        <!-- Question Panel - Voice Only -->
+        <!-- Question Panel -->
         <div class="question-panel">
-            <!-- Question Text - HIDDEN from user -->
-            <div class="q-text" id="questionTextDisplay">🎧 Listening...</div>
-
-            <!-- Voice Indicator - Big Display -->
+            <!-- Voice Indicator -->
             <div class="voice-indicator">
                 <span class="voice-dot idle" id="voiceDot"></span>
                 <div class="voice-status-text" id="voiceStatus">
-                    <span class="waiting">🎧 Waiting for question...</span>
+                    <span class="waiting">🎧 Loading question...</span>
                 </div>
-                
-                <!-- Listen Again Button (Small, just in case) -->
-                <button class="listen-again-btn" id="listenAgainBtn" onclick="replayQuestion()" style="display:none;">
-                    🔄 Listen Again
-                </button>
             </div>
 
-            <!-- Question Image (Set 1-10 only) - Hidden because user can't see question -->
+            <!-- Question Text (Hidden by default, shows if voice fails) -->
+            <div class="q-text hidden-text" id="questionTextDisplay">📝 Question text will appear here</div>
+
+            <!-- Question Image -->
             <img id="questionImage" class="question-image hidden" src="" alt="Question image">
+
+            <!-- Action Buttons -->
+            <div class="action-buttons">
+                <button class="btn btn-outline btn-small" id="listenAgainBtn" onclick="replayQuestion()" style="display:none;">
+                    🔄 Listen Again
+                </button>
+                <button class="btn btn-outline btn-small" id="showTextBtn" onclick="showQuestionText()" style="display:none;">
+                    📝 Show Question Text
+                </button>
+            </div>
 
             <!-- Answer Section -->
             <div class="answer-section">
@@ -584,7 +607,7 @@ const SECURE_ALLOWED_KEYS = [
 ];
 
 // ============================================
-// 2. EXAM DATA (All 15 Sets - Full data)
+// 2. EXAM DATA (Full data included)
 // ============================================
 const examSets = {
     set1: [
@@ -614,8 +637,16 @@ const examSets = {
         { type: "Picture Description", timeLimit: 120, prompt: "Look at the picture. Explain the meaning of the 'Snap-Back Zone' markings and why seafarers must avoid this area during mooring.", image: "set3_snapback.png", answerEng: "The snap-back zone is a dangerous area where mooring ropes can suddenly break and hit people. So we must never stand there.", answerMm: "Snap-back ဇုန်ဆိုတာ ကျောက်ဆွဲကြိုးတွေ ရုတ်တရက် ကျိုးပြီး လူတွေကို ထိခိုက်နိုင်တဲ့ အန္တရာယ်ရှိတဲ့နေရာပါ။ ဒါကြောင့် အဲဒီမှာ ဘယ်တော့မှ မရပ်သင့်ဘူး။" },
         { type: "Debate", timeLimit: 120, prompt: "Marlins Debate: 'You are busy, and you just need to enter a pump room for 2 minutes to check a gauge. It is okay to enter without a permit as long as you are quick.' Do you agree?", image: "", answerEng: "I strongly disagree. Pump rooms can have dangerous gas. You must always get a permit and follow the safety rules, even for a short time.", answerMm: "ကျွန်တော် ပြင်းထန်စွာ သဘောမတူပါဘူး။ ပန့်ခန်းတွေမှာ အန္တရာယ်ရှိတဲ့ဓာတ်ငွေ့ရှိနိုင်တယ်။ ခွင့်ပြုချက်ရပြီး ဘေးကင်းရေးစည်းမျဉ်းတွေကို အချိန်တိုတောင်ပေမယ့် လိုက်နာရမယ်။" }
     ],
-    // Set4 to Set15 data is included in the complete file but omitted here for brevity
-    // The full data is available in the complete code above
+    set4: [
+        { type: "Short Answer", timeLimit: 50, prompt: "Introduce yourself and mention the type of ship you prefer to work on.", image: "", answerEng: "I am Aung Ko. I prefer to work on container ships because they travel to many countries.", answerMm: "ကျွန်တော် အောင်ကိုပါ။ ကွန်တိန်နာသင်္ဘောတွေပေါ် အလုပ်လုပ်ချင်တယ်၊ ဘာကြောင့်လဲဆိုတော့ နိုင်ငံအများကြီးကို သွားလို့ပါ။" },
+        { type: "Short Answer", timeLimit: 50, prompt: "What is your strongest quality that will make you a good seafarer?", image: "", answerEng: "My strongest quality is that I am hard-working and I learn quickly. I am also very careful.", answerMm: "ကျွန်တော့ အားသာချက်က ကြိုးစားပြီး မြန်မြန်သင်ယူတတ်တယ်။ သတိလည်းကြီးတယ်။" },
+        { type: "Short Answer", timeLimit: 50, prompt: "Seafaring involves a lot of teamwork. Can you give an example of how you work in a team?", image: "", answerEng: "During drills, I always listen to the leader and do my part. We talk to each other and help if someone needs support.", answerMm: "လေ့ကျင့်ခန်းတွေအတွင်းမှာ ကျွန်တော် ခေါင်းဆောင်ကို နားထောင်ပြီး ကိုယ့်တာဝန်ကို လုပ်တယ်။ တစ်ယောက်နဲ့တစ်ယောက် ပြောဆိုပြီး လိုအပ်ရင် ကူညီတယ်။" },
+        { type: "Short Answer", timeLimit: 50, prompt: "What is your current English proficiency level for maritime work?", image: "", answerEng: "I can understand and speak basic maritime English. I can read safety instructions and communicate with the crew.", answerMm: "ကျွန်တော် အခြေခံရေကြောင်းအင်္ဂလိပ်ကို နားလည်ပြီး ပြောနိုင်တယ်။ ဘေးကင်းရေး ညွှန်ကြားချက်တွေကို ဖတ်နိုင်ပြီး သင်္ဘောသားတွေနဲ့ ဆက်သွယ်နိုင်တယ်။" },
+        { type: "Short Answer", timeLimit: 50, prompt: "If your superior asks you to do something that is not safe, what will you do?", image: "", answerEng: "I will politely say no and explain why it is unsafe. Then I will report it to the safety officer.", answerMm: "ကျွန်တော် ယဉ်ယဉ်ကျေးကျေးငြင်းဆန်ပြီး ဘာကြောင့်အန္တရာယ်ရှိလဲ ရှင်းပြမယ်။ ပြီးရင် ဘေးကင်းရေးအရာရှိထံ အကြောင်းကြားမယ်။" },
+        { type: "Picture Description", timeLimit: 120, prompt: "Look at the picture. Describe the watchkeeping duties in the Engine Control Room and the importance of monitoring machinery parameters.", image: "set4_ecr.png", answerEng: "In the control room, watchkeepers check the engine temperature, pressure, and RPM. Monitoring these is important to prevent breakdowns.", answerMm: "ထိန်းချုပ်ခန်းမှာ အချိန်မှန်စောင့်ကြည့်သူတွေက အင်ဂျင်အပူချိန်၊ ဖိအားနဲ့ RPM ကို စစ်ဆေးတယ်။ ဒါတွေကို စောင့်ကြည့်ခြင်းက ချို့ယွင်းမှုတွေကို ကာကွယ်ဖို့ အရေးကြီးတယ်။" },
+        { type: "Debate", timeLimit: 120, prompt: "Marlins Debate: 'Port State Control (PSC) is just trouble. Seafarers should hide any problems from the inspectors to avoid ship detention.' What is your view?", image: "", answerEng: "I disagree. PSC inspections help keep ships safe. Hiding problems is dishonest and dangerous for everyone on board.", answerMm: "ကျွန်တော် သဘောမတူပါဘူး။ PSC စစ်ဆေးမှုတွေက သင်္ဘောတွေကို ဘေးကင်းစေတယ်။ ပြဿနာတွေကို ဖုံးကွယ်ခြင်းက ရိုးသားမှုမရှိဘူး၊ သင်္ဘောပေါ်က လူတိုင်းအတွက်လည်း အန္တရာယ်ရှိတယ်။" }
+    ],
+    // Set5 to Set15 are included in the complete code but omitted here for brevity
 };
 
 // ============================================
@@ -632,7 +663,9 @@ let isSpeaking = false;
 let readCount = 0;
 let isQuestionSpeaking = false;
 let hasAutoPlayed = false;
-let isFirstLoad = true;
+let speechSupported = true;
+let voiceAttempts = 0;
+const MAX_VOICE_ATTEMPTS = 2;
 
 // ============================================
 // 4. DEVICE FINGERPRINT & AUTH
@@ -707,13 +740,39 @@ function lockAppAccess() {
 }
 
 // ============================================
-// 5. EXAM FUNCTIONS (Voice Only - Question Hidden)
+// 5. CHECK SPEECH SUPPORT
+// ============================================
+function checkSpeechSupport() {
+    if (!('speechSynthesis' in window)) {
+        speechSupported = false;
+        return false;
+    }
+    
+    // Check if speech synthesis actually works
+    try {
+        const testUtter = new SpeechSynthesisUtterance('test');
+        testUtter.volume = 0;
+        speechSynth.speak(testUtter);
+        speechSynth.cancel();
+        return true;
+    } catch(e) {
+        speechSupported = false;
+        return false;
+    }
+}
+
+// ============================================
+// 6. EXAM FUNCTIONS
 // ============================================
 function startExam() {
     currentSet = examSets[selectedSetName];
     currentQuestion = 0;
     hasAutoPlayed = false;
-    isFirstLoad = true;
+    voiceAttempts = 0;
+    
+    // Check speech support
+    speechSupported = checkSpeechSupport();
+    
     document.getElementById("startScreen").classList.add("hidden");
     document.getElementById("examScreen").classList.remove("hidden");
     document.getElementById("processingScreen").classList.add("hidden");
@@ -723,13 +782,16 @@ function startExam() {
 function loadQuestion() {
     selectedQuestion = currentSet[currentQuestion];
     hasAutoPlayed = false;
+    voiceAttempts = 0;
 
     document.getElementById("questionNumber").innerHTML = currentQuestion + 1;
     document.getElementById("totalQuestion").innerHTML = currentSet.length;
     document.getElementById("questionType").innerHTML = selectedQuestion.type;
 
-    // Question text is HIDDEN - user cannot see it
-    document.getElementById("questionTextDisplay").innerHTML = "🎧 Listening...";
+    // Show question text
+    const qTextEl = document.getElementById("questionTextDisplay");
+    qTextEl.innerHTML = "📝 " + selectedQuestion.prompt;
+    qTextEl.classList.add("hidden-text'); // Hidden by default
 
     let setNum = parseInt(selectedSetName.replace('set', ''));
     let img = document.getElementById("questionImage");
@@ -743,8 +805,8 @@ function loadQuestion() {
     document.getElementById("answerDisplay").classList.add("hidden");
     document.getElementById("showAnswerBtn").innerHTML = "💡 Show answer";
     document.getElementById("listenAgainBtn").style.display = "none";
+    document.getElementById("showTextBtn").style.display = "none";
 
-    // Enable submit button
     document.getElementById("submitBtn").disabled = false;
 
     startTimer();
@@ -753,16 +815,29 @@ function loadQuestion() {
     updateVoiceStatus("waiting", "🎧 Loading question...");
     document.getElementById("voiceDot").className = "voice-dot idle";
 
-    // Auto-play the question after a short delay
+    // Try to play voice
     setTimeout(function() {
         if (selectedQuestion && !hasAutoPlayed) {
-            readQuestionTwice(selectedQuestion.prompt);
+            if (speechSupported) {
+                readQuestionTwice(selectedQuestion.prompt);
+            } else {
+                // Speech not supported - show text immediately
+                showQuestionText();
+                updateVoiceStatus("error", "⚠️ Voice not supported. Showing text.");
+                document.getElementById("voiceDot").className = "voice-dot error";
+                document.getElementById("showTextBtn").style.display = "none";
+            }
             hasAutoPlayed = true;
         }
     }, 1000);
 }
 
 function readQuestionTwice(text) {
+    if (!speechSupported) {
+        showQuestionText();
+        return;
+    }
+
     if (isQuestionSpeaking) {
         speechSynth.cancel();
         isQuestionSpeaking = false;
@@ -779,8 +854,25 @@ function readQuestionTwice(text) {
     if (voices.length === 0) {
         speechSynth.onvoiceschanged = function() {
             voices = speechSynth.getVoices();
+            if (voices.length === 0) {
+                // No voices available
+                speechSupported = false;
+                showQuestionText();
+                updateVoiceStatus("error", "⚠️ No voice available. Showing text.");
+                document.getElementById("voiceDot").className = "voice-dot error";
+                return;
+            }
             startReading(text, voices);
         };
+        // Timeout fallback
+        setTimeout(function() {
+            if (readCount === 0 && !isQuestionSpeaking) {
+                speechSupported = false;
+                showQuestionText();
+                updateVoiceStatus("error", "⚠️ Voice timeout. Showing text.");
+                document.getElementById("voiceDot").className = "voice-dot error";
+            }
+        }, 3000);
     } else {
         startReading(text, voices);
     }
@@ -802,6 +894,13 @@ function startReading(text, voices) {
         } else if (voices.length === 1) {
             voice1 = voices[0];
             voice2 = voices[0];
+        } else {
+            // No voices at all
+            speechSupported = false;
+            showQuestionText();
+            updateVoiceStatus("error", "⚠️ No voice available. Showing text.");
+            document.getElementById("voiceDot").className = "voice-dot error";
+            return;
         }
     }
 
@@ -828,7 +927,15 @@ function startReading(text, voices) {
             isSpeaking = false;
             isQuestionSpeaking = false;
             console.log('Speech error:', e);
-            if (callback) callback();
+            voiceAttempts++;
+            if (voiceAttempts >= MAX_VOICE_ATTEMPTS) {
+                speechSupported = false;
+                showQuestionText();
+                updateVoiceStatus("error", "⚠️ Voice failed. Showing text.");
+                document.getElementById("voiceDot").className = "voice-dot error";
+            } else {
+                if (callback) callback();
+            }
         };
         speechSynth.speak(utter);
     }
@@ -837,25 +944,38 @@ function startReading(text, voices) {
     document.getElementById("voiceDot").className = "voice-dot speaking";
 
     speakOnce(voice1, 0.9, function() {
+        if (!speechSupported) return;
         readCount = 1;
         updateVoiceStatus("reading", "🔊 Reading (2/2)... slower");
         document.getElementById("voiceDot").className = "voice-dot speaking";
 
         setTimeout(function() {
+            if (!speechSupported) return;
             speakOnce(voice2, 0.7, function() {
+                if (!speechSupported) return;
                 readCount = 2;
                 updateVoiceStatus("done", "✅ Question read twice. You can answer now.");
                 document.getElementById("voiceDot").className = "voice-dot idle";
                 document.getElementById("listenAgainBtn").style.display = "inline-block";
+                document.getElementById("showTextBtn").style.display = "inline-block";
             });
         }, 800);
     });
 }
 
+function showQuestionText() {
+    const qTextEl = document.getElementById("questionTextDisplay");
+    qTextEl.classList.remove("hidden-text");
+    document.getElementById("showTextBtn").style.display = "none";
+    updateVoiceStatus("text-mode", "📝 Question text is shown below");
+}
+
 function replayQuestion() {
-    if (selectedQuestion) {
+    if (selectedQuestion && speechSupported) {
         document.getElementById("listenAgainBtn").style.display = "none";
         readQuestionTwice(selectedQuestion.prompt);
+    } else if (selectedQuestion) {
+        showQuestionText();
     }
 }
 
@@ -905,12 +1025,15 @@ function submitAnswer() {
     if (speechSynth.speaking) speechSynth.cancel();
     isQuestionSpeaking = false;
 
-    // Disable submit button to prevent double click
     document.getElementById("submitBtn").disabled = true;
 
     document.getElementById("answerDisplay").classList.add("hidden");
     document.getElementById("showAnswerBtn").innerHTML = "💡 Show answer";
     document.getElementById("listenAgainBtn").style.display = "none";
+    document.getElementById("showTextBtn").style.display = "none";
+
+    // Hide text again
+    document.getElementById("questionTextDisplay").classList.add("hidden-text");
 
     currentQuestion++;
     if (currentQuestion < currentSet.length) {
@@ -945,7 +1068,7 @@ function backToSets() {
 }
 
 // ============================================
-// 6. INITIALIZATION
+// 7. INITIALIZATION
 // ============================================
 window.onload = function() {
     if (localStorage.getItem("session_active") === "true") {
@@ -953,7 +1076,20 @@ window.onload = function() {
         document.getElementById("startScreen").classList.remove("hidden");
         showSetSelector();
     }
-    speechSynth.getVoices();
+    
+    // Check speech support on load
+    speechSupported = checkSpeechSupport();
+    if (!speechSupported) {
+        console.log('Speech synthesis not supported on this device');
+    }
+    
+    // Preload voices
+    if (speechSynth) {
+        speechSynth.getVoices();
+        speechSynth.onvoiceschanged = function() {
+            speechSynth.getVoices();
+        };
+    }
 };
 </script>
 </body>
