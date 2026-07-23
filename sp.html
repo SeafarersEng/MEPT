@@ -587,6 +587,51 @@
     </div>
 
 </div>
+<!-- Test Button (အသံစမ်းဖို့) -->
+<button onclick="testSpeechDirect()" style="background:#22c55e; border:none; padding:10px 20px; border-radius:30px; color:white; font-weight:bold; margin:10px 0;">
+    🔊 Test Speech Direct
+</button>
+
+<script>
+// Direct Test Function (ဒီကို သီးသန့်ထည့်ပါ)
+function testSpeechDirect() {
+    if (!('speechSynthesis' in window)) {
+        alert('❌ Speech synthesis not supported in this browser!');
+        return;
+    }
+    
+    try {
+        const msg = new SpeechSynthesisUtterance('Hello, this is a direct test. Can you hear me?');
+        msg.lang = 'en-US';
+        msg.rate = 0.9;
+        msg.pitch = 1;
+        msg.volume = 1;
+        
+        // Voice ကိုရွေးပါ
+        let voices = window.speechSynthesis.getVoices();
+        if (voices && voices.length > 0) {
+            let engVoice = voices.find(v => v.lang.startsWith('en'));
+            if (engVoice) msg.voice = engVoice;
+        }
+        
+        msg.onstart = function() {
+            console.log('✅ Direct test started');
+            alert('🔊 Speaking now... Can you hear?');
+        };
+        msg.onend = function() {
+            console.log('✅ Direct test ended');
+        };
+        msg.onerror = function(e) {
+            console.log('❌ Direct test error:', e);
+            alert('❌ Speech error: ' + e.error);
+        };
+        
+        window.speechSynthesis.speak(msg);
+    } catch(e) {
+        alert('❌ Error: ' + e.message);
+    }
+}
+</script>
 
 <script>
 // ============================================
@@ -869,23 +914,40 @@ function lockAppAccess() {
 // 5. CHECK SPEECH SUPPORT
 // ============================================
 function checkSpeechSupport() {
+    // ✅ Speech Synthesis ရှိမရှိ စစ်ပါ
     if (!('speechSynthesis' in window)) {
         speechSupported = false;
+        console.log('❌ No speechSynthesis in window');
         return false;
     }
     
-    try {
-        const testUtter = new SpeechSynthesisUtterance('test');
-        testUtter.volume = 0;
-        speechSynth.speak(testUtter);
-        speechSynth.cancel();
+    // ✅ speechSynth ကို ပြန်သတ်မှတ်ပါ
+    speechSynth = window.speechSynthesis;
+    
+    // ✅ Voice ရှိမရှိ စစ်ပါ
+    let voices = speechSynth.getVoices();
+    if (voices && voices.length > 0) {
+        speechSupported = true;
+        console.log('✅ Voices found:', voices.length);
         return true;
-    } catch(e) {
-        speechSupported = false;
-        return false;
     }
+    
+    // ✅ Voices မရှိရင် onvoiceschanged ကို စောင့်ပါ
+    speechSynth.onvoiceschanged = function() {
+        let newVoices = speechSynth.getVoices();
+        if (newVoices && newVoices.length > 0) {
+            speechSupported = true;
+            console.log('✅ Voices loaded:', newVoices.length);
+        } else {
+            speechSupported = false;
+            console.log('❌ No voices available');
+        }
+    };
+    
+    // ✅ ချက်ချင်း false မပြန်ပါနဲ့
+    // (onvoiceschanged ကို စောင့်ပါ)
+    return true; // အစမ်းအနေနဲ့ true ပြန်ပါ
 }
-
 // ============================================
 // 6. UPDATE VOICE STATUS
 // ============================================
@@ -915,60 +977,55 @@ function showQuestionText() {
 // 8. TEXT TO SPEECH - MAIN FUNCTIONS
 // ============================================
 function readQuestionTwice(text) {
-    if (!speechSupported) {
-        showQuestionText();
-        return;
-    }
-
+    console.log('🔊 readQuestionTwice called with:', text);
+    
+    // ✅ Speech Synthesis ရှိမရှိ စစ်ပါ
     if (!('speechSynthesis' in window)) {
         speechSupported = false;
         showQuestionText();
         updateVoiceStatus("error", "⚠️ Speech not supported. Showing text.");
         return;
     }
-
-    if (isQuestionSpeaking) {
-        speechSynth.cancel();
-        isQuestionSpeaking = false;
-        setTimeout(() => readQuestionTwice(text), 300);
-        return;
-    }
-
-    if (speechSynth.speaking) {
-        speechSynth.cancel();
-    }
-
-    readCount = 0;
-    let voices = speechSynth.getVoices();
     
-    if (voices.length === 0) {
+    // ✅ speechSynth ကို ပြန်သတ်မှတ်ပါ
+    speechSynth = window.speechSynthesis;
+    
+    // ✅ Voices ကို ထပ်စစ်ပါ
+    let voices = speechSynth.getVoices();
+    console.log('🔊 Current voices:', voices ? voices.length : 0);
+    
+    // ✅ Voices မရှိရင် onvoiceschanged ကို စောင့်ပါ
+    if (!voices || voices.length === 0) {
+        console.log('🔊 Waiting for voices to load...');
         speechSynth.onvoiceschanged = function() {
-            voices = speechSynth.getVoices();
-            if (voices.length === 0) {
+            let newVoices = speechSynth.getVoices();
+            console.log('🔊 Voices loaded:', newVoices ? newVoices.length : 0);
+            if (newVoices && newVoices.length > 0) {
+                speechSupported = true;
+                startReading(text, newVoices);
+            } else {
                 speechSupported = false;
                 showQuestionText();
                 updateVoiceStatus("error", "⚠️ No voice available. Showing text.");
-                const dot = document.getElementById("voiceDot");
-                if (dot) dot.className = "voice-dot error";
-                return;
+                document.getElementById("voiceDot").className = "voice-dot error";
             }
-            startReading(text, voices);
         };
         
+        // ✅ ၃ စက္ကန့်စောင့်ပြီး မရရင် Text ပြပါ
         setTimeout(function() {
-            if (readCount === 0 && !isQuestionSpeaking) {
-                speechSupported = false;
+            if (speechSupported === false) {
                 showQuestionText();
                 updateVoiceStatus("error", "⚠️ Voice timeout. Showing text.");
-                const dot = document.getElementById("voiceDot");
-                if (dot) dot.className = "voice-dot error";
+                document.getElementById("voiceDot").className = "voice-dot error";
             }
         }, 3000);
-    } else {
-        startReading(text, voices);
+        return;
     }
+    
+    // ✅ Voices ရှိရင် စပါ
+    speechSupported = true;
+    startReading(text, voices);
 }
-
 function startReading(text, voices) {
     let voice1 = null, voice2 = null;
     
@@ -1149,21 +1206,7 @@ function loadQuestion() {
     qTextEl.innerHTML = "📝 " + selectedQuestion.prompt;
     qTextEl.classList.add("hidden-text");
 
-    let setNum = parseInt(selectedSetName.replace('set', ''));
-    let img = document.getElementById("questionImage");
-    if (setNum <= 10 && selectedQuestion.image && selectedQuestion.image.length > 0) {
-        img.src = selectedQuestion.image;
-        img.classList.remove("hidden");
-    } else {
-        img.classList.add("hidden");
-    }
-
-    document.getElementById("answerDisplay").classList.add("hidden");
-    document.getElementById("showAnswerBtn").innerHTML = "💡 Show answer";
-    document.getElementById("listenAgainBtn").style.display = "none";
-    document.getElementById("showTextBtn").style.display = "none";
-
-    document.getElementById("submitBtn").disabled = false;
+    // ... ကျန်တဲ့ Code တွေ ...
 
     startTimer();
     readCount = 0;
@@ -1173,25 +1216,37 @@ function loadQuestion() {
 
     setTimeout(function() {
         if (selectedQuestion && !hasAutoPlayed) {
-            if (speechSupported) {
+            // ✅ Speech Synthesis ကို ထပ်စစ်ပါ
+            if ('speechSynthesis' in window) {
+                speechSynth = window.speechSynthesis;
+                
+                // ✅ Mobile Wake Up
                 if (!window._speechStarted) {
                     window._speechStarted = true;
-                    let empty = new SpeechSynthesisUtterance(' ');
-                    empty.volume = 0;
-                    speechSynth.speak(empty);
+                    try {
+                        let empty = new SpeechSynthesisUtterance(' ');
+                        empty.volume = 0;
+                        speechSynth.speak(empty);
+                        console.log('✅ Speech API woken up');
+                    } catch(e) {
+                        console.log('⚠️ Wake up failed:', e);
+                    }
                 }
-                readQuestionTwice(selectedQuestion.prompt);
+                
+                // ✅ နည်းနည်းနောက်ကျပြီး ခေါ်ပါ
+                setTimeout(function() {
+                    readQuestionTwice(selectedQuestion.prompt);
+                }, 500);
+                
             } else {
                 showQuestionText();
-                updateVoiceStatus("error", "⚠️ Voice not supported. Showing text.");
+                updateVoiceStatus("error", "⚠️ Speech not supported. Showing text.");
                 document.getElementById("voiceDot").className = "voice-dot error";
-                document.getElementById("showTextBtn").style.display = "none";
             }
             hasAutoPlayed = true;
         }
     }, 1000);
 }
-
 function startTimer() {
     clearInterval(timer);
     timeLeft = selectedQuestion.timeLimit;
