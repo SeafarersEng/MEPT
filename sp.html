@@ -6,9 +6,9 @@
     <title>MARLINS SPEAK · AI Voice</title>
     <style>
         /* ============================================
-           CSS ONLY - Full Styles
+           CSS ONLY - Full Styles (Improved)
            ============================================ */
-        
+
         /* ----- RESET & BASE ----- */
         * {
             box-sizing: border-box;
@@ -83,6 +83,12 @@
         .btn:active {
             transform: translateY(4px);
             box-shadow: 0 2px 0 #1e3a8a;
+        }
+        .btn:disabled {
+            opacity: 0.6;
+            transform: translateY(4px);
+            box-shadow: 0 2px 0 #1e3a8a;
+            pointer-events: none;
         }
         .btn-gold {
             background: #facc15;
@@ -240,6 +246,10 @@
             background: #22c55e;
             animation: pulse-dot 1.2s infinite;
         }
+        .voice-dot.idle {
+            background: #64748b;
+            animation: none;
+        }
         @keyframes pulse-dot {
             0% { opacity: 0.3; transform: scale(0.8); }
             50% { opacity: 1; transform: scale(1.2); }
@@ -360,6 +370,10 @@
             border-radius: 16px;
             padding: 12px;
             border-left: 4px solid #3b82f6;
+            margin-bottom: 8px;
+        }
+        .result-item:last-child {
+            margin-bottom: 0;
         }
 
         /* ----- SCROLL ----- */
@@ -451,7 +465,7 @@
         <div class="question-panel">
             <!-- Voice Indicator -->
             <div class="voice-indicator">
-                <span class="voice-dot" id="voiceDot"></span>
+                <span class="voice-dot idle" id="voiceDot"></span>
                 <span id="voiceStatus">🔊 Tap "Play Question" to hear</span>
             </div>
 
@@ -678,6 +692,7 @@ let speechSynth = window.speechSynthesis;
 let isSpeaking = false;
 let readCount = 0;
 let userInteracted = false;
+let isQuestionSpeaking = false;
 
 // ============================================
 // 4. MOBILE FIX - Wake up speech API
@@ -704,31 +719,31 @@ document.addEventListener('DOMContentLoaded', function() {
             e.stopPropagation();
             userInteracted = true;
             console.log('✅ Play button clicked');
-            
-            // Force speech to work on mobile by speaking empty text first
-            if (!speechSynth.speaking) {
-                // First, speak empty to "wake up" the speech API on mobile
-                const emptyUtter = new SpeechSynthesisUtterance(' ');
-                emptyUtter.volume = 0;
-                speechSynth.speak(emptyUtter);
-                
-                // Then speak the actual question after a short delay
-                setTimeout(function() {
-                    if (selectedQuestion) {
-                        readQuestionTwice(selectedQuestion.prompt);
-                    }
-                }, 300);
-            } else {
-                // If already speaking, restart
+
+            // If currently speaking, cancel and restart
+            if (speechSynth.speaking) {
                 speechSynth.cancel();
-                setTimeout(function() {
+                isQuestionSpeaking = false;
+                // Short delay before restarting
+                setTimeout(() => {
                     if (selectedQuestion) {
                         readQuestionTwice(selectedQuestion.prompt);
                     }
-                }, 300);
+                }, 200);
+                return;
+            }
+
+            // If not speaking, start fresh
+            if (selectedQuestion) {
+                readQuestionTwice(selectedQuestion.prompt);
             }
         });
     }
+
+    // Also wake up on any click/touch
+    document.addEventListener('click', function() {
+        wakeUpSpeech();
+    });
 });
 
 // ============================================
@@ -838,13 +853,23 @@ function loadQuestion() {
 
     startTimer();
     readCount = 0;
-    
+
     document.getElementById("voiceStatus").innerHTML = "🔊 Tap 'Play Question' to hear";
-    document.getElementById("voiceDot").style.background = "#facc15";
+    document.getElementById("voiceDot").className = "voice-dot idle";
 }
 
 function readQuestionTwice(text) {
-    if (speechSynth.speaking) speechSynth.cancel();
+    if (isQuestionSpeaking) {
+        speechSynth.cancel();
+        isQuestionSpeaking = false;
+        // Short delay before starting new speech
+        setTimeout(() => readQuestionTwice(text), 300);
+        return;
+    }
+
+    if (speechSynth.speaking) {
+        speechSynth.cancel();
+    }
 
     readCount = 0;
     let voices = speechSynth.getVoices();
@@ -885,29 +910,39 @@ function startReading(text, voices) {
         utter.volume = 1;
         if (voice) utter.voice = voice;
 
-        utter.onstart = function() { isSpeaking = true; };
-        utter.onend = function() { isSpeaking = false; if (callback) callback(); };
-        utter.onerror = function(e) { 
-            isSpeaking = false; 
+        utter.onstart = function() {
+            isSpeaking = true;
+            isQuestionSpeaking = true;
+            document.getElementById("voiceStatus").innerHTML = "🔊 AI reading ...";
+            document.getElementById("voiceDot").className = "voice-dot";
+        };
+        utter.onend = function() {
+            isSpeaking = false;
+            isQuestionSpeaking = false;
+            if (callback) callback();
+        };
+        utter.onerror = function(e) {
+            isSpeaking = false;
+            isQuestionSpeaking = false;
             console.log('Speech error:', e);
-            if (callback) callback(); 
+            if (callback) callback();
         };
         speechSynth.speak(utter);
     }
 
     document.getElementById("voiceStatus").innerHTML = "🔊 AI reading (1/2) ...";
-    document.getElementById("voiceDot").style.background = "#facc15";
+    document.getElementById("voiceDot").className = "voice-dot";
 
     speakOnce(voice1, 0.9, function() {
         readCount = 1;
         document.getElementById("voiceStatus").innerHTML = "🔊 AI reading (2/2) ... slower";
-        document.getElementById("voiceDot").style.background = "#facc15";
+        document.getElementById("voiceDot").className = "voice-dot";
 
         setTimeout(function() {
             speakOnce(voice2, 0.7, function() {
                 readCount = 2;
                 document.getElementById("voiceStatus").innerHTML = "✅ Question read twice. Start speaking.";
-                document.getElementById("voiceDot").style.background = "#22c55e";
+                document.getElementById("voiceDot").className = "voice-dot idle";
             });
         }, 800);
     });
@@ -931,7 +966,7 @@ function startTimer() {
 function showTime() {
     let min = Math.floor(timeLeft / 60);
     let sec = timeLeft % 60;
-    document.getElementById("timer").innerHTML = 
+    document.getElementById("timer").innerHTML =
         `${min}:${sec.toString().padStart(2, "0")}`;
 }
 
@@ -952,6 +987,7 @@ function toggleAnswer() {
 function submitAnswer() {
     clearInterval(timer);
     if (speechSynth.speaking) speechSynth.cancel();
+    isQuestionSpeaking = false;
 
     document.getElementById("answerDisplay").classList.add("hidden");
     document.getElementById("showAnswerBtn").innerHTML = "💡 Show answer";
