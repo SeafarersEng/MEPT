@@ -590,6 +590,11 @@
 
 <script>
 // ============================================
+// MARLINS SPEAK - FULL JAVASCRIPT
+// (Fixed Speech + All Exam Sets)
+// ============================================
+
+// ============================================
 // 1. SECURE KEYS
 // ============================================
 const SECURE_ALLOWED_KEYS = [
@@ -636,7 +641,7 @@ const SECURE_ALLOWED_KEYS = [
 ];
 
 // ============================================
-// 2. EXAM DATA (All 15 Sets - Full data)
+// 2. EXAM DATA (All 15 Sets)
 // ============================================
 const examSets = {
     set1: [
@@ -777,26 +782,16 @@ function generateDeviceFingerprint() {
     return Math.abs(hash).toString(16);
 }
 
-// ============================================
-// 5. RESET FUNCTION - FIX LOGIN ISSUE
-// ============================================
 function resetAllData() {
-    // Clear all localStorage data
     localStorage.clear();
-    
-    // Show success message
     const successEl = document.getElementById('resetSuccess');
-    successEl.classList.remove('hidden');
-    successEl.innerHTML = '✅ Reset successful! All data cleared. You can now login again.';
-    
-    // Hide any error messages
+    if (successEl) {
+        successEl.classList.remove('hidden');
+        successEl.innerHTML = '✅ Reset successful! All data cleared. You can now login again.';
+    }
     document.getElementById('authError').classList.add('hidden');
     document.getElementById('deviceLockError').classList.add('hidden');
-    
-    // Clear input field
     document.getElementById('keyInput').value = '';
-    
-    // Refresh after 2 seconds
     setTimeout(function() {
         location.reload();
     }, 2000);
@@ -810,7 +805,7 @@ function verifySecureActivation() {
     
     error.classList.add("hidden");
     deviceError.classList.add("hidden");
-    successEl.classList.add("hidden");
+    if (successEl) successEl.classList.add("hidden");
 
     if (!input) {
         error.innerHTML = "❌ Please enter an activation key.";
@@ -836,14 +831,12 @@ function verifySecureActivation() {
     let currentDevice = generateDeviceFingerprint();
     let savedDevice = localStorage.getItem("lock_" + rawKey);
 
-    // If key is locked to another device
     if (savedDevice && savedDevice !== currentDevice) {
         deviceError.innerHTML = "🔒 ဒီ Activation Key ကို အခြားစက်တွင် သုံးထားပြီးဖြစ်ပါတယ်။<br><small style='color:#94a3b8;'>This key is already locked to another device.</small><br><br>🔑 <strong>Solution:</strong> Click 'Reset & Clear Data' below to unlock.";
         deviceError.classList.remove("hidden");
         return;
     }
 
-    // If key is new or locked to this device
     localStorage.setItem("lock_" + rawKey, currentDevice);
     localStorage.setItem("session_active", "true");
 
@@ -873,7 +866,7 @@ function lockAppAccess() {
 }
 
 // ============================================
-// 6. CHECK SPEECH SUPPORT
+// 5. CHECK SPEECH SUPPORT
 // ============================================
 function checkSpeechSupport() {
     if (!('speechSynthesis' in window)) {
@@ -894,7 +887,240 @@ function checkSpeechSupport() {
 }
 
 // ============================================
-// 7. EXAM FUNCTIONS
+// 6. UPDATE VOICE STATUS
+// ============================================
+function updateVoiceStatus(status, message) {
+    const el = document.getElementById("voiceStatus");
+    if (el) {
+        el.innerHTML = `<span class="${status}">${message}</span>`;
+    }
+}
+
+// ============================================
+// 7. SHOW QUESTION TEXT (Fallback)
+// ============================================
+function showQuestionText() {
+    const qTextEl = document.getElementById("questionTextDisplay");
+    if (qTextEl) {
+        qTextEl.classList.remove("hidden-text");
+    }
+    const showBtn = document.getElementById("showTextBtn");
+    if (showBtn) {
+        showBtn.style.display = "none";
+    }
+    updateVoiceStatus("text-mode", "📝 Question text is shown below");
+}
+
+// ============================================
+// 8. TEXT TO SPEECH - MAIN FUNCTIONS
+// ============================================
+function readQuestionTwice(text) {
+    if (!speechSupported) {
+        showQuestionText();
+        return;
+    }
+
+    if (!('speechSynthesis' in window)) {
+        speechSupported = false;
+        showQuestionText();
+        updateVoiceStatus("error", "⚠️ Speech not supported. Showing text.");
+        return;
+    }
+
+    if (isQuestionSpeaking) {
+        speechSynth.cancel();
+        isQuestionSpeaking = false;
+        setTimeout(() => readQuestionTwice(text), 300);
+        return;
+    }
+
+    if (speechSynth.speaking) {
+        speechSynth.cancel();
+    }
+
+    readCount = 0;
+    let voices = speechSynth.getVoices();
+    
+    if (voices.length === 0) {
+        speechSynth.onvoiceschanged = function() {
+            voices = speechSynth.getVoices();
+            if (voices.length === 0) {
+                speechSupported = false;
+                showQuestionText();
+                updateVoiceStatus("error", "⚠️ No voice available. Showing text.");
+                const dot = document.getElementById("voiceDot");
+                if (dot) dot.className = "voice-dot error";
+                return;
+            }
+            startReading(text, voices);
+        };
+        
+        setTimeout(function() {
+            if (readCount === 0 && !isQuestionSpeaking) {
+                speechSupported = false;
+                showQuestionText();
+                updateVoiceStatus("error", "⚠️ Voice timeout. Showing text.");
+                const dot = document.getElementById("voiceDot");
+                if (dot) dot.className = "voice-dot error";
+            }
+        }, 3000);
+    } else {
+        startReading(text, voices);
+    }
+}
+
+function startReading(text, voices) {
+    let voice1 = null, voice2 = null;
+    
+    let engVoices = voices.filter(v => v.lang.startsWith('en'));
+    if (engVoices.length >= 2) {
+        voice1 = engVoices[0];
+        voice2 = engVoices[1];
+    } else if (engVoices.length === 1) {
+        voice1 = engVoices[0];
+        voice2 = engVoices[0];
+    } else {
+        if (voices.length >= 2) {
+            voice1 = voices[0];
+            voice2 = voices[1];
+        } else if (voices.length === 1) {
+            voice1 = voices[0];
+            voice2 = voices[0];
+        } else {
+            speechSupported = false;
+            showQuestionText();
+            updateVoiceStatus("error", "⚠️ No voice available. Showing text.");
+            const dot = document.getElementById("voiceDot");
+            if (dot) dot.className = "voice-dot error";
+            return;
+        }
+    }
+
+    function speakOnce(voice, rate, callback) {
+        let utter = new SpeechSynthesisUtterance(text);
+        utter.lang = 'en-US';
+        utter.rate = rate;
+        utter.pitch = 1;
+        utter.volume = 1;
+        if (voice) utter.voice = voice;
+
+        utter.onstart = function() {
+            isSpeaking = true;
+            isQuestionSpeaking = true;
+            updateVoiceStatus("reading", "🔊 Reading question...");
+            const dot = document.getElementById("voiceDot");
+            if (dot) dot.className = "voice-dot speaking";
+        };
+        utter.onend = function() {
+            isSpeaking = false;
+            isQuestionSpeaking = false;
+            if (callback) callback();
+        };
+        utter.onerror = function(e) {
+            isSpeaking = false;
+            isQuestionSpeaking = false;
+            console.log('Speech error:', e);
+            voiceAttempts++;
+            if (voiceAttempts >= MAX_VOICE_ATTEMPTS) {
+                speechSupported = false;
+                showQuestionText();
+                updateVoiceStatus("error", "⚠️ Voice failed. Showing text.");
+                const dot = document.getElementById("voiceDot");
+                if (dot) dot.className = "voice-dot error";
+            } else {
+                if (callback) callback();
+            }
+        };
+        speechSynth.speak(utter);
+    }
+
+    updateVoiceStatus("reading", "🔊 Reading (1/2)...");
+    const dot = document.getElementById("voiceDot");
+    if (dot) dot.className = "voice-dot speaking";
+
+    speakOnce(voice1, 0.9, function() {
+        if (!speechSupported) return;
+        readCount = 1;
+        updateVoiceStatus("reading", "🔊 Reading (2/2)... slower");
+        if (dot) dot.className = "voice-dot speaking";
+
+        setTimeout(function() {
+            if (!speechSupported) return;
+            speakOnce(voice2, 0.7, function() {
+                if (!speechSupported) return;
+                readCount = 2;
+                updateVoiceStatus("done", "✅ Question read twice. You can answer now.");
+                if (dot) dot.className = "voice-dot idle";
+                
+                const listenBtn = document.getElementById("listenAgainBtn");
+                if (listenBtn) listenBtn.style.display = "inline-block";
+                
+                const showBtn = document.getElementById("showTextBtn");
+                if (showBtn) showBtn.style.display = "inline-block";
+            });
+        }, 800);
+    });
+}
+
+function replayQuestion() {
+    const qTextEl = document.getElementById("questionTextDisplay");
+    if (!qTextEl) return;
+    
+    let text = qTextEl.textContent || qTextEl.innerText;
+    text = text.replace('📝 ', '').trim();
+    
+    if (text && speechSupported) {
+        const listenBtn = document.getElementById("listenAgainBtn");
+        if (listenBtn) listenBtn.style.display = "none";
+        readQuestionTwice(text);
+    } else if (text) {
+        showQuestionText();
+    }
+}
+
+// ============================================
+// 9. MOBILE WAKE UP
+// ============================================
+function wakeUpSpeech() {
+    if (!window._speechStarted && 'speechSynthesis' in window) {
+        window._speechStarted = true;
+        let empty = new SpeechSynthesisUtterance(' ');
+        empty.volume = 0;
+        speechSynth.speak(empty);
+        console.log('✅ Speech API woken up');
+    }
+}
+
+// ============================================
+// 10. PRELOAD VOICES
+// ============================================
+function preloadVoices() {
+    if ('speechSynthesis' in window) {
+        speechSynth.getVoices();
+        speechSynth.onvoiceschanged = function() {
+            speechSynth.getVoices();
+            console.log('✅ Voices loaded:', speechSynth.getVoices().length);
+        };
+    }
+}
+
+// ============================================
+// 11. TEST FUNCTION
+// ============================================
+function testSpeech() {
+    if (!('speechSynthesis' in window)) {
+        alert('Text-to-Speech not supported!');
+        return;
+    }
+    const msg = new SpeechSynthesisUtterance('Hello, this is a test. Can you hear me?');
+    msg.lang = 'en-US';
+    msg.rate = 0.9;
+    window.speechSynthesis.speak(msg);
+    alert('Speaking... Can you hear?');
+}
+
+// ============================================
+// 12. EXAM FUNCTIONS
 // ============================================
 function startExam() {
     currentSet = examSets[selectedSetName];
@@ -948,6 +1174,12 @@ function loadQuestion() {
     setTimeout(function() {
         if (selectedQuestion && !hasAutoPlayed) {
             if (speechSupported) {
+                if (!window._speechStarted) {
+                    window._speechStarted = true;
+                    let empty = new SpeechSynthesisUtterance(' ');
+                    empty.volume = 0;
+                    speechSynth.speak(empty);
+                }
                 readQuestionTwice(selectedQuestion.prompt);
             } else {
                 showQuestionText();
@@ -958,155 +1190,6 @@ function loadQuestion() {
             hasAutoPlayed = true;
         }
     }, 1000);
-}
-
-function readQuestionTwice(text) {
-    if (!speechSupported) {
-        showQuestionText();
-        return;
-    }
-
-    if (isQuestionSpeaking) {
-        speechSynth.cancel();
-        isQuestionSpeaking = false;
-        setTimeout(() => readQuestionTwice(text), 300);
-        return;
-    }
-
-    if (speechSynth.speaking) {
-        speechSynth.cancel();
-    }
-
-    readCount = 0;
-    let voices = speechSynth.getVoices();
-    if (voices.length === 0) {
-        speechSynth.onvoiceschanged = function() {
-            voices = speechSynth.getVoices();
-            if (voices.length === 0) {
-                speechSupported = false;
-                showQuestionText();
-                updateVoiceStatus("error", "⚠️ No voice available. Showing text.");
-                document.getElementById("voiceDot").className = "voice-dot error";
-                return;
-            }
-            startReading(text, voices);
-        };
-        setTimeout(function() {
-            if (readCount === 0 && !isQuestionSpeaking) {
-                speechSupported = false;
-                showQuestionText();
-                updateVoiceStatus("error", "⚠️ Voice timeout. Showing text.");
-                document.getElementById("voiceDot").className = "voice-dot error";
-            }
-        }, 3000);
-    } else {
-        startReading(text, voices);
-    }
-}
-
-function startReading(text, voices) {
-    let voice1 = null, voice2 = null;
-    let engVoices = voices.filter(v => v.lang.startsWith('en'));
-    if (engVoices.length >= 2) {
-        voice1 = engVoices[0];
-        voice2 = engVoices[1];
-    } else if (engVoices.length === 1) {
-        voice1 = engVoices[0];
-        voice2 = engVoices[0];
-    } else {
-        if (voices.length >= 2) {
-            voice1 = voices[0];
-            voice2 = voices[1];
-        } else if (voices.length === 1) {
-            voice1 = voices[0];
-            voice2 = voices[0];
-        } else {
-            speechSupported = false;
-            showQuestionText();
-            updateVoiceStatus("error", "⚠️ No voice available. Showing text.");
-            document.getElementById("voiceDot").className = "voice-dot error";
-            return;
-        }
-    }
-
-    function speakOnce(voice, rate, callback) {
-        let utter = new SpeechSynthesisUtterance(text);
-        utter.lang = 'en-US';
-        utter.rate = rate;
-        utter.pitch = 1;
-        utter.volume = 1;
-        if (voice) utter.voice = voice;
-
-        utter.onstart = function() {
-            isSpeaking = true;
-            isQuestionSpeaking = true;
-            updateVoiceStatus("reading", "🔊 Reading question...");
-            document.getElementById("voiceDot").className = "voice-dot speaking";
-        };
-        utter.onend = function() {
-            isSpeaking = false;
-            isQuestionSpeaking = false;
-            if (callback) callback();
-        };
-        utter.onerror = function(e) {
-            isSpeaking = false;
-            isQuestionSpeaking = false;
-            console.log('Speech error:', e);
-            voiceAttempts++;
-            if (voiceAttempts >= MAX_VOICE_ATTEMPTS) {
-                speechSupported = false;
-                showQuestionText();
-                updateVoiceStatus("error", "⚠️ Voice failed. Showing text.");
-                document.getElementById("voiceDot").className = "voice-dot error";
-            } else {
-                if (callback) callback();
-            }
-        };
-        speechSynth.speak(utter);
-    }
-
-    updateVoiceStatus("reading", "🔊 Reading (1/2)...");
-    document.getElementById("voiceDot").className = "voice-dot speaking";
-
-    speakOnce(voice1, 0.9, function() {
-        if (!speechSupported) return;
-        readCount = 1;
-        updateVoiceStatus("reading", "🔊 Reading (2/2)... slower");
-        document.getElementById("voiceDot").className = "voice-dot speaking";
-
-        setTimeout(function() {
-            if (!speechSupported) return;
-            speakOnce(voice2, 0.7, function() {
-                if (!speechSupported) return;
-                readCount = 2;
-                updateVoiceStatus("done", "✅ Question read twice. You can answer now.");
-                document.getElementById("voiceDot").className = "voice-dot idle";
-                document.getElementById("listenAgainBtn").style.display = "inline-block";
-                document.getElementById("showTextBtn").style.display = "inline-block";
-            });
-        }, 800);
-    });
-}
-
-function showQuestionText() {
-    const qTextEl = document.getElementById("questionTextDisplay");
-    qTextEl.classList.remove("hidden-text");
-    document.getElementById("showTextBtn").style.display = "none";
-    updateVoiceStatus("text-mode", "📝 Question text is shown below");
-}
-
-function replayQuestion() {
-    if (selectedQuestion && speechSupported) {
-        document.getElementById("listenAgainBtn").style.display = "none";
-        readQuestionTwice(selectedQuestion.prompt);
-    } else if (selectedQuestion) {
-        showQuestionText();
-    }
-}
-
-function updateVoiceStatus(status, message) {
-    const el = document.getElementById("voiceStatus");
-    el.innerHTML = `<span class="${status}">${message}</span>`;
 }
 
 function startTimer() {
@@ -1192,9 +1275,9 @@ function backToSets() {
 }
 
 // ============================================
-// 8. INITIALIZATION
+// 13. INITIALIZATION
 // ============================================
-window.onload = function() {
+document.addEventListener('DOMContentLoaded', function() {
     if (localStorage.getItem("session_active") === "true") {
         document.getElementById("authScreen").classList.add("hidden");
         document.getElementById("startScreen").classList.remove("hidden");
@@ -1203,16 +1286,37 @@ window.onload = function() {
     
     speechSupported = checkSpeechSupport();
     if (!speechSupported) {
-        console.log('Speech synthesis not supported on this device');
+        console.log('⚠️ Speech synthesis not supported on this device');
     }
     
-    if (speechSynth) {
-        speechSynth.getVoices();
-        speechSynth.onvoiceschanged = function() {
-            speechSynth.getVoices();
-        };
-    }
-};
+    preloadVoices();
+    
+    document.addEventListener('click', function() {
+        wakeUpSpeech();
+    });
+    
+    console.log('✅ MARLINS SPEAK loaded (Mobile compatible)');
+});
+
+// ============================================
+// 14. EXPOSE FUNCTIONS TO WINDOW
+// ============================================
+window.testSpeech = testSpeech;
+window.readQuestionTwice = readQuestionTwice;
+window.replayQuestion = replayQuestion;
+window.showQuestionText = showQuestionText;
+window.wakeUpSpeech = wakeUpSpeech;
+window.preloadVoices = preloadVoices;
+window.updateVoiceStatus = updateVoiceStatus;
+window.verifySecureActivation = verifySecureActivation;
+window.resetAllData = resetAllData;
+window.lockAppAccess = lockAppAccess;
+window.startExam = startExam;
+window.submitAnswer = submitAnswer;
+window.toggleAnswer = toggleAnswer;
+window.backToSets = backToSets;
+
+console.log('✅ All functions exposed to window');
 </script>
 </body>
 </html>
