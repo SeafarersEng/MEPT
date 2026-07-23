@@ -295,12 +295,6 @@
         .finish-card h2 {
             color: #facc15;
         }
-        .result-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 10px;
-            margin: 16px 0;
-        }
         .result-item {
             background: #1e293b;
             border-radius: 16px;
@@ -312,7 +306,6 @@
             h1 { font-size: 1.6rem; }
             .q-text { font-size: 1rem; padding: 14px; }
             .set-grid { grid-template-columns: repeat(3, 1fr); }
-            .result-grid { grid-template-columns: 1fr; }
         }
         .scroll-y {
             max-height: 340px;
@@ -322,6 +315,18 @@
         .scroll-y::-webkit-scrollbar { width: 4px; }
         .scroll-y::-webkit-scrollbar-track { background: #1e293b; border-radius: 20px; }
         .scroll-y::-webkit-scrollbar-thumb { background: #facc15; border-radius: 20px; }
+        
+        /* Mobile tap hint */
+        .tap-hint {
+            color: #94a3b8;
+            font-size: 0.8rem;
+            background: #0f172a;
+            padding: 6px 14px;
+            border-radius: 30px;
+            border: 1px dashed #475569;
+            display: inline-block;
+            margin: 4px auto;
+        }
     </style>
 </head>
 <body>
@@ -364,6 +369,7 @@
                 <span id="voiceStatus">🔊 AI is reading (1/2) ...</span>
             </div>
             <div class="q-text" id="questionTextDisplay">🎧 Listen twice</div>
+            <span class="tap-hint">👆 Tap anywhere to enable voice</span>
             <img id="questionImage" class="hidden" style="width:100%; max-height:200px; object-fit:contain; border-radius:20px; margin:6px 0 10px; background:#0b1120;" alt="question image">
             
             <div class="answer-section">
@@ -394,7 +400,6 @@
 // 1. SECURE KEYS (Base64 + New Keys)
 // ============================================
 const SECURE_ALLOWED_KEYS = [
-    // ===== Base64 Keys (Original) =====
     "WThWMk01NTA=", "UjRCOVEzMTI=", "SzFXN1o4NDU=", "VDNENVg2MTk=", "TTZQMUg4NzI=",
     "RjlZM1cyMTA=", "QjJWOEs1NDM=", "SDRNMVo3NjA=", "QzhGNVAyMTk=", "WDNUOVE2NTQ=",
     "UzdSMlc4MTA=", "TjFLNUQ0MzI=", "UDlGM0c3NjU=", "VzJCOEMxMDQ=", "SjZWME41NDI=",
@@ -415,8 +420,6 @@ const SECURE_ALLOWED_KEYS = [
     "RDhWMVg0MjM=", "VDRRMk44MTU=", "RjNIOVo1NDA=", "QjdLMk00MzE=", "UDFXNlM4NzI=",
     "WThHMU4zNTQ=", "RjRSOUI2MTA=", "TTJYN0s4OTE=", "UzZQM0M1NDI=", "NjlUMUY4MzA=",
     "VzhWMlE2NTQ=", "SzRCOVoxMDM=", "TDdNM0g1NDI=", "WDFEOVA4NjA=", "WjZGMkM3NDM=",
-    
-    // ===== New Keys (MN23OP1D style) =====
     "MN23OP1D", "PQ45QR2E", "RS67ST3F", "TU89UV4G", "VW01WX5H",
     "XY12YZ6I", "ZA34AB7J", "BC56CD8K", "DE78EF9L", "FG90GH0M",
     "HI12IJ1N", "JK34KL2O", "LM56MN3P", "NO78OP4Q", "PQ90QR5R",
@@ -440,12 +443,9 @@ const SECURE_ALLOWED_KEYS = [
 ];
 
 // ============================================
-// 2. EXAM DATA — Sets 1 to 15 (B1 Level)
-//    Set 1-10: with images (picture filenames)
-//    Set 11-15: no images, more debates
+// 2. EXAM DATA (Sets 1-10 with images, Sets 11-15 no images)
 // ============================================
 const examSets = {
-    // ========== SET 1 to 10 (with images, B1 Level) ==========
     set1: [
         { type: "Short Answer", timeLimit: 50, prompt: "Introduce yourself and tell me where you live.", image: "", answerEng: "Hello, my name is Aung Ko. I am from Yangon, which is the largest city in Myanmar. I live in a peaceful neighborhood near the river with my family. I am 24 years old and I enjoy learning new things every day.", answerMm: "မင်္ဂလာပါ။ ကျွန်တော် အောင်ကိုပါ။ ကျွန်တော် မြန်မာနိုင်ငံရဲ့ အကြီးဆုံးမြို့ဖြစ်တဲ့ ရန်ကုန်ကပါ။ မြစ်အနီးက ငြိမ်းချမ်းတဲ့ရပ်ကွက်လေးမှာ မိသားစုနဲ့ အတူနေပါတယ်။ အသက် ၂၄ နှစ်ရှိပြီး နေ့တိုင်း အသစ်အဆန်းတွေ သင်ယူရတာ နှစ်သက်ပါတယ်။" },
         { type: "Short Answer", timeLimit: 50, prompt: "Why do you want to become a seafarer?", image: "", answerEng: "I want to become a seafarer because I have always been fascinated by the ocean and ships. I also want to explore different countries, experience various cultures, and earn a good income to support my family. I believe this career offers both adventure and stability.", answerMm: "ကျွန်တော် သင်္ဘောသားဖြစ်ချင်တာက ပင်လယ်နဲ့ သင်္ဘောတွေကို ငယ်ငယ်ကတည်းက စိတ်ဝင်စားခဲ့လို့ပါ။ နိုင်ငံအမျိုးမျိုးကို စူးစမ်းလေ့လာချင်တယ်၊ ယဉ်ကျေးမှုအမျိုးမျိုးကို တွေ့ကြုံချင်တယ်၊ မိသားစုကို ထောက်ပံ့ဖို့ ဝင်ငွေကောင်းကောင်းရချင်တယ်။ ဒီအလုပ်က စွန့်စားမှုရော တည်ငြိမ်မှုပါ ပေးတယ်လို့ ယုံကြည်ပါတယ်။" },
@@ -536,8 +536,6 @@ const examSets = {
         { type: "Picture Description", timeLimit: 120, prompt: "Look at the picture. Describe the correct procedure for discharging ballast water and the environmental risks of oil spills during bunkering.", image: "set10_environment.png", answerEng: "Ballast water must be treated before discharging. Oil spills during bunkering are very harmful to marine life, so we must monitor carefully.", answerMm: "ဘားလက်စ်ရေကို စွန့်ပစ်မတိုင်ခင် သန့်စင်ရမယ်။ ဆီဖြည့်တင်းစဉ်အတွင်း ဆီယိုဖိတ်မှုက ရေနေသတ္တဝါတွေကို အလွန်ထိခိုက်စေတဲ့အတွက် ဂရုတစိုက် စောင့်ကြည့်ရမယ်။" },
         { type: "Debate", timeLimit: 120, prompt: "Marlins Debate: 'Regular crew safety drills are simply for passing inspections and do not actually prepare us for real emergencies.' Argue your position.", image: "", answerEng: "I disagree. Drills make us practice emergency actions so we can react quickly in a real situation. They save lives.", answerMm: "ကျွန်တော် သဘောမတူပါဘူး။ လေ့ကျင့်ခန်းတွေက အရေးပေါ်လုပ်ဆောင်မှုတွေကို လေ့ကျင့်စေပြီး တကယ့်အခြေအနေမှာ မြန်မြန်တုံ့ပြန်နိုင်စေတယ်။ အသက်တွေကို ကယ်တယ်။" }
     ],
-
-    // ========== SET 11 to 15 (NO images, more debates, B1 Level) ==========
     set11: [
         { type: "Debate", timeLimit: 120, prompt: "Marlins Debate: 'Crew members should be allowed to keep a small amount of alcohol in their cabins to relax after long working hours.' Do you support this?", image: "", answerEng: "I do not support this idea. Alcohol consumption on board can impair judgment and reaction time, which is extremely dangerous in a maritime environment where quick decisions are often required. Even a small amount of alcohol can affect a person's ability to respond to emergencies. Instead of alcohol, I believe we should encourage healthier ways to relax, such as reading, exercise, or socializing with colleagues in designated areas. Many shipping companies already have strict no-alcohol policies, and these rules are in place to ensure the safety of everyone on board. It is better to maintain professionalism at all times and find alternative ways to unwind after work.", answerMm: "ကျွန်တော် ဒီအဆိုကို မထောက်ခံပါဘူး။ သင်္ဘောပေါ်မှာ အရက်သောက်ခြင်းက ဆုံးဖြတ်ချက်ချနိုင်စွမ်းနဲ့ တုံ့ပြန်ချိန်ကို ထိခိုက်စေနိုင်ပါတယ်၊ ဒါက မကြာခဏ လျင်မြန်တဲ့ ဆုံးဖြတ်ချက်တွေ လိုအပ်တဲ့ ရေကြောင်းပတ်ဝန်းကျင်မှာ အလွန်အန္တရာယ်များပါတယ်။ အရက်အနည်းငယ်တောင်မှ လူတစ်ယောက်ရဲ့ အရေးပေါ်အခြေအနေတွေကို တုံ့ပြန်နိုင်စွမ်းကို ထိခိုက်စေနိုင်ပါတယ်။ အရက်အစား စာဖတ်ခြင်း၊ လေ့ကျင့်ခန်းလုပ်ခြင်း ဒါမှမဟုတ် သတ်မှတ်ထားတဲ့နေရာတွေမှာ လုပ်ဖော်ကိုင်ဖက်တွေနဲ့ ပေါင်းသင်းခြင်းလိုမျိုး ကျန်းမာရေးနဲ့ညီညွတ်တဲ့ အနားယူနည်းတွေကို အားပေးသင့်တယ်လို့ ယုံကြည်ပါတယ်။ သင်္ဘောကုမ္ပဏီအများအပြားမှာ အရက်လုံးဝမသောက်ရဆိုတဲ့ မူဝါဒတွေရှိပြီးသားဖြစ်ပြီး ဒီစည်းမျဉ်းတွေက သင်္ဘောပေါ်က လူတိုင်းရဲ့ ဘေးကင်းရေးကို သေချာစေဖို့အတွက် ချမှတ်ထားတာပါ။ အချိန်တိုင်း ကျွမ်းကျင်မှုကို ထိန်းသိမ်းပြီး အလုပ်ပြီးရင် အနားယူဖို့ အခြားနည်းလမ်းတွေ ရှာဖွေတာ ပိုကောင်းပါတယ်။" },
         { type: "Debate", timeLimit: 120, prompt: "Marlins Debate: 'When a Pilot is on board, the Master is completely relieved of all navigational responsibility.' Do you agree with this statement?", image: "", answerEng: "I disagree with this statement. While the Pilot provides valuable local knowledge and advice when entering ports or navigating in confined waters, the Master still holds the ultimate responsibility for the safety of the ship, crew, and cargo. The Master must supervise the Pilot's actions and ensure that the vessel is being handled safely. If the Master has any concerns about the Pilot's instructions, they have the authority to intervene. The responsibility cannot be transferred; it is shared, but the Master remains accountable. This is clearly stated in maritime regulations and is a fundamental principle of ship management.", answerMm: "ကျွန်တော် ဒီအဆိုကို သဘောမတူပါဘူး။ လမ်းပြက ဆိပ်ကမ်းဝင်တဲ့အခါ ဒါမှမဟုတ် ကန့်သတ်ရေပြင်တွေမှာ သွားလာတဲ့အခါ အဖိုးတန်တဲ့ ဒေသန္တရအသိပညာနဲ့ အကြံဉာဏ်တွေကို ပေးစွမ်းပေမယ့် သင်္ဘော၊ သင်္ဘောသားတွေနဲ့ ကုန်ပစ္စည်းတွေရဲ့ ဘေးကင်းရေးအတွက် နောက်ဆုံးတာဝန်က ကပ္ပတိန်မှာပဲ ရှိပါတယ်။ ကပ္ပတိန်က လမ်းပြရဲ့ ဆောင်ရွက်ချက်တွေကို ကြီးကြပ်ပြီး သင်္ဘောကို ဘေးကင်းစွာ ကိုင်တွယ်ကြောင်း သေချာစေရပါမယ်။ ကပ္ပတိန်က လမ်းပြရဲ့ ညွှန်ကြားချက်တွေနဲ့ပတ်သက်ပြီး စိုးရိမ်မှုရှိရင် ဝင်ရောက်စွက်ဖက်ပိုင်ခွင့်ရှိပါတယ်။ တာဝန်ကို လွှဲပြောင်းလို့မရပါဘူး၊ မျှဝေထားပေမယ့် ကပ္ပတိန်က တာဝန်ခံနေဆဲပါ။ ဒါက ရေကြောင်းစည်းမျဉ်းတွေမှာ ရှင်းရှင်းလင်းလင်း ဖော်ပြထားပြီး သင်္ဘောစီမံခန့်ခွဲမှုရဲ့ အခြေခံမူတစ်ခုပါ။" },
@@ -577,6 +575,7 @@ let utterance = null;
 let isSpeaking = false;
 let readCount = 0;
 let readInterval = null;
+let userInteracted = false;
 
 // ============================================
 // 4. DEVICE FINGERPRINT & AUTH
@@ -651,7 +650,44 @@ function lockAppAccess() {
 }
 
 // ============================================
-// 5. EXAM — VOICE READS TWICE
+// 5. ENABLE VOICE ON MOBILE (Tap to enable)
+// ============================================
+// Any touch/click enables voice on mobile
+document.addEventListener('touchstart', function() {
+    if (!userInteracted) {
+        userInteracted = true;
+        console.log('Voice enabled (mobile tap)');
+        // If a question is loaded, read it
+        if (selectedQuestion && !speechSynth.speaking) {
+            readQuestionTwice(selectedQuestion.prompt);
+        }
+    }
+}, { once: true });
+
+document.addEventListener('click', function() {
+    if (!userInteracted) {
+        userInteracted = true;
+        console.log('Voice enabled (click)');
+        if (selectedQuestion && !speechSynth.speaking) {
+            readQuestionTwice(selectedQuestion.prompt);
+        }
+    }
+}, { once: true });
+
+// Also enable when "Show answer" button is clicked
+document.addEventListener('DOMContentLoaded', function() {
+    document.getElementById('showAnswerBtn').addEventListener('click', function() {
+        if (!userInteracted) {
+            userInteracted = true;
+            if (selectedQuestion && !speechSynth.speaking) {
+                readQuestionTwice(selectedQuestion.prompt);
+            }
+        }
+    });
+});
+
+// ============================================
+// 6. EXAM — VOICE READS TWICE (1st normal, 2nd slower)
 // ============================================
 function startExam() {
     currentSet = examSets[selectedSetName];
@@ -671,7 +707,6 @@ function loadQuestion() {
 
     document.getElementById("questionTextDisplay").innerHTML = "🎧 Listen twice ...";
 
-    // Show image ONLY if Set 1-10 (set1 to set10)
     let setNum = parseInt(selectedSetName.replace('set', ''));
     let img = document.getElementById("questionImage");
     if (setNum <= 10 && selectedQuestion.image && selectedQuestion.image.length > 0) {
@@ -686,7 +721,15 @@ function loadQuestion() {
 
     startTimer();
     readCount = 0;
-    readQuestionTwice(selectedQuestion.prompt);
+    
+    // If user already interacted, read automatically
+    if (userInteracted) {
+        readQuestionTwice(selectedQuestion.prompt);
+    } else {
+        // Show hint to tap
+        document.getElementById("voiceStatus").innerHTML = "👆 Tap anywhere to hear the question";
+        document.getElementById("voiceDot").style.background = "#facc15";
+    }
 }
 
 function readQuestionTwice(text) {
@@ -727,10 +770,10 @@ function startReading(text, voices) {
         }
     }
 
-    function speakOnce(voice, callback) {
+    function speakOnce(voice, rate, callback) {
         let utter = new SpeechSynthesisUtterance(text);
         utter.lang = 'en-US';
-        utter.rate = 0.85;
+        utter.rate = rate; // 1st: 0.9 (normal), 2nd: 0.7 (slower)
         utter.pitch = 1;
         utter.volume = 1;
         if (voice) utter.voice = voice;
@@ -744,13 +787,15 @@ function startReading(text, voices) {
     document.getElementById("voiceStatus").innerHTML = "🔊 AI reading (1/2) ...";
     document.getElementById("voiceDot").style.background = "#facc15";
 
-    speakOnce(voice1, function() {
+    // 1st read: normal speed (0.9)
+    speakOnce(voice1, 0.9, function() {
         readCount = 1;
-        document.getElementById("voiceStatus").innerHTML = "🔊 AI reading (2/2) ...";
+        document.getElementById("voiceStatus").innerHTML = "🔊 AI reading (2/2) ... slower";
         document.getElementById("voiceDot").style.background = "#facc15";
 
+        // 2nd read: slower (0.7) after 800ms
         setTimeout(function() {
-            speakOnce(voice2, function() {
+            speakOnce(voice2, 0.7, function() {
                 readCount = 2;
                 document.getElementById("voiceStatus").innerHTML = "✅ Question read twice. Start speaking.";
                 document.getElementById("voiceDot").style.background = "#22c55e";
@@ -844,27 +889,6 @@ window.onload = function() {
     }
     speechSynth.getVoices();
 };
-    // ဖုန်းအတွက် - နှိပ်မှသာ အသံဖတ်ပေးမယ်
-let userInteracted = false;
-
-document.addEventListener('touchstart', function() {
-    userInteracted = true;
-    // အသံထွက်အောင်လုပ်ပေးတယ်
-    if (speechSynth.speaking) return;
-    if (selectedQuestion) {
-        readQuestionTwice(selectedQuestion.prompt);
-    }
-}, { once: true });
-
-// ဒါမှမဟုတ် "Show answer" ကိုနှိပ်တာနဲ့ အသံဖွင့်ပေးမယ်
-document.getElementById('showAnswerBtn').addEventListener('click', function() {
-    if (!userInteracted) {
-        userInteracted = true;
-        if (selectedQuestion) {
-            readQuestionTwice(selectedQuestion.prompt);
-        }
-    }
-});
 </script>
 </body>
 </html>
