@@ -3,8 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
-    <title>MARLINS SPEAK · AI Voice 2x</title>
+    <title>MARLINS SPEAK · AI Voice</title>
     <style>
+        /* ============================================
+           CSS ONLY - Full Styles
+           ============================================ */
+        
+        /* ----- RESET & BASE ----- */
         * {
             box-sizing: border-box;
             margin: 0;
@@ -29,13 +34,17 @@
             box-shadow: 0 20px 40px rgba(0,0,0,0.6);
             border: 1px solid #334155;
         }
+
+        /* ----- UTILITY ----- */
         .hidden { display: none !important; }
         .flex-col { display: flex; flex-direction: column; gap: 18px; }
         .text-center { text-align: center; }
         .mt-1 { margin-top: 8px; }
         .mt-2 { margin-top: 16px; }
         .mb-1 { margin-bottom: 8px; }
+        .mx-auto { margin-left: auto; margin-right: auto; }
 
+        /* ----- TYPOGRAPHY ----- */
         h1 {
             font-size: 1.9rem;
             font-weight: 700;
@@ -55,29 +64,7 @@
             font-size: 0.95rem;
         }
 
-        .auth-box {
-            background: #0f172a;
-            border-radius: 28px;
-            padding: 28px 20px;
-            border: 1px solid #334155;
-        }
-        .key-input {
-            width: 100%;
-            padding: 16px 18px;
-            background: #0b1120;
-            border: 2px solid #334155;
-            border-radius: 40px;
-            color: #f1f5f9;
-            font-size: 1.1rem;
-            text-align: center;
-            letter-spacing: 2px;
-            font-weight: 600;
-        }
-        .key-input:focus {
-            outline: none;
-            border-color: #facc15;
-            box-shadow: 0 0 0 3px rgba(250, 204, 21, 0.2);
-        }
+        /* ----- BUTTONS ----- */
         .btn {
             background: #3b82f6;
             border: none;
@@ -115,6 +102,36 @@
             transform: none;
             box-shadow: none;
         }
+        .btn-small {
+            padding: 8px 18px;
+            font-size: 0.85rem;
+            min-width: auto;
+        }
+
+        /* ----- AUTH BOX ----- */
+        .auth-box {
+            background: #0f172a;
+            border-radius: 28px;
+            padding: 28px 20px;
+            border: 1px solid #334155;
+        }
+        .key-input {
+            width: 100%;
+            padding: 16px 18px;
+            background: #0b1120;
+            border: 2px solid #334155;
+            border-radius: 40px;
+            color: #f1f5f9;
+            font-size: 1.1rem;
+            text-align: center;
+            letter-spacing: 2px;
+            font-weight: 600;
+        }
+        .key-input:focus {
+            outline: none;
+            border-color: #facc15;
+            box-shadow: 0 0 0 3px rgba(250, 204, 21, 0.2);
+        }
         .error {
             color: #f87171;
             background: #451a1a;
@@ -124,6 +141,7 @@
             border-left: 4px solid #f87171;
         }
 
+        /* ----- SET SELECTOR ----- */
         .set-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
@@ -148,6 +166,7 @@
             box-shadow: 0 1px 0 #0f172a;
         }
 
+        /* ----- QUESTION PANEL ----- */
         .question-panel {
             background: #0f172a;
             border-radius: 32px;
@@ -188,7 +207,21 @@
             font-weight: 600;
             letter-spacing: 0.3px;
             text-shadow: 0 0 8px rgba(250,204,21,0.15);
+            text-align: center;
         }
+        .question-image {
+            width: 100%;
+            max-height: 200px;
+            object-fit: contain;
+            border-radius: 20px;
+            margin: 6px 0 10px;
+            background: #0b1120;
+        }
+        .question-image.hidden {
+            display: none;
+        }
+
+        /* ----- VOICE INDICATOR ----- */
         .voice-indicator {
             display: flex;
             align-items: center;
@@ -212,6 +245,28 @@
             50% { opacity: 1; transform: scale(1.2); }
             100% { opacity: 0.3; transform: scale(0.8); }
         }
+
+        /* ----- VOICE CONTROL (PLAY BUTTON) ----- */
+        .voice-control {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin: 6px 0 10px;
+            flex-wrap: wrap;
+        }
+        .voice-control .btn {
+            min-width: auto;
+            padding: 10px 24px;
+            font-size: 0.95rem;
+            margin: 0;
+        }
+        .voice-hint {
+            font-size: 0.75rem;
+            color: #94a3b8;
+        }
+
+        /* ----- TIMER ----- */
         .timer-box {
             font-size: 2rem;
             font-weight: 700;
@@ -223,6 +278,8 @@
             color: #facc15;
             border: 1px solid #334155;
         }
+
+        /* ----- ANSWER SECTION ----- */
         .answer-section {
             background: #1a2538;
             border-radius: 28px;
@@ -266,6 +323,8 @@
         .answer-box .mm {
             color: #a7f3d0;
         }
+
+        /* ----- SUBMIT BUTTON ----- */
         .sub-btn {
             background: #facc15;
             border: none;
@@ -286,6 +345,7 @@
             box-shadow: 0 2px 0 #b68b1c;
         }
 
+        /* ----- FINISH CARD ----- */
         .finish-card {
             background: #0f172a;
             border-radius: 40px;
@@ -301,61 +361,85 @@
             padding: 12px;
             border-left: 4px solid #3b82f6;
         }
-        @media (max-width: 540px) {
-            .app-container { padding: 16px 12px; }
-            h1 { font-size: 1.6rem; }
-            .q-text { font-size: 1rem; padding: 14px; }
-            .set-grid { grid-template-columns: repeat(3, 1fr); }
-        }
+
+        /* ----- SCROLL ----- */
         .scroll-y {
             max-height: 340px;
             overflow-y: auto;
             padding-right: 4px;
         }
-        .scroll-y::-webkit-scrollbar { width: 4px; }
-        .scroll-y::-webkit-scrollbar-track { background: #1e293b; border-radius: 20px; }
-        .scroll-y::-webkit-scrollbar-thumb { background: #facc15; border-radius: 20px; }
-        
-        /* Mobile tap hint */
-        .tap-hint {
-            color: #94a3b8;
-            font-size: 0.8rem;
-            background: #0f172a;
-            padding: 6px 14px;
-            border-radius: 30px;
-            border: 1px dashed #475569;
-            display: inline-block;
-            margin: 4px auto;
+        .scroll-y::-webkit-scrollbar {
+            width: 4px;
+        }
+        .scroll-y::-webkit-scrollbar-track {
+            background: #1e293b;
+            border-radius: 20px;
+        }
+        .scroll-y::-webkit-scrollbar-thumb {
+            background: #facc15;
+            border-radius: 20px;
+        }
+
+        /* ----- RESPONSIVE ----- */
+        @media (max-width: 540px) {
+            .app-container {
+                padding: 16px 12px;
+            }
+            h1 {
+                font-size: 1.6rem;
+            }
+            .q-text {
+                font-size: 1rem;
+                padding: 14px;
+            }
+            .set-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+            .voice-control .btn {
+                padding: 12px 28px;
+                font-size: 1rem;
+                min-width: 170px;
+            }
         }
     </style>
 </head>
 <body>
-<div class="app-container" id="app">
 
-    <!-- AUTH -->
+<div class="app-container">
+
+    <!-- ==========================================
+    AUTH SCREEN
+    ========================================== -->
     <div id="authScreen" class="flex-col text-center">
         <h1>⚓ MARLINS SPEAK</h1>
         <p class="subhead">AI Voice 2x · Show answer · B1 Level</p>
         <div class="auth-box">
             <label for="keyInput" style="display:block; font-weight:500; margin-bottom:10px;">Activation Key</label>
             <input type="text" id="keyInput" class="key-input" placeholder="Enter your key" autocomplete="off">
-            <div id="authError" class="error hidden mt-1"></div>
-            <div id="deviceLockError" class="error hidden mt-1"></div>
+            <div id="authError" class="error hidden mt-1">❌ Invalid Activation Key. Please check and try again.</div>
+            <div id="deviceLockError" class="error hidden mt-1">🔒 This key is already locked to another device.</div>
             <button class="btn btn-gold mt-2" onclick="verifySecureActivation()">🔓 Unlock</button>
         </div>
         <p style="font-size:0.8rem; color:#64748b;">Key is locked to your device after first use.</p>
     </div>
 
-    <!-- START -->
+    <!-- ==========================================
+    START SCREEN (Set Selector)
+    ========================================== -->
     <div id="startScreen" class="hidden flex-col text-center">
         <h2>📚 Choose a Set</h2>
         <p class="subhead">Each set has 7 speaking exercises · AI reads each question twice</p>
-        <div id="setSelector" class="set-grid"></div>
+        <div id="setSelector" class="set-grid">
+            <!-- Set buttons will be generated by JavaScript -->
+        </div>
         <button class="btn btn-outline" onclick="lockAppAccess()" style="margin-top:20px;">🔒 Lock & exit</button>
     </div>
 
-    <!-- EXAM -->
+    <!-- ==========================================
+    EXAM SCREEN
+    ========================================== -->
     <div id="examScreen" class="hidden flex-col">
+        <!-- Header: Question number, type, timer -->
         <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px;">
             <span class="q-badge" id="questionNumber">1</span>
             <span class="q-badge">/ <span id="totalQuestion">7</span></span>
@@ -363,48 +447,61 @@
             <span class="timer-box" id="timer">0:00</span>
         </div>
 
+        <!-- Question Panel -->
         <div class="question-panel">
+            <!-- Voice Indicator -->
             <div class="voice-indicator">
                 <span class="voice-dot" id="voiceDot"></span>
-                <span id="voiceStatus">🔊 AI is reading (1/2) ...</span>
+                <span id="voiceStatus">🔊 Tap "Play Question" to hear</span>
             </div>
-              <!-- Voice အတွက် Play ခလုတ် -->
+
+            <!-- PLAY VOICE BUTTON (Mobile Fix) -->
             <div class="voice-control">
-                <button id="playVoiceBtn" class="btn btn-gold" style="min-width:auto; padding:10px 20px; font-size:0.9rem;">
-                    🔊 Play Question
-                </button>
-                <span style="font-size:0.75rem; color:#94a3b8; margin-left:8px;">(Tap to hear the question)</span>
+                <button id="playVoiceBtn" class="btn btn-gold">🔊 Play Question</button>
+                <span class="voice-hint">(Tap to hear the question)</span>
             </div>
+
+            <!-- Question Text -->
             <div class="q-text" id="questionTextDisplay">🎧 Listen twice</div>
-            <span class="tap-hint">👆 Tap anywhere to enable voice</span>
-            <img id="questionImage" class="hidden" style="width:100%; max-height:200px; object-fit:contain; border-radius:20px; margin:6px 0 10px; background:#0b1120;" alt="question image">
-           
+
+            <!-- Question Image (Set 1-10 only) -->
+            <img id="questionImage" class="question-image hidden" src="" alt="Question image">
+
+            <!-- Answer Section -->
             <div class="answer-section">
                 <button class="answer-toggle" id="showAnswerBtn" onclick="toggleAnswer()">💡 Show answer</button>
                 <div id="answerDisplay" class="answer-box hidden">
-                    <p class="eng" id="answerEnglish">English answer here</p>
-                    <p class="mm" id="answerBurmese">မြန်မာ အဖြေ ဒီမှာ</p>
+                    <p class="eng" id="answerEnglish">📘 English answer here</p>
+                    <p class="mm" id="answerBurmese">📗 မြန်မာ အဖြေ ဒီမှာ</p>
                 </div>
             </div>
         </div>
 
+        <!-- Next / Submit Button -->
         <button class="sub-btn" onclick="submitAnswer()">⏩ Next / Submit</button>
-        <button class="btn btn-outline" onclick="lockAppAccess()" style="margin:4px auto 0; font-size:0.8rem; padding:8px 18px;">Exit</button>
+
+        <!-- Exit Button -->
+        <button class="btn btn-outline btn-small" onclick="lockAppAccess()" style="margin:4px auto 0;">Exit</button>
     </div>
 
-    <!-- FINISH -->
+    <!-- ==========================================
+    FINISH SCREEN
+    ========================================== -->
     <div id="processingScreen" class="hidden text-center finish-card">
         <h2>✅ Practice complete!</h2>
         <p style="color:#94a3b8; margin:12px 0;">You finished all 7 questions.</p>
-        <div id="resultContainer" class="scroll-y" style="text-align:left; margin:16px 0;"></div>
+        <div id="resultContainer" class="scroll-y" style="text-align:left; margin:16px 0;">
+            <!-- Results will be inserted here -->
+        </div>
         <button class="btn btn-gold" onclick="backToSets()">📋 Back to sets</button>
         <button class="btn btn-outline" onclick="lockAppAccess()" style="margin:10px auto 0;">Lock</button>
     </div>
 
 </div>
+
 <script>
 // ============================================
-// 1. SECURE KEYS (Base64 + New Keys)
+// 1. SECURE KEYS
 // ============================================
 const SECURE_ALLOWED_KEYS = [
     "WThWMk01NTA=", "UjRCOVEzMTI=", "SzFXN1o4NDU=", "VDNENVg2MTk=", "TTZQMUg4NzI=",
@@ -450,7 +547,7 @@ const SECURE_ALLOWED_KEYS = [
 ];
 
 // ============================================
-// 2. EXAM DATA (Sets 1-10 with images, Sets 11-15 no images)
+// 2. EXAM DATA (Sets 1-15)
 // ============================================
 const examSets = {
     set1: [
@@ -568,6 +665,9 @@ const examSets = {
     ]
 };
 
+// ============================================
+// 3. GLOBALS
+// ============================================
 let currentSet = [];
 let currentQuestion = 0;
 let timer;
@@ -580,7 +680,59 @@ let readCount = 0;
 let userInteracted = false;
 
 // ============================================
-// 4. DEVICE FINGERPRINT & AUTH
+// 4. MOBILE FIX - Wake up speech API
+// ============================================
+function wakeUpSpeech() {
+    if (!userInteracted) {
+        userInteracted = true;
+        // Speak empty text to "wake up" the speech API on mobile
+        const emptyUtter = new SpeechSynthesisUtterance(' ');
+        emptyUtter.volume = 0;
+        speechSynth.speak(emptyUtter);
+        console.log('✅ Speech API woken up');
+    }
+}
+
+// ============================================
+// 5. PLAY VOICE BUTTON - Mobile fix (2 clicks)
+// ============================================
+
+document.addEventListener('DOMContentLoaded', function() {
+    const playBtn = document.getElementById('playVoiceBtn');
+    if (playBtn) {
+        playBtn.addEventListener('click', function(e) {
+            e.stopPropagation();
+            userInteracted = true;
+            console.log('✅ Play button clicked');
+            
+            // Force speech to work on mobile by speaking empty text first
+            if (!speechSynth.speaking) {
+                // First, speak empty to "wake up" the speech API on mobile
+                const emptyUtter = new SpeechSynthesisUtterance(' ');
+                emptyUtter.volume = 0;
+                speechSynth.speak(emptyUtter);
+                
+                // Then speak the actual question after a short delay
+                setTimeout(function() {
+                    if (selectedQuestion) {
+                        readQuestionTwice(selectedQuestion.prompt);
+                    }
+                }, 300);
+            } else {
+                // If already speaking, restart
+                speechSynth.cancel();
+                setTimeout(function() {
+                    if (selectedQuestion) {
+                        readQuestionTwice(selectedQuestion.prompt);
+                    }
+                }, 300);
+            }
+        });
+    }
+});
+
+// ============================================
+// 6. DEVICE FINGERPRINT & AUTH
 // ============================================
 function generateDeviceFingerprint() {
     let data = navigator.userAgent + navigator.language + screen.width;
@@ -652,28 +804,7 @@ function lockAppAccess() {
 }
 
 // ============================================
-// 5. PLAY VOICE BUTTON - Mobile fix
-// ============================================
-document.addEventListener('DOMContentLoaded', function() {
-    const playBtn = document.getElementById('playVoiceBtn');
-    if (playBtn) {
-        playBtn.addEventListener('click', function(e) {
-            e.stopPropagation();
-            userInteracted = true;
-            if (selectedQuestion && !speechSynth.speaking) {
-                readQuestionTwice(selectedQuestion.prompt);
-            } else if (speechSynth.speaking) {
-                speechSynth.cancel();
-                setTimeout(function() {
-                    readQuestionTwice(selectedQuestion.prompt);
-                }, 300);
-            }
-        });
-    }
-});
-
-// ============================================
-// 6. EXAM FUNCTIONS
+// 7. EXAM FUNCTIONS
 // ============================================
 function startExam() {
     currentSet = examSets[selectedSetName];
@@ -708,7 +839,6 @@ function loadQuestion() {
     startTimer();
     readCount = 0;
     
-    // Reset voice status
     document.getElementById("voiceStatus").innerHTML = "🔊 Tap 'Play Question' to hear";
     document.getElementById("voiceDot").style.background = "#facc15";
 }
@@ -750,14 +880,18 @@ function startReading(text, voices) {
     function speakOnce(voice, rate, callback) {
         let utter = new SpeechSynthesisUtterance(text);
         utter.lang = 'en-US';
-        utter.rate = rate; // 1st: 0.9, 2nd: 0.7
+        utter.rate = rate;
         utter.pitch = 1;
         utter.volume = 1;
         if (voice) utter.voice = voice;
 
         utter.onstart = function() { isSpeaking = true; };
         utter.onend = function() { isSpeaking = false; if (callback) callback(); };
-        utter.onerror = function() { isSpeaking = false; if (callback) callback(); };
+        utter.onerror = function(e) { 
+            isSpeaking = false; 
+            console.log('Speech error:', e);
+            if (callback) callback(); 
+        };
         speechSynth.speak(utter);
     }
 
