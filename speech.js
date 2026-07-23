@@ -1,7 +1,11 @@
 /* ==========================================
-   speech.js - Frontend Only (GitHub Pages)
-   Web Speech API for Voice to Text
+   speech.js - FULL (Voice to Text + Text to Speech)
+   Web Speech API for Voice to Text & Text to Speech
 ========================================== */
+
+// ==========================================
+// 1. SPEECH RECOGNITION (Voice to Text)
+// ==========================================
 
 let recognition = null;
 let finalTranscript = "";
@@ -35,13 +39,123 @@ function updateStatus(message, color) {
 }
 
 // ==========================================
-// TEXT TO SPEECH
+// TEXT TO SPEECH (FIXED - Mobile Compatible)
+// ==========================================
+
+function speakText(text) {
+    console.log('🔊 speakText called with:', text);
+    
+    if (!("speechSynthesis" in window)) {
+        console.warn("❌ Text To Speech is not supported");
+        // Fallback: Show text instead
+        if (dom.questionText) {
+            dom.questionText.innerText = "🔊 " + text;
+        }
+        return;
+    }
+
+    // Cancel any ongoing speech
+    window.speechSynthesis.cancel();
+
+    let speech = new SpeechSynthesisUtterance(text);
+    speech.lang = "en-US";
+    speech.rate = 0.85;
+    speech.pitch = 1;
+    speech.volume = 1;
+
+    // Get voices - with retry
+    let voices = window.speechSynthesis.getVoices();
+    
+    // If no voices, wait for them to load
+    if (!voices || voices.length === 0) {
+        console.log('⏳ Waiting for voices to load...');
+        window.speechSynthesis.onvoiceschanged = function() {
+            voices = window.speechSynthesis.getVoices();
+            if (voices && voices.length > 0) {
+                console.log('✅ Voices loaded:', voices.length);
+                selectAndSpeak(speech, voices);
+            } else {
+                console.warn('⚠️ No voices available');
+                // Still try to speak without voice
+                window.speechSynthesis.speak(speech);
+            }
+        };
+        // Try again after 1 second
+        setTimeout(function() {
+            if (voices && voices.length === 0) {
+                voices = window.speechSynthesis.getVoices();
+                if (voices && voices.length > 0) {
+                    selectAndSpeak(speech, voices);
+                } else {
+                    // Speak without voice selection
+                    window.speechSynthesis.speak(speech);
+                }
+            }
+        }, 1000);
+        return;
+    }
+
+    selectAndSpeak(speech, voices);
+}
+
+function selectAndSpeak(speech, voices) {
+    let preferred = ["Google UK English Male", "Google US English Male", "Microsoft David", "Samantha", "Alex"];
+    let selected = null;
+    
+    for (let p of preferred) {
+        let found = voices.find(v => v.name.includes(p));
+        if (found) {
+            selected = found;
+            break;
+        }
+    }
+    
+    if (!selected) {
+        // Try to find any English voice
+        selected = voices.find(v => v.lang.startsWith('en')) || voices[0];
+    }
+    
+    if (selected) {
+        speech.voice = selected;
+        console.log('✅ Selected voice:', selected.name);
+    }
+
+    // Events for debugging
+    speech.onstart = function() {
+        console.log('🔊 Speech started');
+    };
+    speech.onend = function() {
+        console.log('🔊 Speech ended');
+    };
+    speech.onerror = function(e) {
+        console.error('❌ Speech error:', e);
+        // Fallback: Show text
+        if (dom.questionText) {
+            dom.questionText.innerText = "🔊 " + speech.text;
+        }
+    };
+
+    window.speechSynthesis.speak(speech);
+}
+
+// ==========================================
+// READ QUESTION (With Auto-Play)
 // ==========================================
 
 function readQuestion() {
     let text = dom.questionText ? dom.questionText.innerText : "";
+    if (!text) {
+        console.warn('⚠️ No question text found');
+        return;
+    }
+
+    // Remove any existing emojis from text
+    text = text.replace(/[🔊🎧📝]/g, '').trim();
     if (!text) return;
 
+    console.log('📖 Reading question:', text);
+    
+    // Speak twice
     speakText(text);
     setTimeout(function() {
         speakText(text);
@@ -54,55 +168,33 @@ function readQuestion() {
     }, 3500);
 }
 
-function speakText(text) {
-    if (!("speechSynthesis" in window)) {
-        alert("Text To Speech is not supported");
-        return;
-    }
+// ==========================================
+// MOBILE WAKE UP (Fix for Android)
+// ==========================================
 
-    window.speechSynthesis.cancel();
-
-    let speech = new SpeechSynthesisUtterance();
-    speech.text = text;
-    speech.lang = "en-US";
-    speech.rate = 0.85;
-    speech.pitch = 1;
-    speech.volume = 1;
-
-    let voices = window.speechSynthesis.getVoices();
-    if (voices.length > 0) {
-        let preferred = ["Google UK English Male", "Google US English Male", "Microsoft David", "Samantha", "Alex"];
-        let selected = null;
-        
-        for (let p of preferred) {
-            let found = voices.find(v => v.name.includes(p));
-            if (found) {
-                selected = found;
-                break;
-            }
-        }
-        
-        if (!selected) {
-            selected = voices.find(v => v.name.toLowerCase().includes("male")) || voices[0];
-        }
-        
-        if (selected) {
-            speech.voice = selected;
+function wakeUpSpeech() {
+    if (!window._speechStarted && "speechSynthesis" in window) {
+        window._speechStarted = true;
+        try {
+            let empty = new SpeechSynthesisUtterance(' ');
+            empty.volume = 0;
+            window.speechSynthesis.speak(empty);
+            console.log('✅ Speech API woken up');
+        } catch(e) {
+            console.log('⚠️ Wake up failed:', e);
         }
     }
-
-    window.speechSynthesis.speak(speech);
 }
 
 // ==========================================
-// START SPEECH RECOGNITION (Web Speech API)
+// START SPEECH RECOGNITION (Voice to Text)
 // ==========================================
 
 function startSpeechRecognition() {
     const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
     
     if (!SpeechRecognition) {
-        alert("Speech Recognition is not supported. Please use Chrome.");
+        updateStatus("⚠️ Speech Recognition not supported", "#eab308");
         return;
     }
 
@@ -274,15 +366,28 @@ function stopAllSpeech() {
     stopSpeechRecognition();
 }
 
+// ==========================================
+// PRELOAD VOICES & MOBILE SETUP
+// ==========================================
+
 // Preload voices
 if (window.speechSynthesis) {
     window.speechSynthesis.getVoices();
     window.speechSynthesis.onvoiceschanged = function() {
         window.speechSynthesis.getVoices();
+        console.log('✅ Voices preloaded');
     };
 }
 
-// Expose globals
+// Mobile wake up on any click
+document.addEventListener('click', function() {
+    wakeUpSpeech();
+});
+
+// ==========================================
+// EXPOSE GLOBALS
+// ==========================================
+
 window.readQuestion = readQuestion;
 window.speakText = speakText;
 window.startSpeechRecognition = startSpeechRecognition;
@@ -290,5 +395,6 @@ window.stopSpeechRecognition = stopSpeechRecognition;
 window.getTranscript = getTranscript;
 window.clearTranscript = clearTranscript;
 window.stopAllSpeech = stopAllSpeech;
+window.wakeUpSpeech = wakeUpSpeech;
 
-console.log("✅ speech.js loaded (Frontend Only - GitHub Pages compatible)");
+console.log("✅ speech.js FULL loaded (Voice to Text + Text to Speech)");
