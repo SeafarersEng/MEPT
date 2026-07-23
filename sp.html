@@ -368,10 +368,17 @@
                 <span class="voice-dot" id="voiceDot"></span>
                 <span id="voiceStatus">🔊 AI is reading (1/2) ...</span>
             </div>
+              <!-- Voice အတွက် Play ခလုတ် -->
+            <div class="voice-control">
+                <button id="playVoiceBtn" class="btn btn-gold" style="min-width:auto; padding:10px 20px; font-size:0.9rem;">
+                    🔊 Play Question
+                </button>
+                <span style="font-size:0.75rem; color:#94a3b8; margin-left:8px;">(Tap to hear the question)</span>
+            </div>
             <div class="q-text" id="questionTextDisplay">🎧 Listen twice</div>
             <span class="tap-hint">👆 Tap anywhere to enable voice</span>
             <img id="questionImage" class="hidden" style="width:100%; max-height:200px; object-fit:contain; border-radius:20px; margin:6px 0 10px; background:#0b1120;" alt="question image">
-            
+           
             <div class="answer-section">
                 <button class="answer-toggle" id="showAnswerBtn" onclick="toggleAnswer()">💡 Show answer</button>
                 <div id="answerDisplay" class="answer-box hidden">
@@ -561,9 +568,6 @@ const examSets = {
     ]
 };
 
-// ============================================
-// 3. GLOBALS
-// ============================================
 let currentSet = [];
 let currentQuestion = 0;
 let timer;
@@ -571,10 +575,8 @@ let timeLeft;
 let selectedQuestion;
 let selectedSetName = "set1";
 let speechSynth = window.speechSynthesis;
-let utterance = null;
 let isSpeaking = false;
 let readCount = 0;
-let readInterval = null;
 let userInteracted = false;
 
 // ============================================
@@ -650,44 +652,28 @@ function lockAppAccess() {
 }
 
 // ============================================
-// 5. ENABLE VOICE ON MOBILE (Tap to enable)
+// 5. PLAY VOICE BUTTON - Mobile fix
 // ============================================
-// Any touch/click enables voice on mobile
-document.addEventListener('touchstart', function() {
-    if (!userInteracted) {
-        userInteracted = true;
-        console.log('Voice enabled (mobile tap)');
-        // If a question is loaded, read it
-        if (selectedQuestion && !speechSynth.speaking) {
-            readQuestionTwice(selectedQuestion.prompt);
-        }
-    }
-}, { once: true });
-
-document.addEventListener('click', function() {
-    if (!userInteracted) {
-        userInteracted = true;
-        console.log('Voice enabled (click)');
-        if (selectedQuestion && !speechSynth.speaking) {
-            readQuestionTwice(selectedQuestion.prompt);
-        }
-    }
-}, { once: true });
-
-// Also enable when "Show answer" button is clicked
 document.addEventListener('DOMContentLoaded', function() {
-    document.getElementById('showAnswerBtn').addEventListener('click', function() {
-        if (!userInteracted) {
+    const playBtn = document.getElementById('playVoiceBtn');
+    if (playBtn) {
+        playBtn.addEventListener('click', function(e) {
+            e.stopPropagation();
             userInteracted = true;
             if (selectedQuestion && !speechSynth.speaking) {
                 readQuestionTwice(selectedQuestion.prompt);
+            } else if (speechSynth.speaking) {
+                speechSynth.cancel();
+                setTimeout(function() {
+                    readQuestionTwice(selectedQuestion.prompt);
+                }, 300);
             }
-        }
-    });
+        });
+    }
 });
 
 // ============================================
-// 6. EXAM — VOICE READS TWICE (1st normal, 2nd slower)
+// 6. EXAM FUNCTIONS
 // ============================================
 function startExam() {
     currentSet = examSets[selectedSetName];
@@ -722,22 +708,13 @@ function loadQuestion() {
     startTimer();
     readCount = 0;
     
-    // If user already interacted, read automatically
-    if (userInteracted) {
-        readQuestionTwice(selectedQuestion.prompt);
-    } else {
-        // Show hint to tap
-        document.getElementById("voiceStatus").innerHTML = "👆 Tap anywhere to hear the question";
-        document.getElementById("voiceDot").style.background = "#facc15";
-    }
+    // Reset voice status
+    document.getElementById("voiceStatus").innerHTML = "🔊 Tap 'Play Question' to hear";
+    document.getElementById("voiceDot").style.background = "#facc15";
 }
 
 function readQuestionTwice(text) {
     if (speechSynth.speaking) speechSynth.cancel();
-    if (readInterval) {
-        clearInterval(readInterval);
-        readInterval = null;
-    }
 
     readCount = 0;
     let voices = speechSynth.getVoices();
@@ -773,7 +750,7 @@ function startReading(text, voices) {
     function speakOnce(voice, rate, callback) {
         let utter = new SpeechSynthesisUtterance(text);
         utter.lang = 'en-US';
-        utter.rate = rate; // 1st: 0.9 (normal), 2nd: 0.7 (slower)
+        utter.rate = rate; // 1st: 0.9, 2nd: 0.7
         utter.pitch = 1;
         utter.volume = 1;
         if (voice) utter.voice = voice;
@@ -787,13 +764,11 @@ function startReading(text, voices) {
     document.getElementById("voiceStatus").innerHTML = "🔊 AI reading (1/2) ...";
     document.getElementById("voiceDot").style.background = "#facc15";
 
-    // 1st read: normal speed (0.9)
     speakOnce(voice1, 0.9, function() {
         readCount = 1;
         document.getElementById("voiceStatus").innerHTML = "🔊 AI reading (2/2) ... slower";
         document.getElementById("voiceDot").style.background = "#facc15";
 
-        // 2nd read: slower (0.7) after 800ms
         setTimeout(function() {
             speakOnce(voice2, 0.7, function() {
                 readCount = 2;
@@ -843,10 +818,6 @@ function toggleAnswer() {
 function submitAnswer() {
     clearInterval(timer);
     if (speechSynth.speaking) speechSynth.cancel();
-    if (readInterval) {
-        clearInterval(readInterval);
-        readInterval = null;
-    }
 
     document.getElementById("answerDisplay").classList.add("hidden");
     document.getElementById("showAnswerBtn").innerHTML = "💡 Show answer";
