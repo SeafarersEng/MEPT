@@ -276,7 +276,7 @@ const listeningData = {
         { q:"Which best describes the cadet's personality?", opts:["A. Attentive and responsible","B. Friendly and helpful","C. Confident and active"], ans:"A" },
         { q:"What can we understand about the chief officer?", opts:["A. Focuses on strict rules","B. Values teamwork","C. Encourages learning through guidance"], ans:"C" },
         { q:"What does the chief officer suggest the cadet should do?", opts:["A. Check safety equipment","B. Pay close attention and continue learning","C. Report small problems later"], ans:"B" }
-    ]}, audioFiles:{ task2:"set1part1.mp3", task3:"set1part2.mp3" } },
+    ]}, audioFiles:{ task2:"set1p1.mp3", task3:"set1p2.mp3" } },
     2: { task2:{ title:"Short Conversations", questions:[
         { q:"What worries the chief mate?", opts:["A. Navigation system","B. Rising temperature","C. Food supply"], ans:"A" },
         { q:"Why did the cook change the menu?", opts:["A. Supplies were limited","B. To save money","C. Not enough time"], ans:"B" },
@@ -291,7 +291,7 @@ const listeningData = {
         { q:"Describe the cadet's personality.", opts:["A. Attentive and responsible","B. Friendly and helpful","C. Confident and active"], ans:"C" },
         { q:"What do we understand about the officer?", opts:["A. Focuses mainly on strict safety rules","B. Values teamwork","C. Encourages learning through guidance"], ans:"A" },
         { q:"What does the officer suggest?", opts:["A. Check safety equipment","B. Pay close attention","C. Report small problems later"], ans:"A" }
-    ]}, audioFiles:{ task2:"set2part1.mp3", task3:"set2part2.mp3" } },
+    ]}, audioFiles:{ task2:"set2p1.mp3", task3:"set2p2.mp3" } },
     3: { task2:{ title:"Short Conversations", questions:[
         { q:"What worries the engineer?", opts:["A. Navigation system","B. Rising temperature","C. Food supply"], ans:"C" },
         { q:"Why did the cook change the menu?", opts:["A. Supplies were limited","B. To save money","C. Not enough time"], ans:"C" },
@@ -306,7 +306,7 @@ const listeningData = {
         { q:"Describe the cadet's personality.", opts:["A. Attentive and responsible","B. Friendly and helpful","C. Confident and active"], ans:"B" },
         { q:"What do we understand about the officer?", opts:["A. Focuses on strict rules","B. Values teamwork and collaboration","C. Encourages learning through guidance"], ans:"B" },
         { q:"What does the officer suggest?", opts:["A. Check safety equipment","B. Pay close attention","C. Report small problems later"], ans:"C" }
-    ]}, audioFiles:{ task2:"set3part1.mp3", task3:"set3part2.mp3" } },
+    ]}, audioFiles:{ task2:"set3p1.mp3", task3:"set3p2.mp3" } },
     4: { task2:{ title:"Short Conversations", questions:[
         { q:"What worries the speaker?", opts:["A. Navigation system","B. Rising temperature","C. Food supply"], ans:"B" },
         { q:"Why was the menu changed?", opts:["A. Supplies were limited","B. To save money","C. Not enough time"], ans:"A" },
@@ -321,7 +321,7 @@ const listeningData = {
         { q:"Describe the cadet's personality.", opts:["A. Attentive and responsible","B. Friendly and helpful","C. Confident and active"], ans:"A" },
         { q:"What do we understand about the officer?", opts:["A. Focuses on strict rules","B. Values teamwork","C. Learning through guidance"], ans:"C" },
         { q:"What does the officer suggest?", opts:["A. Check safety equipment","B. Pay close attention and continue learning","C. Report small problems later"], ans:"B" }
-    ]}, audioFiles:{ task2:"set4part1.mp3", task3:"set4part2.mp3" } },
+    ]}, audioFiles:{ task2:"set4p1.mp3", task3:"set4p2.mp3" } },
     5: { task2:{ title:"Short Conversations", questions:[
         { q:"What worries the speaker?", opts:["A. Navigation system","B. Rising temperature","C. Food supply"], ans:"B" },
         { q:"Why did the cook change the menu?", opts:["A. Supplies were limited","B. To save money","C. Not enough time"], ans:"C" },
@@ -336,7 +336,7 @@ const listeningData = {
         { q:"Describe the cadet's personality.", opts:["A. Attentive and responsible","B. Friendly and helpful","C. Confident and active"], ans:"B" },
         { q:"What do we understand about the officer?", opts:["A. Focuses on strict rules","B. Values teamwork","C. Encourages learning through guidance"], ans:"C" },
         { q:"What does the officer suggest?", opts:["A. Check safety equipment","B. Pay close attention and continue learning","C. Report small problems later"], ans:"B" }
-    ]}, audioFiles:{ task2:"set5part1.mp3", task3:"set5part2.mp3" } }
+    ]}, audioFiles:{ task2:"set5p1.mp3", task3:"set5p2.mp3" } }
 };
 
 // ======================== WRITING DATA ========================
