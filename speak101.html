@@ -1,0 +1,925 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes"/>
+    <title>Speaking Test · AI Voice 3x</title>
+    <style>
+        /* ============================================
+           CSS - Full Styles
+           ============================================ */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+            background: #0b1120;
+            color: #e2e8f0;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 16px;
+        }
+
+        .container {
+            max-width: 820px;
+            width: 100%;
+            background: #1e293b;
+            border-radius: 40px;
+            padding: 24px 20px 32px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.6);
+            border: 1px solid #334155;
+        }
+
+        h1 {
+            font-size: 1.6rem;
+            font-weight: 700;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+            background: linear-gradient(135deg, #facc15, #38bdf8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 16px;
+        }
+
+        .badge {
+            font-size: 0.8rem;
+            background: #2d3a52;
+            padding: 4px 14px;
+            border-radius: 30px;
+            -webkit-text-fill-color: #f1f5f9;
+            color: #f1f5f9;
+        }
+
+        /* ----- AUTH SCREEN ----- */
+        .auth-screen {
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
+            text-align: center;
+        }
+        .auth-box {
+            background: #0f172a;
+            border-radius: 28px;
+            padding: 28px 20px;
+            border: 1px solid #334155;
+        }
+        .key-input {
+            width: 100%;
+            padding: 16px 18px;
+            background: #0b1120;
+            border: 2px solid #334155;
+            border-radius: 40px;
+            color: #f1f5f9;
+            font-size: 1.1rem;
+            text-align: center;
+            letter-spacing: 2px;
+            font-weight: 600;
+        }
+        .key-input:focus {
+            outline: none;
+            border-color: #facc15;
+            box-shadow: 0 0 0 3px rgba(250, 204, 21, 0.2);
+        }
+        .error {
+            color: #f87171;
+            background: #451a1a;
+            padding: 12px 16px;
+            border-radius: 30px;
+            font-size: 0.95rem;
+            border-left: 4px solid #f87171;
+        }
+        .error.hidden { display: none; }
+
+        .btn {
+            border: none;
+            padding: 14px 24px;
+            border-radius: 60px;
+            font-weight: 700;
+            font-size: 1rem;
+            color: white;
+            cursor: pointer;
+            transition: 0.15s;
+            box-shadow: 0 6px 0 #1e3a8a;
+            width: fit-content;
+            min-width: 140px;
+            margin: 0 auto;
+        }
+        .btn:active {
+            transform: translateY(4px);
+            box-shadow: 0 2px 0 #1e3a8a;
+        }
+        .btn-gold {
+            background: #facc15;
+            color: #0b1120;
+            box-shadow: 0 6px 0 #b68b1c;
+        }
+        .btn-primary {
+            background: #3b82f6;
+            box-shadow: 0 6px 0 #1e3a8a;
+        }
+        .btn-success {
+            background: #22c55e;
+            box-shadow: 0 6px 0 #15803d;
+        }
+        .btn-outline {
+            background: transparent;
+            border: 2px solid #475569;
+            box-shadow: none;
+            color: #e2e8f0;
+        }
+        .btn-outline:active { transform: none; box-shadow: none; }
+        .btn:disabled {
+            opacity: 0.5;
+            transform: none;
+            box-shadow: 0 6px 0 #1e3a8a;
+            cursor: not-allowed;
+        }
+
+        /* ----- SET SELECTOR ----- */
+        .set-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+            gap: 12px;
+            margin: 12px 0 6px;
+        }
+        .set-btn {
+            background: #2d3a52;
+            border: none;
+            border-radius: 60px;
+            padding: 12px 6px;
+            font-weight: 600;
+            color: #f1f5f9;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: 0.1s;
+            box-shadow: 0 4px 0 #0f172a;
+            border: 1px solid #475569;
+        }
+        .set-btn:active {
+            transform: translateY(3px);
+            box-shadow: 0 1px 0 #0f172a;
+        }
+
+        /* ----- QUESTION BOX ----- */
+        .question-box {
+            background: #0f172a;
+            border-radius: 28px;
+            padding: 20px 18px;
+            border: 1px solid #334155;
+            margin-bottom: 12px;
+            min-height: 120px;
+        }
+        .q-counter {
+            font-size: 0.85rem;
+            color: #94a3b8;
+            text-align: center;
+            margin-bottom: 6px;
+        }
+        .question-text-display {
+            font-size: 1.15rem;
+            color: #facc15;
+            font-weight: 500;
+            padding: 16px 12px;
+            background: #1a2538;
+            border-radius: 20px;
+            border-left: 6px solid #facc15;
+            min-height: 70px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            line-height: 1.6;
+            transition: all 0.3s ease;
+        }
+        .question-text-display.hidden-text {
+            color: transparent;
+            background: #1a2538;
+            border-left-color: #334155;
+        }
+        .question-text-display .text-content {
+            transition: all 0.3s ease;
+        }
+        .question-text-display.hidden-text .text-content {
+            opacity: 0;
+        }
+        .question-text-display .text-content {
+            opacity: 1;
+        }
+        .sub-hint {
+            font-size: 0.85rem;
+            color: #94a3b8;
+            font-weight: 400;
+        }
+        .question-image {
+            width: 100%;
+            max-height: 200px;
+            object-fit: contain;
+            border-radius: 16px;
+            margin-top: 10px;
+            background: #0b1120;
+        }
+        .question-image.hidden { display: none; }
+
+        /* ----- VOICE STATUS ----- */
+        .voice-status {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin: 8px 0 10px;
+            font-size: 0.95rem;
+            color: #94a3b8;
+            flex-wrap: wrap;
+        }
+        .voice-dot {
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: #22c55e;
+            animation: pulse-dot 1.2s infinite;
+        }
+        .voice-dot.inactive {
+            animation: none;
+            background: #475569;
+        }
+        @keyframes pulse-dot {
+            0% { opacity: 0.3; transform: scale(0.8); }
+            50% { opacity: 1; transform: scale(1.2); }
+            100% { opacity: 0.3; transform: scale(0.8); }
+        }
+
+        /* ----- TIMER ----- */
+        .timer-area {
+            display: flex;
+            justify-content: center;
+            margin: 6px 0 14px;
+        }
+        .timer {
+            font-size: 2.4rem;
+            font-weight: 700;
+            background: #0b1120;
+            padding: 4px 24px;
+            border-radius: 60px;
+            font-variant-numeric: tabular-nums;
+            color: #facc15;
+            border: 1px solid #334155;
+            min-width: 100px;
+            text-align: center;
+        }
+
+        /* ----- BUTTON GROUP ----- */
+        .btn-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: center;
+            margin: 8px 0 16px;
+        }
+        .btn-group .btn {
+            min-width: 120px;
+            flex: 1 1 auto;
+            max-width: 200px;
+            margin: 0;
+        }
+
+        /* ----- ANSWER BOX ----- */
+        .answer-box {
+            background: #0b1120;
+            border-radius: 20px;
+            padding: 18px 16px;
+            border-left: 4px solid #facc15;
+            max-height: 0;
+            overflow: hidden;
+            opacity: 0;
+            transition: max-height 0.5s ease, opacity 0.5s ease, padding 0.3s ease;
+            padding: 0 16px;
+        }
+        .answer-box.show {
+            max-height: 800px;
+            opacity: 1;
+            padding: 18px 16px;
+        }
+        .answer-box p {
+            margin: 8px 0;
+            line-height: 1.7;
+        }
+        .answer-eng { color: #93c5fd; }
+        .answer-my { color: #a7f3d0; }
+        .answer-label {
+            font-weight: 600;
+            font-size: 0.8rem;
+            color: #94a3b8;
+            margin-top: 4px;
+        }
+
+        /* ----- FOOTER ----- */
+        .footer-nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 16px;
+            padding-top: 12px;
+            border-top: 1px solid #334155;
+            font-size: 0.9rem;
+            color: #94a3b8;
+        }
+        .status-text { flex: 1; }
+        .progress-text { font-weight: 600; color: #e2e8f0; }
+
+        /* ----- RESPONSIVE ----- */
+        @media (max-width: 540px) {
+            .container { padding: 16px 12px; }
+            h1 { font-size: 1.2rem; }
+            .question-text-display { font-size: 1rem; padding: 14px 10px; min-height: 60px; }
+            .btn-group .btn { min-width: 100px; font-size: 0.85rem; padding: 12px 16px; }
+            .set-grid { grid-template-columns: repeat(3, 1fr); }
+            .timer { font-size: 2rem; }
+        }
+
+        /* ----- UTILITY ----- */
+        .hidden { display: none !important; }
+        .text-center { text-align: center; }
+        .mt-1 { margin-top: 8px; }
+        .mt-2 { margin-top: 16px; }
+        .mb-1 { margin-bottom: 8px; }
+        .gap-1 { gap: 10px; }
+        .flex-col { display: flex; flex-direction: column; gap: 12px; }
+        .flex-center { display: flex; align-items: center; justify-content: center; }
+    </style>
+</head>
+<body>
+
+<div class="container" id="app">
+    <!-- ==========================================
+    AUTH SCREEN
+    ========================================== -->
+    <div id="authScreen" class="auth-screen">
+        <h1>🎤 Speaking Test</h1>
+        <p style="color:#94a3b8;">AI Voice 3x · 15 Questions · B1 Level</p>
+        <div class="auth-box">
+            <label for="keyInput" style="display:block; font-weight:500; margin-bottom:10px;">Activation Key</label>
+            <input type="text" id="keyInput" class="key-input" placeholder="Enter your key" autocomplete="off">
+            <div id="authError" class="error hidden">❌ Invalid Activation Key. Please check and try again.</div>
+            <div id="deviceLockError" class="error hidden">🔒 This key is already locked to another device.</div>
+            <button class="btn btn-gold mt-2" onclick="verifySecureActivation()">🔓 Unlock</button>
+        </div>
+        <p style="font-size:0.8rem; color:#64748b;">1 Key · 1 Device · Valid for 1 Year</p>
+    </div>
+
+    <!-- ==========================================
+    START SCREEN
+    ========================================== -->
+    <div id="startScreen" class="hidden">
+        <h1>📚 Choose a Test <span class="badge">15 Questions</span></h1>
+        <p style="color:#94a3b8; text-align:center; margin-bottom:8px;">AI reads each question 3 times · Timer · Show Answer</p>
+        <button class="btn btn-gold" onclick="startTest()" style="margin:10px auto;">▶ Start Speaking Test</button>
+        <button class="btn btn-outline" onclick="lockAppAccess()" style="margin-top:12px;">🔒 Lock & exit</button>
+    </div>
+
+    <!-- ==========================================
+    EXAM SCREEN
+    ========================================== -->
+    <div id="examScreen" class="hidden">
+        <h1>🎤 Speaking Test <span class="badge" id="testLabel">1 / 15</span></h1>
+
+        <div class="question-box">
+            <div class="q-counter" id="qCounter">Question 1 of 15</div>
+            
+            <!-- Question Text Display - Shows/Hides during voice -->
+            <div class="question-text-display hidden-text" id="questionDisplay">
+                <span class="text-content" id="questionTextContent">Question will appear here during voice reading...</span>
+            </div>
+            
+            <img id="questionImage" class="question-image hidden" src="" alt="Question image">
+        </div>
+
+        <!-- Voice Status -->
+        <div class="voice-status">
+            <span class="voice-dot inactive" id="voiceDot"></span>
+            <span id="voiceStatus">⏳ Press "Listen (3x)" to start</span>
+        </div>
+
+        <!-- Timer -->
+        <div class="timer-area">
+            <div class="timer" id="timerDisplay">01:00</div>
+        </div>
+
+        <!-- Buttons -->
+        <div class="btn-group">
+            <button id="listenBtn" class="btn btn-primary">🔊 Listen (3x)</button>
+            <button id="showAnswerBtn" class="btn btn-success" disabled>📖 Show Answer</button>
+            <button id="nextBtn" class="btn btn-outline">Next ▶</button>
+        </div>
+
+        <!-- Answer Box -->
+        <div class="answer-box" id="answerBox">
+            <p class="answer-label">🇬🇧 English Answer</p>
+            <p class="answer-eng" id="answerEng">English answer here</p>
+            <p class="answer-label" style="margin-top:12px;">🇲🇲 မြန်မာလို အဖြေ</p>
+            <p class="answer-my" id="answerMy">မြန်မာလို အဖြေ</p>
+        </div>
+
+        <!-- Footer -->
+        <div class="footer-nav">
+            <span class="status-text" id="statusText">⏳ Press "Listen (3x)" to start</span>
+            <span class="progress-text" id="progressText">1 / 15</span>
+        </div>
+    </div>
+
+    <!-- ==========================================
+    FINISH SCREEN
+    ========================================== -->
+    <div id="finishScreen" class="hidden text-center" style="padding:20px 0;">
+        <h2 style="color:#facc15; margin-bottom:12px;">🎉 Test Complete!</h2>
+        <p style="color:#94a3b8;">You finished all 15 questions.</p>
+        <button class="btn btn-gold mt-2" onclick="backToStart()">📋 Back to Start</button>
+        <button class="btn btn-outline mt-1" onclick="lockAppAccess()">🔒 Lock</button>
+    </div>
+</div>
+
+<script>
+// ============================================
+// 1. SECURE KEYS
+// ============================================
+const SECURE_ALLOWED_KEYS = [
+    "MNP234OPQ12D", "PQR456QRS23E", "RST678STU34F", "TUV890UVW45G", "VWX012WXY56H",
+    "XYZ123YZA67I", "ZAB345ABC78J", "BCD567CDE89K", "DEF789EFG90L", "FGH901GHI01M",
+    "HIJ123IJK12N", "JKL345KLM23O", "LMN567MNO34P", "NOP789OPQ45Q", "PQR901QRS56R",
+    "RST123STU67S", "TUV345UVW78T", "VWX567WXY89U", "XYZ789YZA90V", "ZAB901ABC01W",
+    "BCD123CDE12X", "DEF345EFG23Y", "FGH567GHI34Z", "HIJ789IJK45A", "JKL901KLM56B",
+    "LMN123MNO67C", "NOP345OPQ78D", "PQR567QRS89E", "RST789STU90F", "TUV901UVW01G",
+    "VWX123WXY12H", "XYZ345YZA23I", "ZAB567ABC34J", "BCD789CDE45K", "DEF901EFG56L",
+    "FGH123GHI67M", "HIJ345IJK78N", "JKL567KLM89O", "LMN789MNO90P", "NOP901OPQ01Q",
+    "PQR123QRS12R", "RST345STU23S", "TUV567UVW34T", "VWX789WXY45U", "XYZ901YZA56V"
+];
+
+// ============================================
+// 2. SPEAKING TEST QUESTIONS (15 Questions)
+// ============================================
+const testQuestions = [
+    // PART 1: Personal Introduction
+    {
+        id: 1,
+        category: "Personal Intro",
+        prompt: "Can you introduce yourself? Please tell me about your name, age, and where you are from.",
+        image: "",
+        timeLimit: 60,
+        answerEng: "Hello, my name is Aung Ko. I am 24 years old. I come from Yangon, which is the largest city in Myanmar. I live in a peaceful neighborhood with my family. I am a friendly and hardworking person. I enjoy learning new things and I am always interested in improving my English skills. In my free time, I like reading books, especially adventure stories, and listening to music. I am currently preparing to work as a seafarer because I want to explore the world and support my family.",
+        answerMm: "မင်္ဂလာပါ။ ကျွန်တော် အောင်ကိုပါ။ အသက် ၂၄ နှစ်ရှိပါပြီ။ ကျွန်တော် မြန်မာနိုင်ငံရဲ့ အကြီးဆုံးမြို့ဖြစ်တဲ့ ရန်ကုန်မြို့က လာပါတယ်။ မိသားစုနဲ့အတူ ငြိမ်းချမ်းတဲ့ရပ်ကွက်လေးမှာ နေထိုင်ပါတယ်။ ကျွန်တော်ဟာ ဖော်ရွေပြီး ကြိုးစားတတ်တဲ့သူတစ်ယောက်ပါ။ အသစ်အဆန်းတွေကို သင်ယူရတာ နှစ်သက်ပြီး အင်္ဂလိပ်စာစွမ်းရည်ကို အမြဲတိုးတက်အောင်လုပ်ဖို့ စိတ်ဝင်စားပါတယ်။ အားလပ်ချိန်မှာ စာအုပ်ဖတ်ရတာ ကြိုက်တယ်၊ အထူးသဖြင့် စွန့်စားခန်းဇာတ်လမ်းတွေနဲ့ ဂီတနားထောင်တာကို ကြိုက်ပါတယ်။ လက်ရှိမှာ သင်္ဘောသားအဖြစ် အလုပ်လုပ်ဖို့ ပြင်ဆင်နေပါတယ်၊ ဘာကြောင့်လဲဆိုတော့ ကမ္ဘာကို စူးစမ်းချင်ပြီး မိသားစုကို ထောက်ပံ့ချင်လို့ပါ။"
+    },
+    {
+        id: 2,
+        category: "My Hometown",
+        prompt: "Can you tell me about your hometown? What is it famous for?",
+        image: "",
+        timeLimit: 60,
+        answerEng: "My hometown is Yangon. It is the former capital of Myanmar and the most populous city in the country. Yangon is famous for the Shwedagon Pagoda, which is one of the most sacred Buddhist sites in the world. The city is also known for its colonial-era buildings, bustling markets, and delicious street food. People in Yangon are very friendly and welcoming. The city has a mix of modern and traditional culture. I really love my hometown because it is full of life and history.",
+        answerMm: "ကျွန်တော့ဇာတိမြို့က ရန်ကုန်ပါ။ ရန်ကုန်က မြန်မာနိုင်ငံရဲ့ ယခင်မြို့တော်ဖြစ်ပြီး လူဦးရေအများဆုံးမြို့လည်းဖြစ်ပါတယ်။ ရန်ကုန်က ကမ္ဘာပေါ်မှာ အထင်ရှားဆုံး ဗုဒ္ဓဘာသာနေရာတွေထဲက တစ်ခုဖြစ်တဲ့ ရွှေတိဂုံစေတီတော်အတွက် နာမည်ကြီးပါတယ်။ ဒီမြို့က ကိုလိုနီခေတ်က အဆောက်အအုံတွေ၊ စည်ကားတဲ့ဈေးတွေနဲ့ အရသာရှိတဲ့ လမ်းဘေးအစားအစာတွေအတွက်လည်း နာမည်ကြီးပါတယ်။ ရန်ကုန်မှာရှိတဲ့လူတွေက အရမ်းဖော်ရွေပြီး ဧည့်ဝတ်ကျေပါတယ်။ ဒီမြို့မှာ ခေတ်မီနဲ့ ရိုးရာယဉ်ကျေးမှု ရောနှောနေပါတယ်။ ကျွန်တော် ဇာတိမြို့ကို အရမ်းချစ်တယ်၊ ဘာကြောင့်လဲဆိုတော့ ဒီမြို့မှာ အသက်ဝင်းနဲ့ သမိုင်းကြောင်းတွေ ပြည့်နေလို့ပါ။"
+    },
+    {
+        id: 3,
+        category: "Famous Food & Places",
+        prompt: "What are some famous foods and places in your country?",
+        image: "",
+        timeLimit: 60,
+        answerEng: "Myanmar has many delicious foods. Some of the most famous dishes include Mohinga, which is a fish noodle soup and is considered the national dish. Another popular food is Shan Noodle, which is a rice noodle dish with chicken or pork. Tea Leaf Salad, called Laphet Thoke, is also very famous. As for famous places, besides the Shwedagon Pagoda, there is the ancient city of Bagan with thousands of pagodas. Inle Lake is also a popular destination, known for its floating villages and unique leg-rowing fishermen.",
+        answerMm: "မြန်မာနိုင်ငံမှာ အရသာရှိတဲ့ အစားအစာတွေ အများကြီးရှိပါတယ်။ အကျော်ကြားဆုံး ဟင်းလျာတွေထဲမှာ မုန့်ဟင်းခါးက ပါဝင်ပါတယ်၊ ဒါက ငါးနဲ့ချက်တဲ့ ခေါက်ဆွဲဟင်းရည်ဖြစ်ပြီး အမျိုးသားဟင်းလျာအဖြစ် သတ်မှတ်ခံရပါတယ်။ နောက်ထပ်လူကြိုက်များတဲ့ အစားအစာက ရှမ်းခေါက်ဆွဲပါ၊ ဒါက ကြက်သား ဒါမှမဟုတ် ဝက်သားနဲ့ စားရတဲ့ ဆန်ခေါက်ဆွဲဟင်းလျာပါ။ လက်ဖက်သုပ် ကလည်း အရမ်းကျော်ကြားပါတယ်။ ကျော်ကြားတဲ့နေရာတွေအနေနဲ့ ရွှေတိဂုံစေတီအပြင် ပုဂံမြို့ဟောင်းလည်း ရှိပါတယ်၊ အဲဒီမှာ စေတီပုထိုးတွေ ထောင်နဲ့ချီရှိပါတယ်။ အင်းလေးကန်ကလည်း ရေပေါ်ရွာတွေနဲ့ ထူးခြားတဲ့ ခြေထောက်နဲ့လှော်တဲ့ တံငါသည်တွေအတွက် နာမည်ကြီးတဲ့ ခရီးသွားနေရာတစ်ခုပါ။"
+    },
+    // PART 2: Workplace Safety
+    {
+        id: 4,
+        category: "Restricted Areas",
+        prompt: "What are restricted areas on a ship? Why is it important to follow the rules in these areas?",
+        image: "",
+        timeLimit: 60,
+        answerEng: "Restricted areas on a ship are places where only authorized personnel are allowed to enter. These areas include the engine room, the bridge, the pump room, and areas with dangerous machinery or chemicals. It is very important to follow the rules in these areas because they can be extremely dangerous. The engine room has heavy machinery that can cause serious injuries. The pump room may contain harmful gases. Without proper training and permission, entering these areas can be life-threatening. Following the rules helps protect ourselves and our colleagues from accidents.",
+        answerMm: "သင်္ဘောပေါ်မှာ ကန့်သတ်ဧရိယာတွေဆိုတာ ခွင့်ပြုချက်ရှိတဲ့သူတွေသာ ဝင်ခွင့်ရှိတဲ့နေရာတွေပါ။ ဒီနေရာတွေမှာ အင်ဂျင်ခန်း၊ တံတား၊ ပန့်ခန်းနဲ့ အန္တရာယ်ရှိတဲ့စက်ကိရိယာ ဒါမှမဟုတ် ဓာတုပစ္စည်းတွေရှိတဲ့နေရာတွေ ပါဝင်ပါတယ်။ ဒီနေရာတွေမှာ စည်းမျဉ်းတွေကို လိုက်နာဖို့ အရမ်းအရေးကြီးပါတယ်၊ ဘာကြောင့်လဲဆိုတော့ ဒီနေရာတွေက အလွန်အန္တရာယ်များနိုင်လို့ပါ။ အင်ဂျင်ခန်းမှာ ပြင်းထန်တဲ့ဒဏ်ရာတွေ ဖြစ်စေနိုင်တဲ့ စက်ကြီးတွေရှိပါတယ်။ ပန့်ခန်းမှာ အန္တရာယ်ရှိတဲ့ဓာတ်ငွေ့တွေ ပါဝင်နိုင်ပါတယ်။ သင့်လျော်တဲ့လေ့ကျင့်မှုနဲ့ ခွင့်ပြုချက်မပါဘဲ ဒီနေရာတွေကို ဝင်ရောက်ခြင်းက အသက်အန္တရာယ်ရှိနိုင်ပါတယ်။ စည်းမျဉ်းတွေကို လိုက်နာခြင်းက ကိုယ့်ကိုယ်ကိုယ်ရော လုပ်ဖော်ကိုင်ဖက်တွေကိုပါ မတော်တဆမှုတွေကနေ ကာကွယ်ပေးပါတယ်။"
+    },
+    {
+        id: 5,
+        category: "Restricted Areas - Picture",
+        prompt: "Look at the picture. Describe what you see and explain the importance of restricted areas on a ship.",
+        image: "restricted_area.png",
+        timeLimit: 60,
+        answerEng: "In this picture, I can see the entrance to a restricted area on a ship, which appears to be the engine room. There is a clear warning sign that says 'RESTRICTED AREA - AUTHORIZED PERSONNEL ONLY.' There are also other warning signs like 'HIGH VOLTAGE' and 'DANGER: NO ENTRY.' The entrance is blocked by a red safety barrier. I can see a crew member standing nearby wearing proper PPE, including a hard hat, safety vest, and gloves. Next to the entrance, there is a fire extinguisher and an emergency alarm. Restricted areas like this are very important because they contain dangerous machinery, high voltage equipment, or harmful chemicals. Only trained and authorized personnel should enter these areas.",
+        answerMm: "ဒီပုံမှာ သင်္ဘောပေါ်က ကန့်သတ်ဧရိယာတစ်ခုရဲ့ ဝင်ပေါက်ကို မြင်ရပါတယ်၊ ဒါက အင်ဂျင်ခန်းဖြစ်ပုံရပါတယ်။ 'RESTRICTED AREA - AUTHORIZED PERSONNEL ONLY' လို့ ရေးထားတဲ့ ရှင်းလင်းတဲ့ သတိပေးဆိုင်းဘုတ်တစ်ခုရှိပါတယ်။ 'HIGH VOLTAGE' နဲ့ 'DANGER: NO ENTRY' လိုမျိုး အခြားသတိပေးဆိုင်းဘုတ်တွေလည်း ရှိပါတယ်။ ဝင်ပေါက်ကို အနီရောင်အတားအဆီးနဲ့ ပိတ်ထားတယ်။ အနီးမှာ ဦးထုပ်၊ ဘေးကင်းရေးအင်္ကျီနဲ့ လက်အိတ်တွေ အပါအဝင် သင့်လျော်တဲ့ PPE ဝတ်ဆင်ထားတဲ့ သင်္ဘောသားတစ်ယောက်ကိုလည်း မြင်ရပါတယ်။ ဝင်ပေါက်အနီးမှာ မီးသတ်ဆေးဘူးနဲ့ အရေးပေါ်ခေါင်းလောင်းလည်း ရှိတယ်။ ဒီလိုကန့်သတ်ဧရိယာတွေက အန္တရာယ်ရှိတဲ့စက်ကိရိယာတွေ၊ မြင့်မားတဲ့ဗို့အားပစ္စည်းတွေ ဒါမှမဟုတ် အန္တရာယ်ရှိတဲ့ဓာတုပစ္စည်းတွေ ပါဝင်တဲ့အတွက် အရမ်းအရေးကြီးပါတယ်။ လေ့ကျင့်သင်ကြားပြီး ခွင့်ပြုချက်ရှိတဲ့သူတွေသာ ဒီနေရာတွေကို ဝင်သင့်ပါတယ်။"
+    },
+    {
+        id: 6,
+        category: "Safety Vest and Safety Sign",
+        prompt: "What is the purpose of a safety vest and safety signs on board? Why are they important?",
+        image: "",
+        timeLimit: 60,
+        answerEng: "A safety vest is a bright-colored vest that makes crew members visible, especially in low-light conditions or during emergency situations. It helps others see you clearly, which prevents accidents like being hit by moving equipment. Safety signs are visual warnings that show potential dangers, remind us of safety rules, or guide us during emergencies. Signs like 'No Entry,' 'High Voltage,' or 'Wear PPE' are common on ships. Both safety vests and safety signs are very important because they help us stay aware of our surroundings and avoid dangerous situations. They are simple but effective tools for preventing accidents and saving lives.",
+        answerMm: "ဘေးကင်းရေးအင်္ကျီ (Safety Vest) ဆိုတာ အရောင်တောက်တောက်ပါတဲ့ အင်္ကျီဖြစ်ပြီး သင်္ဘောသားတွေကို အထူးသဖြင့် အလင်းရောင်အားနည်းတဲ့အခြေအနေတွေ ဒါမှမဟုတ် အရေးပေါ်အခြေအနေတွေမှာ မြင်သာအောင် လုပ်ပေးပါတယ်။ ဒါက သင့်ကို အခြားသူတွေ ရှင်းရှင်းလင်းလင်းမြင်ရစေပြီး ရွေ့လျားနေတဲ့ စက်ကိရိယာတွေနဲ့ ထိခိုက်မှုလိုမျိုး မတော်တဆမှုတွေကို ကာကွယ်ပေးပါတယ်။ ဘေးကင်းရေးဆိုင်းဘုတ်တွေက ဖြစ်နိုင်ခြေရှိတဲ့အန္တရာယ်တွေကို ပြသခြင်း၊ ဘေးကင်းရေးစည်းမျဉ်းတွေကို သတိပေးခြင်း ဒါမှမဟုတ် အရေးပေါ်အခြေအနေတွေမှာ လမ်းညွှန်ပေးတဲ့ မြင်နိုင်တဲ့သတိပေးချက်တွေပါ။ ဘေးကင်းရေးအင်္ကျီရော ဘေးကင်းရေးဆိုင်းဘုတ်ရော နှစ်ခုစလုံးက အရမ်းအရေးကြီးပါတယ်၊ ဘာကြောင့်လဲဆိုတော့ သူတို့က ကျွန်တော်တို့ကို အနီးအနားပတ်ဝန်းကျင်ကို သတိထားမိစေပြီး အန္တရာယ်ရှိတဲ့အခြေအနေတွေကို ရှောင်ရှားနိုင်အောင် ကူညီပေးလို့ပါ။"
+    },
+    {
+        id: 7,
+        category: "Follow Request?",
+        prompt: "When someone gives you a safety request or instruction, do you follow it? Why or why not?",
+        image: "",
+        timeLimit: 60,
+        answerEng: "Yes, I always follow safety requests and instructions without hesitation. I believe that safety rules are made to protect everyone on board. When a senior officer gives a safety instruction, it is based on their experience and knowledge. Ignoring safety requests can lead to serious accidents or injuries. I also understand that teamwork is very important on a ship. When everyone follows the safety rules, we create a safer environment for everyone. If I have a question about a safety instruction, I would ask for clarification politely, but I would never refuse to follow it because safety is everyone's responsibility.",
+        answerMm: "ဟုတ်ကဲ့၊ ကျွန်တော် ဘေးကင်းရေးဆိုင်ရာ တောင်းဆိုချက်တွေနဲ့ ညွှန်ကြားချက်တွေကို အမြဲတမ်း ချက်ချင်းလိုက်နာပါတယ်။ သင်္ဘောပေါ်မှာ လူတိုင်းကို ကာကွယ်ဖို့ ဘေးကင်းရေးစည်းမျဉ်းတွေကို ချမှတ်ထားတာလို့ ကျွန်တော်ယုံကြည်ပါတယ်။ အကြီးတန်းအရာရှိက ဘေးကင်းရေးညွှန်ကြားချက်တစ်ခုပေးတဲ့အခါ သူတို့ရဲ့ အတွေ့အကြုံနဲ့ အသိပညာအပေါ် အခြေခံပြီး ပေးတာပါ။ ဘေးကင်းရေးတောင်းဆိုချက်တွေကို လျစ်လျူရှုခြင်းက ဆိုးရွားတဲ့မတော်တဆမှုတွေ ဒါမှမဟုတ် ဒဏ်ရာတွေ ဖြစ်စေနိုင်ပါတယ်။ သင်္ဘောပေါ်မှာ အဖွဲ့လိုက်လုပ်ဆောင်မှုက အရမ်းအရေးကြီးတယ်ဆိုတာလည်း ကျွန်တော်နားလည်ပါတယ်။ လူတိုင်း ဘေးကင်းရေးစည်းမျဉ်းတွေကို လိုက်နာတဲ့အခါ လူတိုင်းအတွက် ပိုလုံခြုံတဲ့ပတ်ဝန်းကျင်ကို ဖန်တီးနိုင်ပါတယ်။"
+    },
+    {
+        id: 8,
+        category: "Protect from Accidents",
+        prompt: "How do safety vests, safety signs, and following safety rules protect you from accidents?",
+        image: "",
+        timeLimit: 60,
+        answerEng: "Safety vests, safety signs, and following safety rules work together to protect us from accidents in many ways. Safety vests make us visible to others, especially in busy or low-light areas. Safety signs warn us about potential dangers, such as high voltage, slippery floors, or restricted areas. Following safety rules ensures that we do not take unnecessary risks. All of these measures help us stay aware of our surroundings, avoid dangerous situations, and respond properly in emergencies. Ultimately, they are designed to keep us safe and prevent accidents from happening.",
+        answerMm: "ဘေးကင်းရေးအင်္ကျီတွေ၊ ဘေးကင်းရေးဆိုင်းဘုတ်တွေနဲ့ ဘေးကင်းရေးစည်းမျဉ်းတွေကို လိုက်နာခြင်းတွေက ကျွန်တော်တို့ကို မတော်တဆမှုတွေကနေ နည်းလမ်းများစွာနဲ့ ကာကွယ်ပေးပါတယ်။ ဘေးကင်းရေးအင်္ကျီတွေက အထူးသဖြင့် စည်ကားတဲ့ ဒါမှမဟုတ် အလင်းရောင်အားနည်းတဲ့နေရာတွေမှာ အခြားသူတွေကို မြင်သာစေတယ်။ ဘေးကင်းရေးဆိုင်းဘုတ်တွေက မြင့်မားသောဗို့အား၊ ချော်ကျတတ်တဲ့ကြမ်းပြင် ဒါမှမဟုတ် ကန့်သတ်ဧရိယာတွေလိုမျိုး ဖြစ်နိုင်ခြေရှိတဲ့အန္တရာယ်တွေအကြောင်း သတိပေးပါတယ်။ ဘေးကင်းရေးစည်းမျဉ်းတွေကို လိုက်နာခြင်းက မလိုအပ်တဲ့စွန့်စားမှုတွေ မလုပ်မိအောင် သေချာစေတယ်။ ဒီအစီအမံအားလုံးက ကျွန်တော်တို့ကို အနီးအနားပတ်ဝန်းကျင်ကို သတိထားမိစေပြီး အန္တရာယ်ရှိတဲ့အခြေအနေတွေကို ရှောင်ရှားကာ အရေးပေါ်အခြေအနေတွေမှာ သင့်လျော်စွာ တုံ့ပြန်နိုင်အောင် ကူညီပေးတယ်။"
+    },
+    // PART 3: More Questions (9-15)
+    {
+        id: 9,
+        category: "Opinion",
+        prompt: "Do you think safety rules on a ship are too strict? Why or why not?",
+        image: "",
+        timeLimit: 60,
+        answerEng: "No, I don't think safety rules on a ship are too strict. In fact, I believe they are necessary to protect everyone on board. Ships can be dangerous places with heavy machinery, high voltage, and hazardous materials. The rules are designed to prevent accidents and save lives. While some rules may seem inconvenient, they are based on years of experience and lessons learned from past accidents. Following safety rules is a small price to pay for the safety of the crew and the vessel.",
+        answerMm: "မဟုတ်ပါဘူး၊ သင်္ဘောပေါ်က ဘေးကင်းရေးစည်းမျဉ်းတွေက သိပ်တင်းကျပ်တယ်လို့ ကျွန်တော်မထင်ပါဘူး။ တကယ်တော့ သင်္ဘောပေါ်က လူတိုင်းကို ကာကွယ်ဖို့ ဒါတွေက လိုအပ်တယ်လို့ ယုံကြည်ပါတယ်။ သင်္ဘောတွေက စက်ကြီးတွေ၊ မြင့်မားတဲ့ဗို့အားနဲ့ အန္တရာယ်ရှိတဲ့ပစ္စည်းတွေပါတဲ့ အန္တရာယ်များတဲ့နေရာတွေ ဖြစ်နိုင်ပါတယ်။ စည်းမျဉ်းတွေက မတော်တဆမှုတွေကို ကာကွယ်ပြီး အသက်တွေကို ကယ်ဖို့ ဒီဇိုင်းလုပ်ထားတာပါ။ အချို့စည်းမျဉ်းတွေက အဆင်မပြေပုံရပေမယ့် အတွေ့အကြုံနဲ့ အတိတ်က မတော်တဆမှုတွေကနေ သင်ယူခဲ့ရတဲ့ အခြေခံပေါ်မှာ အခြေခံထားတာပါ။"
+    },
+    {
+        id: 10,
+        category: "Opinion",
+        prompt: "What would you do if you saw someone not wearing their safety vest in a dangerous area?",
+        image: "",
+        timeLimit: 60,
+        answerEng: "If I saw someone not wearing their safety vest in a dangerous area, I would politely remind them to put it on. I would explain that it is for their own safety and that accidents can happen quickly. If they refused, I would report it to a supervisor because safety is everyone's responsibility. It is important to look out for each other on board and ensure that everyone follows the safety rules.",
+        answerMm: "တစ်စုံတစ်ယောက်က အန္တရာယ်ရှိတဲ့နေရာမှာ သူတို့ရဲ့ ဘေးကင်းရေးအင်္ကျီကို မဝတ်ထားတာကို မြင်ရင် ယဉ်ယဉ်ကျေးကျေး ဝတ်ဖို့ သတိပေးမယ်။ ဒါက သူ့ကိုယ်သူ ဘေးကင်းဖို့ဖြစ်ပြီး မတော်တဆမှုတွေ အမြန်ဖြစ်နိုင်တယ်ဆိုတာကို ရှင်းပြမယ်။ သူငြင်းဆန်ရင် ကြီးကြပ်သူကို အကြောင်းကြားမယ်၊ ဘာကြောင့်လဲဆိုတော့ ဘေးကင်းရေးက လူတိုင်းရဲ့တာဝန်ပါ။ သင်္ဘောပေါ်မှာ တစ်ယောက်နဲ့တစ်ယောက် ဂရုစိုက်ပြီး လူတိုင်း ဘေးကင်းရေးစည်းမျဉ်းတွေကို လိုက်နာကြောင်း သေချာဖို့ အရေးကြီးပါတယ်။"
+    },
+    {
+        id: 11,
+        category: "Opinion",
+        prompt: "Why is it important to wear PPE (Personal Protective Equipment) on board?",
+        image: "",
+        timeLimit: 60,
+        answerEng: "It is very important to wear PPE on board because it protects us from many hazards. PPE includes items like hard hats, safety vests, gloves, safety shoes, and ear protection. These items protect us from falling objects, cuts, burns, chemical exposure, and loud noises. Wearing PPE is not just a rule; it is a way to stay safe and prevent injuries. When we wear PPE, we show that we care about our own safety and the safety of others.",
+        answerMm: "သင်္ဘောပေါ်မှာ PPE ဝတ်ဆင်ဖို့ အရမ်းအရေးကြီးပါတယ်၊ ဘာကြောင့်လဲဆိုတော့ ဒါက ကျွန်တော်တို့ကို အန္တရာယ်အများအပြားကနေ ကာကွယ်ပေးလို့ပါ။ PPE မှာ ဦးထုပ်၊ ဘေးကင်းရေးအင်္ကျီ၊ လက်အိတ်၊ ဘေးကင်းရေးဖိနပ်နဲ့ နားအကာအကွယ်တွေ ပါဝင်ပါတယ်။ ဒီပစ္စည်းတွေက ပြုတ်ကျတဲ့ပစ္စည်းတွေ၊ ဒဏ်ရာတွေ၊ လောင်ကျွမ်းမှုတွေ၊ ဓာတုပစ္စည်းထိတွေ့မှုတွေနဲ့ ကျယ်လောင်တဲ့အသံတွေကနေ ကာကွယ်ပေးပါတယ်။ PPE ဝတ်ဆင်ခြင်းက စည်းမျဉ်းတစ်ခုသာမဟုတ်ဘူး၊ ဒါက ဘေးကင်းအောင်နေပြီး ဒဏ်ရာတွေကို ကာကွယ်တဲ့ နည်းလမ်းတစ်ခုပါ။ PPE ဝတ်တဲ့အခါ ကိုယ့်ရဲ့ဘေးကင်းရေးနဲ့ တခြားသူတွေရဲ့ ဘေးကင်းရေးကို ဂရုစိုက်တယ်ဆိုတာကို ပြသပါတယ်။"
+    },
+    {
+        id: 12,
+        category: "Opinion",
+        prompt: "Do you think safety drills are useful? Why or why not?",
+        image: "",
+        timeLimit: 60,
+        answerEng: "Yes, I think safety drills are very useful. They help us practice what to do in an emergency so that we can react quickly and correctly if a real emergency happens. Drills like fire drills, abandon ship drills, and man overboard drills teach us our roles and responsibilities. They also help us find problems with equipment or procedures before a real emergency. Practicing regularly makes us more confident and prepared.",
+        answerMm: "ဟုတ်ကဲ့၊ ဘေးကင်းရေးလေ့ကျင့်ခန်းတွေက အရမ်းအသုံးဝင်တယ်လို့ ကျွန်တော်ထင်ပါတယ်။ ဒါတွေက တကယ့်အရေးပေါ်အခြေအနေဖြစ်ရင် မြန်မြန်နဲ့ မှန်မှန်တုံ့ပြန်နိုင်အောင် အရေးပေါ်အခြေအနေမှာ ဘာလုပ်ရမလဲဆိုတာကို လေ့ကျင့်ပေးပါတယ်။ မီးသတ်လေ့ကျင့်ခန်း၊ သင်္ဘောစွန့်ခွာလေ့ကျင့်ခန်းနဲ့ လူပျောက်ကယ်ဆယ်ရေးလေ့ကျင့်ခန်းတွေက ကျွန်တော်တို့ရဲ့ အခန်းကဏ္ဍနဲ့ တာဝန်တွေကို သင်ပေးပါတယ်။ တကယ့်အရေးပေါ်အခြေအနေမတိုင်ခင် စက်ကိရိယာ ဒါမှမဟုတ် လုပ်ထုံးတွေနဲ့ ပြဿနာတွေကို ရှာဖွေဖို့လည်း ကူညီပေးပါတယ်။ ပုံမှန်လေ့ကျင့်ခြင်းက ကျွန်တော်တို့ကို ပိုယုံကြည်မှုရှိပြီး အဆင်သင့်ဖြစ်စေပါတယ်။"
+    },
+    {
+        id: 13,
+        category: "Opinion",
+        prompt: "What is the most important safety rule on a ship in your opinion? Why?",
+        image: "",
+        timeLimit: 60,
+        answerEng: "In my opinion, the most important safety rule on a ship is to always wear the required PPE. This rule protects us from many dangers like falling objects, chemical spills, and injuries. Without proper PPE, even simple tasks can become dangerous. Wearing PPE is a basic but essential way to protect ourselves. It shows that we take safety seriously and helps prevent accidents before they happen.",
+        answerMm: "ကျွန်တော့အမြင်မှာ သင်္ဘောပေါ်က အရေးအကြီးဆုံးဘေးကင်းရေးစည်းမျဉ်းက လိုအပ်တဲ့ PPE ကို အမြဲဝတ်ဆင်ဖို့ပါ။ ဒီစည်းမျဉ်းက ပြုတ်ကျတဲ့ပစ္စည်းတွေ၊ ဓာတုပစ္စည်းယိုဖိတ်မှုတွေနဲ့ ဒဏ်ရာတွေလိုမျိုး အန္တရာယ်အများအပြားကနေ ကာကွယ်ပေးပါတယ်။ သင့်လျော်တဲ့ PPE မပါဘဲ ရိုးရိုးအလုပ်တွေတောင် အန္တရာယ်ဖြစ်နိုင်ပါတယ်။ PPE ဝတ်ဆင်ခြင်းက ကိုယ့်ကိုယ်ကိုယ်ကာကွယ်ဖို့ အခြေခံပေမယ့် မရှိမဖြစ်နည်းလမ်းတစ်ခုပါ။ ဒါက ဘေးကင်းရေးကို အလေးအနက်ထားကြောင်း ပြသပြီး မတော်တဆမှုတွေ မဖြစ်ခင် ကာကွယ်ဖို့ ကူညီပါတယ်။"
+    },
+    {
+        id: 14,
+        category: "Opinion",
+        prompt: "How do you think technology can help improve safety on ships?",
+        image: "",
+        timeLimit: 60,
+        answerEng: "Technology can help improve safety on ships in many ways. For example, modern navigation systems like GPS and radar help ships avoid collisions. Monitoring systems can detect fires, gas leaks, or engine problems early. Communication systems allow crew to call for help quickly in emergencies. Technology can also help with training through simulators. However, technology is only a tool; it is still important for crew members to be trained and follow safety procedures.",
+        answerMm: "နည်းပညာက သင်္ဘောတွေပေါ်မှာ ဘေးကင်းရေးကို နည်းလမ်းများစွာနဲ့ တိုးတက်အောင်လုပ်နိုင်ပါတယ်။ ဥပမာ၊ GPS နဲ့ ရေဒါလိုမျိုး ခေတ်မီလမ်းကြောင်းပြစနစ်တွေက သင်္ဘောတွေ တိုက်မိခြင်းကို ရှောင်ရှားဖို့ ကူညီပါတယ်။ စောင့်ကြည့်စနစ်တွေက မီး၊ ဓာတ်ငွေ့ယိုစိမ့်မှု ဒါမှမဟုတ် အင်ဂျင်ပြဿနာတွေကို စောစီးစွာ ရှာဖွေနိုင်ပါတယ်။ ဆက်သွယ်ရေးစနစ်တွေက အရေးပေါ်အခြေအနေမှာ သင်္ဘောသားတွေကို အကူအညီ အမြန်တောင်းနိုင်စေတယ်။ နည်းပညာက သင်တုန်းစနစ်တွေကနေ လေ့ကျင့်ရေးမှာလည်း ကူညီနိုင်ပါတယ်။ ဒါပေမယ့် နည်းပညာက ကိရိယာတစ်ခုသာဖြစ်ပြီး သင်္ဘောသားတွေ လေ့ကျင့်သင်ကြားပြီး ဘေးကင်းရေးလုပ်ထုံးတွေကို လိုက်နာဖို့ နေဆဲအရေးကြီးပါတယ်။"
+    },
+    {
+        id: 15,
+        category: "Opinion",
+        prompt: "What would you do if you discovered a safety hazard on board?",
+        image: "",
+        timeLimit: 60,
+        answerEng: "If I discovered a safety hazard on board, I would first make sure that no one was in immediate danger. Then, I would report it to my supervisor or the safety officer immediately. I would also make sure the area is marked or blocked to prevent others from entering. It is important to report hazards quickly so they can be fixed before they cause an accident. Safety is everyone's responsibility, and we must all help keep the ship safe.",
+        answerMm: "သင်္ဘောပေါ်မှာ ဘေးကင်းရေးအန္တရာယ်တစ်ခုကို ရှာဖွေတွေ့ရှိရင် ပထမဆုံး ဘယ်သူမှ ချက်ချင်းအန္တရာယ်မရှိကြောင်း သေချာစေမယ်။ ပြီးရင် ကျွန်တော့ရဲ့ ကြီးကြပ်သူ ဒါမှမဟုတ် ဘေးကင်းရေးအရာရှိကို ချက်ချင်းအကြောင်းကြားမယ်။ တခြားသူတွေ မဝင်ရောက်နိုင်အောင် ဧရိယာကို အမှတ်အသားလုပ် ဒါမှမဟုတ် ပိတ်ဆို့ထားမယ်။ အန္တရာယ်တွေကို မတော်တဆမှုမဖြစ်ခင် ပြင်ဆင်နိုင်အောင် အမြန်အကြောင်းကြားဖို့ အရေးကြီးပါတယ်။ ဘေးကင်းရေးက လူတိုင်းရဲ့တာဝန်ဖြစ်ပြီး သင်္ဘောကို ဘေးကင်းအောင်ထားဖို့ အားလုံးက ကူညီရပါမယ်။"
+    }
+];
+
+// ============================================
+// 3. GLOBALS
+// ============================================
+let currentIndex = 0;
+let timer;
+let timeLeft;
+let timerRunning = false;
+let isSpeaking = false;
+let listenUsed = false;
+let speechSynth = window.speechSynthesis;
+
+// ============================================
+// 4. DOM REFS
+// ============================================
+const authScreen = document.getElementById('authScreen');
+const startScreen = document.getElementById('startScreen');
+const examScreen = document.getElementById('examScreen');
+const finishScreen = document.getElementById('finishScreen');
+const keyInput = document.getElementById('keyInput');
+const authError = document.getElementById('authError');
+const deviceLockError = document.getElementById('deviceLockError');
+const testLabel = document.getElementById('testLabel');
+const qCounter = document.getElementById('qCounter');
+const questionDisplay = document.getElementById('questionDisplay');
+const questionTextContent = document.getElementById('questionTextContent');
+const questionImage = document.getElementById('questionImage');
+const timerDisplay = document.getElementById('timerDisplay');
+const voiceStatus = document.getElementById('voiceStatus');
+const voiceDot = document.getElementById('voiceDot');
+const listenBtn = document.getElementById('listenBtn');
+const showAnswerBtn = document.getElementById('showAnswerBtn');
+const nextBtn = document.getElementById('nextBtn');
+const answerBox = document.getElementById('answerBox');
+const answerEng = document.getElementById('answerEng');
+const answerMy = document.getElementById('answerMy');
+const statusText = document.getElementById('statusText');
+const progressText = document.getElementById('progressText');
+
+// ============================================
+// 5. DEVICE FINGERPRINT
+// ============================================
+function generateDeviceFingerprint() {
+    let data = navigator.userAgent + navigator.language + screen.width + screen.height;
+    let hash = 0;
+    for (let i = 0; i < data.length; i++) {
+        hash = ((hash << 5) - hash) + data.charCodeAt(i);
+        hash |= 0;
+    }
+    return Math.abs(hash).toString(16);
+}
+
+// ============================================
+// 6. AUTH FUNCTIONS
+// ============================================
+function verifySecureActivation() {
+    let input = keyInput.value.trim().toUpperCase();
+    authError.classList.add('hidden');
+    deviceLockError.classList.add('hidden');
+
+    let isValid = SECURE_ALLOWED_KEYS.includes(input);
+    if (!isValid) {
+        authError.classList.remove('hidden');
+        return;
+    }
+
+    let rawKey = input;
+    try {
+        let decoded = atob(input);
+        rawKey = decoded;
+    } catch(e) {
+        rawKey = input;
+    }
+
+    let currentDevice = generateDeviceFingerprint();
+    let savedDevice = localStorage.getItem('lock_' + rawKey);
+
+    if (savedDevice && savedDevice !== currentDevice) {
+        deviceLockError.classList.remove('hidden');
+        return;
+    }
+
+    let expiryKey = 'expiry_' + rawKey;
+    let expiryDate = localStorage.getItem(expiryKey);
+    let now = Date.now();
+    let oneYear = 365 * 24 * 60 * 60 * 1000;
+
+    if (!expiryDate) {
+        localStorage.setItem(expiryKey, String(now + oneYear));
+    } else {
+        if (now > parseInt(expiryDate)) {
+            deviceLockError.innerHTML = '⏰ This key has expired (1 year).';
+            deviceLockError.classList.remove('hidden');
+            return;
+        }
+    }
+
+    localStorage.setItem('lock_' + rawKey, currentDevice);
+    localStorage.setItem('session_active', 'true');
+
+    authScreen.classList.add('hidden');
+    startScreen.classList.remove('hidden');
+}
+
+function lockAppAccess() {
+    localStorage.removeItem('session_active');
+    location.reload();
+}
+
+// ============================================
+// 7. TEST FUNCTIONS
+// ============================================
+function startTest() {
+    currentIndex = 0;
+    startScreen.classList.add('hidden');
+    examScreen.classList.remove('hidden');
+    finishScreen.classList.add('hidden');
+    loadQuestion();
+}
+
+function loadQuestion() {
+    const q = testQuestions[currentIndex];
+    const total = testQuestions.length;
+
+    testLabel.textContent = `${currentIndex + 1} / ${total}`;
+    qCounter.textContent = `Question ${currentIndex + 1} of ${total}`;
+    progressText.textContent = `${currentIndex + 1} / ${total}`;
+
+    // Hide question text initially
+    questionDisplay.classList.add('hidden-text');
+    questionTextContent.textContent = q.prompt;
+
+    // Show image if exists
+    if (q.image && q.image.length > 0) {
+        questionImage.src = q.image;
+        questionImage.classList.remove('hidden');
+    } else {
+        questionImage.classList.add('hidden');
+    }
+
+    // Reset state
+    if (timer) clearInterval(timer);
+    timerRunning = false;
+    listenUsed = false;
+    isSpeaking = false;
+    timeLeft = q.timeLimit || 60;
+    updateTimerDisplay();
+
+    listenBtn.disabled = false;
+    showAnswerBtn.disabled = true;
+    nextBtn.disabled = false;
+
+    answerBox.classList.remove('show');
+    voiceStatus.textContent = '⏳ Press "Listen (3x)" to start';
+    voiceDot.className = 'voice-dot inactive';
+    statusText.textContent = '⏳ Press "Listen (3x)" to start';
+}
+
+function updateTimerDisplay() {
+    let mins = Math.floor(timeLeft / 60);
+    let secs = timeLeft % 60;
+    timerDisplay.textContent = `${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
+}
+
+function startTimer() {
+    if (timerRunning) return;
+    timerRunning = true;
+    const q = testQuestions[currentIndex];
+    timeLeft = q.timeLimit || 60;
+    updateTimerDisplay();
+    statusText.textContent = '⏱️ Timer running... Start speaking!';
+
+    timer = setInterval(() => {
+        timeLeft--;
+        updateTimerDisplay();
+        if (timeLeft <= 0) {
+            clearInterval(timer);
+            timerRunning = false;
+            showAnswerBtn.disabled = false;
+            statusText.textContent = '⏰ Time is up! Click "Show Answer" to check.';
+            voiceStatus.textContent = '⏰ Time is up!';
+            // Hide question text when time is up
+            questionDisplay.classList.add('hidden-text');
+        }
+    }, 1000);
+}
+
+function speakQuestion(callback, speed) {
+    if (!('speechSynthesis' in window)) {
+        if (callback) callback();
+        return;
+    }
+    const q = testQuestions[currentIndex];
+    const utter = new SpeechSynthesisUtterance(q.prompt);
+    utter.lang = 'en-US';
+    utter.rate = speed || 0.9;
+    utter.pitch = 1.1;
+    utter.volume = 1;
+    utter.onstart = function() {
+        // Show question text when speaking starts
+        questionDisplay.classList.remove('hidden-text');
+        voiceDot.className = 'voice-dot';
+    };
+    utter.onend = function() { if (callback) callback(); };
+    utter.onerror = function(e) {
+        console.log('Speech error:', e);
+        if (callback) callback();
+    };
+    window.speechSynthesis.cancel();
+    window.speechSynthesis.speak(utter);
+}
+
+function handleListen() {
+    if (isSpeaking || listenUsed) return;
+    if (timerRunning) {
+        clearInterval(timer);
+        timerRunning = false;
+    }
+
+    isSpeaking = true;
+    listenBtn.disabled = true;
+
+    const speeds = [0.9, 0.7, 0.5];
+    const speedLabels = ['normal', 'slow', 'slower'];
+    let currentRead = 0;
+
+    // Show question text
+    questionDisplay.classList.remove('hidden-text');
+    voiceDot.className = 'voice-dot';
+    voiceStatus.textContent = '🔊 Speaking... (1/3) normal';
+
+    function readNext() {
+        if (currentRead >= speeds.length) {
+            isSpeaking = false;
+            listenUsed = true;
+            
+            // HIDE question text after 3rd reading
+            questionDisplay.classList.add('hidden-text');
+            voiceDot.className = 'voice-dot inactive';
+            
+            voiceStatus.textContent = '✅ Finished speaking (3 times). Timer starts now!';
+            statusText.textContent = '✅ Finished speaking. Timer starts now!';
+            setTimeout(() => {
+                startTimer();
+            }, 500);
+            return;
+        }
+
+        voiceStatus.textContent = `🔊 Speaking... (${currentRead+1}/3) ${speedLabels[currentRead]}`;
+        statusText.textContent = `🔊 Speaking... (${currentRead+1}/3) ${speedLabels[currentRead]}`;
+
+        speakQuestion(() => {
+            currentRead++;
+            setTimeout(readNext, 500);
+        }, speeds[currentRead]);
+    }
+
+    readNext();
+}
+
+function showAnswer() {
+    const q = testQuestions[currentIndex];
+    answerEng.textContent = q.answerEng;
+    answerMy.textContent = q.answerMm;
+    answerBox.classList.add('show');
+    showAnswerBtn.disabled = true;
+    statusText.textContent = '📖 Answer shown. Press "Next" for next question.';
+    voiceStatus.textContent = '📖 Answer shown.';
+    if (timerRunning) {
+        clearInterval(timer);
+        timerRunning = false;
+    }
+    // Keep question hidden
+    questionDisplay.classList.add('hidden-text');
+}
+
+function nextQuestion() {
+    if (currentIndex < testQuestions.length - 1) {
+        currentIndex++;
+        loadQuestion();
+    } else {
+        finishTest();
+    }
+}
+
+function finishTest() {
+    examScreen.classList.add('hidden');
+    finishScreen.classList.remove('hidden');
+}
+
+function backToStart() {
+    finishScreen.classList.add('hidden');
+    startScreen.classList.remove('hidden');
+}
+
+// ============================================
+// 8. EVENT LISTENERS
+// ============================================
+listenBtn.addEventListener('click', handleListen);
+showAnswerBtn.addEventListener('click', showAnswer);
+nextBtn.addEventListener('click', nextQuestion);
+
+// ============================================
+// 9. AUTO LOGIN CHECK
+// ============================================
+window.onload = function() {
+    if (localStorage.getItem('session_active') === 'true') {
+        authScreen.classList.add('hidden');
+        startScreen.classList.remove('hidden');
+    }
+    speechSynth.getVoices();
+};
+</script>
+</body>
+</html>
