@@ -287,6 +287,106 @@ const questionsData = [
       my: 'မနေ့က ကျွန်တော်တို့ အတန်းက ဆိပ်ကမ်းဂိတ်ကို သွားရောက်လည်ပတ်ခဲ့တယ်။ ကွန်တိန်နာတွေကို သင်္ဘောတွေပေါ်ကနေ ဘယ်လိုတင်ဆွဲ၊ ချချတယ်ဆိုတာ မြင်ခဲ့ရတယ်။ ဆိပ်ကမ်းက ခေတ်မီ ကရိန်းတွေနဲ့ ပစ္စည်းတွေကို သုံးတယ်။ အလုပ်သမားတွေက တင်းကျပ်တဲ့ ဘေးကင်းရေး စည်းမျဉ်းတွေကို လိုက်နာတယ်။ လုပ်ငန်းဆောင်တာအားလုံးကို စောင့်ကြည့်တဲ့ ထိန်းချုပ်ခန်းကိုလည်း သွားရောက်ကြည့်ရှုခဲ့တယ်။ ဆိပ်ကမ်းမန်နေဂျာက လုပ်ငန်းစဉ်တစ်ခုလုံးကို ရှင်းပြခဲ့တယ်။ စိတ်ဝင်စားစရာ အတွေ့အကြုံတစ်ခုပါ။ ဆိပ်ကမ်းလုပ်ငန်းနဲ့ ထောက်ပံ့ပို့ဆောင်ရေးအကြောင်း အများကြီး သင်ယူခဲ့ရတယ်။ ဒီလည်ပတ်မှုက ရေကြောင်းလုပ်ငန်းမှာ အဖွဲ့လိုက်လုပ်ဆောင်မှုနဲ့ ဘေးကင်းရေးရဲ့ အရေးပါမှုကို နားလည်စေခဲ့တယ်။'
     }
   }
+    // ===== 7M EXAM 4 =====
+{
+  batch: '7m_exam4',
+  category: 'personal',
+  type: 'Speaking (Personal)',
+  en: 'Basic Personal Info',
+  my: 'ကိုယ်ရေးကိုယ်တာ အခြေခံမေးခွန်းများ',
+  sub: [
+    'What is your name? / နာမည် ဘယ်သူလဲ?',
+    'How old are you? / အသက် ဘယ်လောက်လဲ?',
+    'What job do you want to do? Why? / ဘယ်အလုပ် လုပ်ချင်တာလဲ၊ ဘာကြောင့်လဲ?'
+  ],
+  answer: {
+    en: 'My name is Aung Ko. I am 22 years old. I want to be a marine engineer because I love working on ships and fixing machines. It is an exciting and challenging career that allows me to travel and learn new things.',
+    my: 'ကျွန်တော့်နာမည်က အောင်ကိုပါ။ အသက် ၂၂ နှစ်ပါ။ ကျွန်တော် ရေကြောင်းအင်ဂျင်နီယာ ဖြစ်ချင်တယ်။ ဘာဖြစ်လို့လဲဆိုတော့ သင်္ဘောတွေပေါ်မှာ အလုပ်လုပ်ရတာနဲ့ စက်တွေပြင်ရတာကို ကြိုက်လို့ပါ။ ဒါက ခရီးသွားရင်းနဲ့ အသစ်အဆန်းတွေ သင်ယူရတဲ့ စိတ်လှုပ်ရှားစရာနဲ့ စိန်ခေါ်မှုရှိတဲ့ အလုပ်တစ်ခုပါ။'
+  }
+},
+{
+  batch: '7m_exam4',
+  category: 'personal',
+  type: 'Speaking (Daily Life)',
+  en: 'Daily Life & Preferences',
+  my: 'နေ့စဉ်ဘဝနှင့် နှစ်သက်မှုများ',
+  sub: [
+    'What kind of food do you like? / ဘယ်လို အစားအစာ ကြိုက်လဲ?',
+    'How did you come to the exam centre today? / ဒီနေ့ စာမေးပွဲဖြေဖို့ ဘာနဲ့ လာခဲ့တာလဲ?',
+    'Was your journey difficult? Why? / ခရီးလမ်းက ခက်ခဲခဲ့သလား၊ ဘာကြောင့်လဲ?',
+    'What is your favorite place in your hometown/township? / နေထိုင်ရာ မြို့နယ်ရဲ့ အကြိုက်ဆုံးနေရာက ဘာလဲ?'
+  ],
+  answer: {
+    en: 'I like traditional Burmese food, especially Mohinga and Shan noodles. I came to the exam centre by taxi today. The journey was not difficult because the traffic was light. My favorite place in my hometown is the city park. It is peaceful and I enjoy walking there in the evening.',
+    my: 'ကျွန်တော် မြန်မာရိုးရာအစားအစာတွေ အထူးသဖြင့် မုန့်ဟင်းခါးနဲ့ ရှမ်းခေါက်ဆွဲကို ကြိုက်တယ်။ ဒီနေ့ စာမေးပွဲဖြေဖို့ တက္ကစီနဲ့ လာခဲ့တယ်။ ကားအသွားအလာ သိပ်မများတော့ ခရီးက သိပ်မခက်ခဲဘူး။ ကျွန်တော့်ဇာတိမြို့မှာ အကြိုက်ဆုံးနေရာက မြို့ပန်းခြံပါ။ အဲဒီမှာ အေးချမ်းပြီး ညနေပိုင်းတွေမှာ လမ်းလျှောက်ရတာ သဘောကျတယ်။'
+  }
+},
+{
+  batch: '7m_exam4',
+  category: 'debate',
+  type: 'Speaking (Discussion / Opinion)',
+  en: 'Discussion / Opinion',
+  my: 'ဆွေးနွေးခြင်း / သဘောထား',
+  sub: [
+    'What new things do you want to experience? Why? / ဘဝမှာ ဘယ်လို အတွေ့အကြုံသစ်တွေကို စမ်းသပ်လိုသလဲ၊ ဘာကြောင့်လဲ?',
+    'Do you agree that "Learning is a lifelong process"? / မင်း ဘဝတစ်ခုလုံး ပညာသင်ယူနေရတယ်ဆိုတာကို လက်ခံပါသလား?'
+  ],
+  answer: {
+    en: 'I want to experience living in a foreign country. I believe it will help me learn about different cultures and improve my language skills. Yes, I strongly agree that learning is a lifelong process. New technologies and challenges appear every day. We must keep learning to stay updated and succeed in life.',
+    my: 'ကျွန်တော် နိုင်ငံခြားမှာ နေထိုင်တဲ့ အတွေ့အကြုံကို လိုချင်တယ်။ ဒါက မတူညီတဲ့ ယဉ်ကျေးမှုတွေအကြောင်း လေ့လာနိုင်ပြီး ဘာသာစကားစွမ်းရည်ကို မြှင့်တင်နိုင်မယ်လို့ ယုံကြည်တယ်။ ဟုတ်ကဲ့၊ ဘဝတစ်ခုလုံး ပညာသင်ယူနေရတယ်ဆိုတာကို အပြင်းအထန် သဘောတူတယ်။ နည်းပညာအသစ်တွေနဲ့ စိန်ခေါ်မှုအသစ်တွေ နေ့တိုင်း ပေါ်လာတယ်။ အချိန်နဲ့အမျှ လိုက်လျောညီထွေဖြစ်ပြီး ဘဝမှာ အောင်မြင်ဖို့ ဆက်လက်သင်ယူနေရမယ်။'
+  }
+},
+{
+  batch: '7m_exam4',
+  category: 'speaking',
+  type: 'Speaking (Picture Description)',
+  en: 'Picture: Firefighter extinguishing fire',
+  my: 'ဓါတ်ပုံ: မီးသတ်သမား မီးငြှိမ်းသတ်နေခြင်း',
+  sub: [
+    'What do you see in the picture? / ပုံထဲမှာ ဘာတွေမြင်ရလဲ?',
+    'What is the person doing? / လူက ဘာလုပ်နေလဲ?',
+    'Why is this important? / ဒါက ဘာကြောင့် အရေးကြီးသလဲ?',
+    'What safety equipment is being used? / ဘယ်လိုဘေးကင်းရေးပစ္စည်းတွေ သုံးနေလဲ?'
+  ],
+  answer: {
+    en: 'In the picture, I can see a firefighter or a crew member using a fire extinguisher to put out a fire. The person is wearing a safety helmet and protective clothing. This is very important because fires can cause serious damage and injuries. Using the right equipment and following safety procedures helps prevent accidents and saves lives.',
+    my: 'ပုံထဲမှာ မီးသတ်သမား ဒါမှမဟုတ် သင်္ဘောသားတစ်ယောက် မီးသတ်ဆေးဘူးကို သုံးပြီး မီးငြှိမ်းသတ်နေတာကို မြင်ရတယ်။ အဲဒီလူက ဘေးကင်းရေးဦးထုပ်နဲ့ အကာအကွယ်အဝတ်အစားတွေ ဝတ်ထားတယ်။ ဒါက အရမ်းအရေးကြီးတယ်။ ဘာဖြစ်လို့လဲဆိုတော့ မီးက ပြင်းထန်တဲ့ ပျက်စီးမှုတွေနဲ့ ဒဏ်ရာတွေကို ဖြစ်စေနိုင်လို့ပါ။ မှန်ကန်တဲ့ ပစ္စည်းတွေသုံးပြီး ဘေးကင်းရေးလုပ်ထုံးလုပ်နည်းတွေကို လိုက်နာတာက မတော်တဆမှုတွေကို ကာကွယ်ပြီး အသက်တွေကို ကယ်တယ်။'
+  }
+},
+{
+  batch: '7m_exam4',
+  category: 'speaking',
+  type: 'Speaking (Picture Description)',
+  en: 'Picture: Person eating with hands',
+  my: 'ဓါတ်ပုံ: လက်နဲ့ ထမင်းစားနေသူ',
+  sub: [
+    'What do you see in the picture? / ပုံထဲမှာ ဘာတွေမြင်ရလဲ?',
+    'What is the person doing? / လူက ဘာလုပ်နေလဲ?',
+    'How do people eat in your culture? / မင်းတို့ယဉ်ကျေးမှုမှာ လူတွေ ဘယ်လိုစားကြသလဲ?',
+    'What are the advantages of eating with hands? / လက်နဲ့စားခြင်းရဲ့ အားသာချက်တွေက ဘာတွေလဲ?'
+  ],
+  answer: {
+    en: 'In the picture, I can see a person eating a meal with their hands. In Myanmar, many people eat with their hands, especially when eating traditional dishes like rice and curry. Eating with hands is natural and connects us to our culture. It also helps us enjoy the texture and temperature of the food. However, it is important to wash hands before eating for hygiene.',
+    my: 'ပုံထဲမှာ လူတစ်ယောက် လက်နဲ့ ထမင်းစားနေတာကို မြင်ရတယ်။ မြန်မာနိုင်ငံမှာ လူအများစုက လက်နဲ့စားကြတယ်။ အထူးသဖြင့် ထမင်းနဲ့ ဟင်းတွေကို စားတဲ့အခါမှာပါ။ လက်နဲ့စားတာက သဘာဝကျပြီး ကျွန်တော်တို့ရဲ့ ယဉ်ကျေးမှုနဲ့ ချိတ်ဆက်ပေးတယ်။ အစားအစာရဲ့ အသွင်အပြင်နဲ့ အပူချိန်ကို ခံစားရစေတယ်။ ဒါပေမယ့် သန့်ရှင်းရေးအတွက် မစားခင်မှာ လက်ကို သေချာဆေးကြောဖို့ အရေးကြီးတယ်။'
+  }
+},
+{
+  batch: '7m_exam4',
+  category: 'safety',
+  type: 'Speaking (Situation)',
+  en: 'Restaurant Situation: Discussing food preferences',
+  my: 'စားသောက်ဆိုင် အခြေအနေ: အစားအစာ ကြိုက်နှစ်သက်မှု ဆွေးနွေးခြင်း',
+  sub: [
+    'What is your favorite restaurant? / မင်းရဲ့ အကြိုက်ဆုံးစားသောက်ဆိုင်က ဘာလဲ?',
+    'What do you usually order there? / အဲဒီမှာ မင်း ဘာများမှာလေ့ရှိသလဲ?',
+    'Why do you like that restaurant? / ဘာကြောင့် အဲဒီစားသောက်ဆိုင်ကို ကြိုက်တာလဲ?',
+    'How would you recommend it to a friend? / သူငယ်ချင်းကို ဘယ်လို အကြံပြုမလဲ?'
+  ],
+  answer: {
+    en: 'My favorite restaurant is "Golden Myanmar Restaurant" near the city center. I usually order Mohinga or Shan noodles because they are my favorite dishes. I like this restaurant because the food is delicious, the service is fast, and the prices are reasonable. I would recommend it to a friend by saying, "If you want to taste authentic Burmese food, you must visit Golden Myanmar Restaurant. Their Mohinga is the best!"',
+    my: 'ကျွန်တော့်အကြိုက်ဆုံးစားသောက်ဆိုင်က မြို့လယ်အနီးက "Golden Myanmar စားသောက်ဆိုင်" ပါ။ အများအားဖြင့် မုန့်ဟင်းခါး ဒါမှမဟုတ် ရှမ်းခေါက်ဆွဲကို မှာတယ်။ ဘာဖြစ်လို့လဲဆိုတော့ သူတို့က ကျွန်တော့်အကြိုက်ဆုံးဟင်းတွေပါ။ ဒီစားသောက်ဆိုင်ကို ကြိုက်တာက အစားအစာက အရသာရှိတယ်၊ ဝန်ဆောင်မှုက မြန်တယ်၊ ဈေးနှုန်းတွေက သင့်တင့်မျှတလို့ပါ။ သူငယ်ချင်းကို ဒီလိုအကြံပြုမယ်။ "မင်း စစ်မှန်တဲ့ မြန်မာရိုးရာအစားအစာကို စမ်းသုံးကြည့်ချင်ရင် Golden Myanmar စားသောက်ဆိုင်ကို သွားရမယ်။ သူတို့ရဲ့ မုန့်ဟင်းခါးက အကောင်းဆုံးပဲ!"'
+  }
+}
 ];
 
 // ========== LOGIN SYSTEM ==========
